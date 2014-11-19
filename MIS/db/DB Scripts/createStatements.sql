@@ -1,3 +1,5 @@
+DROP SCHEMA IF EXISTS mis_db;
+
 CREATE SCHEMA mis_db;
 SELECT DATABASE();
 use mis_db; 
