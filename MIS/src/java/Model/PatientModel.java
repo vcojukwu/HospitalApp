@@ -1,14 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Model;
 
-/**
- *
- * @author TheKey
- */
 public class PatientModel {
-    
+    String PatientId;
+    String DoctorId;
+    int HealthStateId;
+    int HealthCardNumber;
+    int SocialInsuranceNumber;
+    int NumberOfVisits;
+    boolean IsActive;
+    String PatientNotes;
 }
