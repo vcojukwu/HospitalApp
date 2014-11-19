@@ -1,3 +1,7 @@
+CREATE SCHEMA mis_db;
+SELECT DATABASE();
+use mis_db; 
+
 CREATE TABLE STAFF
 (
 	StaffId VARCHAR(25) NOT NULL,
