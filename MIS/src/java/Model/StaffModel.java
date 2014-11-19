@@ -2,5 +2,14 @@
 package Model;
 
 public class StaffModel {
-    String StaffId;
+    private String StaffId;
+
+    public String getStaffId() {
+        return StaffId;
+    }
+
+    public void setStaffId(String StaffId) {
+        this.StaffId = StaffId;
+    }
+    
 }
