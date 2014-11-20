@@ -21,7 +21,7 @@
 </div>
 
 <div class="content" style="margin-top:10%">
-<form class="pure-form pure-form-stacked" method="post" action="LoginController">
+<form class="pure-form pure-form-stacked" method="post" action="Login">
     <fieldset>
         <legend>Login</legend>
 

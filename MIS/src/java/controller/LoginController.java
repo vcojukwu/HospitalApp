@@ -79,9 +79,9 @@ public class LoginController extends HttpServlet {
         boolean succesfull = authenticate.Login(request.getParameter("userId"), request.getParameter("pwd"));
         String forward = "";
         if(succesfull)
-           forward = "Views/test_login.jsp";
+           forward = "/Views/test_login.jsp";
         else
-            forward = "Views/login_failed.jsp";
+            forward = "/Views/login_failed.jsp";
         RequestDispatcher view = request.getServletContext().getRequestDispatcher(forward);
         view.forward(request, response);
     }
