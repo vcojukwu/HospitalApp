@@ -6,6 +6,9 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import util.DbUtil;
 
 /**
@@ -22,7 +25,22 @@ public class LoginDao {
     
     public boolean Login(String userName, String password)
     {
+        Statement stmt = null;
+        ResultSet rs = null;
+        String passwordInDatabase = null;
+        String query = "SELECT password FROM users where UserId = '" + userName + "'";
+        try{
+            stmt = DbUtil.getConnection().createStatement();
+            rs = stmt.executeQuery(query); 
+            while (rs.next()) {
+                passwordInDatabase = rs.getString("Password");
+            }
+        } catch (SQLException e) {
+                e.printStackTrace();
+        }
         
-        return false;
+        if(password.equals(passwordInDatabase))
+            return true;
+        else return false;
     }
 }
