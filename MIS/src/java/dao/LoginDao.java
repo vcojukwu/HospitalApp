@@ -20,7 +20,7 @@ public class LoginDao {
         connection = DbUtil.getConnection();
     }
     
-    public boolean Login(string userName, string password)
+    public boolean Login(String userName, String password)
     {
         
         return false;
