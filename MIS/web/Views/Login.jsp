@@ -1,28 +1,44 @@
-<%-- 
-    Document   : Login
-    Created on : 18-Nov-2014, 11:55:01 PM
-    Author     : TheKey
---%>
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Login Page</title>
-    </head>
-    <body>
-        <form method="Post" action="">
-            <div>
-                User Id: 
-                <input type="text"></input>
-            </div>
-            <div>
-                Password 
-                <input type="text"></input>
-            </div>
-            <input type="submit" vale="Login"></input>
+    <title>Profile</title>
 
-        </form>
-    </body>
+<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css">
+<link rel="stylesheet" type="text/css" href="../CSS/test.css">
+<script src="../JS/test.js"></script>
+
+</head>
+
+<body>
+
+<div>   <a href="#" style="position:absolute; top:0"><img src="../Images/uwhlogo.jpg" alt="Insert Logo Here" width="120" height="90" id="Insert_logo"/></a>
+<p style="text-align:right;"><span style="font-family:Verdana;font-size:18px;font-style:italic;font-weight:bold;text-decoration:none;text-transform:uppercase;color:#2F2D2D;"><span style="color:#E5EB13">University</span> of <span style="color:#E5EB13">Waterloo</span> Hospital <br><span style="padding-right:10% ;font-size:22px">(UWH)</span>
+</span>
+</p>
+</div>
+
+<div class="content" style="margin-top:10%">
+<form class="pure-form pure-form-stacked">
+    <fieldset>
+        <legend>Login</legend>
+
+        <label for="email">Email</label>
+        <input id="email" type="email" placeholder="Email">
+
+        <label for="password">Password</label>
+        <input id="password" type="password" placeholder="Password">
+
+        <label for="remember" class="pure-checkbox">
+            <input id="remember" type="checkbox"> Remember me
+        </label>
+
+        <button type="submit" class="pure-button pure-button-primary">Sign in</button>
+    </fieldset>
+</form>
+</div>
+</body>
+
 </html>
