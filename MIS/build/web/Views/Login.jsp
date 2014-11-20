@@ -21,15 +21,15 @@
 </div>
 
 <div class="content" style="margin-top:10%">
-<form class="pure-form pure-form-stacked">
+<form class="pure-form pure-form-stacked" method="post" action="LoginController">
     <fieldset>
         <legend>Login</legend>
 
         <label for="email">Email</label>
-        <input id="email" type="email" placeholder="Email">
+        <input id="email" name="userId" type="email" placeholder="Email">
 
         <label for="password">Password</label>
-        <input id="password" type="password" placeholder="Password">
+        <input id="password" name="pwd" type="password" placeholder="Password">
 
         <label for="remember" class="pure-checkbox">
             <input id="remember" type="checkbox"> Remember me
