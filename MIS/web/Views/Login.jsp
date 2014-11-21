@@ -39,7 +39,8 @@
     </fieldset>
 </form>
     <a href="Views/PatientView/profile.jsp">Go To Patient View</a><br>
-    <a href="Views/DoctorView/profile_doc.jsp">Go To Doctor View</a>
+    <a href="Views/DoctorView/profile_doc.jsp">Go To Doctor View</a><br>
+    <a href="Views/StaffView/profile_staff.jsp">Go To Staff View</a>
 </div>
 </body>
 
