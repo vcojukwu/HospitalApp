@@ -62,38 +62,38 @@
     	<legend>Contact Information</legend>
         <div class="pure-control-group">
             <label for="address">Address :</label>
-            <input id="address" type="text" placeholder="Address">
+            <input id="address" type="text" placeholder="Address" disabled>
         </div>
 
         <div class="pure-control-group">
             <label for="city">City :</label>
-            <input id="" type="text" placeholder="City">
+            <input id="city" type="text" placeholder="City" disabled>
         </div>
         
         <div class="pure-control-group">
             <label for="state">State :</label>
-            <input id="state" type="text" placeholder="State">
+            <input id="state" type="text" placeholder="State" disabled>
         </div>
 		
         <div class="pure-control-group">
             <label for="zip">Postal Code :</label>
-            <input id="zip" type="text" placeholder="Postal Code">
+            <input id="zip" type="text" placeholder="Postal Code" disabled>
         </div>
         
         <div class="pure-control-group">
             <label for="phone">Phone Number :</label>
-            <input id="phone" type="tel" placeholder="123456789">
+            <input id="phone" type="tel" placeholder="123456789" disabled>
         </div>
         
         <div class="pure-control-group">
             <label for="email">Email Address :</label>
-            <input id="email" type="email" placeholder="Email Address">
+            <input id="email" type="email" placeholder="Email Address" disabled>
         </div>
 
  
        <div class="pure-controls">
             <button style="margin-left:5%" type="submit" class="pure-button pure-button-primary">Submit</button>
-            <button style="margin-left:5%" type="button" class="pure-button pure-button-primary">Edit</button>
+            <button onClick="enable();return false" style="margin-left:5%" type="button" class="pure-button pure-button-primary">Edit</button>
         </div>
         
     </fieldset>
