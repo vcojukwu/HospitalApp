@@ -1,6 +1,11 @@
+MIS/nbproject/build-impl.xml
+MIS/nbp
 MIS/build/web/META-INF/context.xml
 MIS/build/web/META-INF/MANIFEST.MF
 MIS/nbproject/private/private.properties
 MIS/build/.
 /MIS/dist/
 MIS/build/*
+/MIS/nbproject/project.properties
+/MIS/nbproject/project.xml
+/MIS/nbproject/genfiles.properties
