@@ -38,7 +38,8 @@
         <button type="submit" class="pure-button pure-button-primary">Sign in</button>
     </fieldset>
 </form>
-    <a href="Views/PatientView/profile.html">Go To Patient View</a>
+    <a href="Views/PatientView/profile.jsp">Go To Patient View</a><br>
+    <a href="Views/DoctorView/profile_doc.jsp">Go To Doctor View</a>
 </div>
 </body>
 

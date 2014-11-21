@@ -1,8 +1,8 @@
-DROP SCHEMA IF EXISTS mis;
+DROP SCHEMA IF EXISTS mis_db;
 
-CREATE SCHEMA mis;
+CREATE SCHEMA mis_db;
 SELECT DATABASE();
-use mis; 
+use mis_db; 
 
 CREATE TABLE STAFF
 (

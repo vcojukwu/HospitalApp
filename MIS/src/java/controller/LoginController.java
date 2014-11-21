@@ -79,14 +79,14 @@ public class LoginController extends HttpServlet {
         int userType = authenticate.Login(request.getParameter("userId"), request.getParameter("pwd"));
         String forward = "";
         if(userType == 1) //Patient
-           forward = "/Views/PatientViews/profile.html";
+           forward = "/Views/PatientView/profile.jsp";
         else if(userType == 2) //Doctor
-           forward = "/Views/profile_doc.html";
+           forward = "/Views/DoctorView/profile_doc.jsp";
         else if(userType == 3) //Staff
            forward = "/Views/test_login.jsp";
-        else if(userType == 4) //Finance
+        else if(userType == 4) //Finanace
            forward = "/Views/test_login.jsp";
-        else
+        else 
             forward = "/Views/login_failed.jsp";
         RequestDispatcher view = request.getServletContext().getRequestDispatcher(forward);
         view.forward(request, response);

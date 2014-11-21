@@ -27,9 +27,10 @@ public class LoginDao {
     {
         Statement stmt = null;
         ResultSet rs = null;
-        String passwordInDatabase = null;
         int userType = 0;
-        String query = "SELECT password, usertype FROM users where UserId = '" + userName + "'";
+        String passwordInDatabase = null;
+        String query = "SELECT password,usertype FROM users where UserId = '" + userName + "'";
+        
         try{
             stmt = DbUtil.getConnection().createStatement();
             rs = stmt.executeQuery(query); 
@@ -44,6 +45,6 @@ public class LoginDao {
         if(password.equals(passwordInDatabase))
             return userType;
         else 
-            return -1; 
+            return -1;
     }
 }
