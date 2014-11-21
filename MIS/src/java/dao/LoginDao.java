@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import util.DbUtil;
+import util.Security;
 
 /**
  *
@@ -31,6 +32,9 @@ public class LoginDao {
         String passwordInDatabase = null;
         String query = "SELECT password,usertype FROM users where UserId = '" + userName + "'";
         
+        Security checkPassword = new Security();
+        String hashedPassword = checkPassword.hashedPassword(password);
+        
         try{
             stmt = DbUtil.getConnection().createStatement();
             rs = stmt.executeQuery(query); 
@@ -42,7 +46,7 @@ public class LoginDao {
                 e.printStackTrace();
         }
         
-        if(password.equals(passwordInDatabase))
+        if(hashedPassword.equals(passwordInDatabase))
             return userType;
         else 
             return -1;
