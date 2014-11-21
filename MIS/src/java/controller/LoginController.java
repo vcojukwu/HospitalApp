@@ -78,13 +78,13 @@ public class LoginController extends HttpServlet {
         LoginDao authenticate = new LoginDao();
         int userType = authenticate.Login(request.getParameter("userId"), request.getParameter("pwd"));
         String forward = "";
-        if(userType == 1)
+        if(userType == 1) //Patient
+           forward = "/Views/PatientViews/profile.html";
+        else if(userType == 2) //Doctor
+           forward = "/Views/profile_doc.html";
+        else if(userType == 3) //Staff
            forward = "/Views/test_login.jsp";
-        else if(userType == 2)
-           forward = "/Views/test_login.jsp";
-        else if(userType == 3)
-           forward = "/Views/test_login.jsp";
-        else if(userType == 4)
+        else if(userType == 4) //Finance
            forward = "/Views/test_login.jsp";
         else
             forward = "/Views/login_failed.jsp";

@@ -29,7 +29,7 @@ public class LoginDao {
         ResultSet rs = null;
         String passwordInDatabase = null;
         int userType = 0;
-        String query = "SELECT password FROM users where UserId = '" + userName + "'";
+        String query = "SELECT password, usertype FROM users where UserId = '" + userName + "'";
         try{
             stmt = DbUtil.getConnection().createStatement();
             rs = stmt.executeQuery(query); 
