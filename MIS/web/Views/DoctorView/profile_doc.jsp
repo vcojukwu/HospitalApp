@@ -22,20 +22,17 @@
 
     <div id="menu">
         <div class="pure-menu pure-menu-open">
-            <p class="pure-menu-heading" align="center">UWH</p>
+            <p class="pure-menu-heading" align="center" style="background-color:#F4090D">UWH</p>
             <a href="#"><img src="../../Images/uwhlogo.jpg" alt="Insert Logo Here" width="120" height="90" id="Insert_logo" style="margin-left:17px"/>
     </a>
     <p align="center"><a style="padding-left:0" href="#">Username</a></p>
             <ul style="margin-top:20%">
             
-                <li class="menu-item-divided pure-menu-selected"><a href="profile.html">Profile</a></li>
-                <li><a href="appointments.html">Past Appointments</a></li>
-                <li><a href="prescriptions.html">Prescriptions</a> </li>
-                <li><a href="diagnosis.html">Diagnosis</a></li>
-                <li><a href="requests.html">Request Appointment</a></li>
+                <li class="menu-item-divided pure-menu-selected" style="background-color:#F4090D"><a href="profile_doc.html">Profile</a></li>
+                <li><a href="search_patients.html">Patients Search</a></li>
+                <li><a href="search_records.html">Past Records Search</a> </li>
+                <li><a href="enter_records.html">Enter New Record</a></li>
                 <li><a href="#">Logout</a></li>
-
-                
             </ul>
         </div>
     </div>
@@ -49,7 +46,7 @@
             <img style="margin-left:40%" src="../../Images/profilepic.jpg"/>
             
             <div style="float:right; width:45%; height:80%; margin-left:5%">
-            <p>Upcoming Appointments</p>
+            <p>Schedule</p>
             <ul>
             <li>1</li>
             <li>2</li>
@@ -62,38 +59,38 @@
     	<legend>Contact Information</legend>
         <div class="pure-control-group">
             <label for="address">Address :</label>
-            <input id="address" type="text" placeholder="Address">
+            <input id="address" type="text" placeholder="Address" disabled>
         </div>
 
         <div class="pure-control-group">
             <label for="city">City :</label>
-            <input id="" type="text" placeholder="City">
+            <input id="city" type="text" placeholder="City" disabled>
         </div>
         
         <div class="pure-control-group">
             <label for="state">State :</label>
-            <input id="state" type="text" placeholder="State">
+            <input id="state" type="text" placeholder="State" disabled>
         </div>
 		
         <div class="pure-control-group">
             <label for="zip">Postal Code :</label>
-            <input id="zip" type="text" placeholder="Postal Code">
+            <input id="zip" type="text" placeholder="Postal Code" disabled>
         </div>
         
         <div class="pure-control-group">
             <label for="phone">Phone Number :</label>
-            <input id="phone" type="tel" placeholder="123456789">
+            <input id="phone" type="tel" placeholder="123456789" disabled>
         </div>
         
         <div class="pure-control-group">
             <label for="email">Email Address :</label>
-            <input id="email" type="email" placeholder="Email Address">
+            <input id="email" type="email" placeholder="Email Address" disabled>
         </div>
 
  
        <div class="pure-controls">
-            <button style="margin-left:5%" type="submit" class="pure-button pure-button-primary">Submit</button>
-            <button style="margin-left:5%" type="button" class="pure-button pure-button-primary">Edit</button>
+            <button style="margin-left:5%" type="submit" class="pure-button pure-button-primary">Save</button>
+            <button onClick="enable();return false" style="margin-left:5%" type="button" class="pure-button pure-button-primary">Edit</button>
         </div>
         
     </fieldset>
