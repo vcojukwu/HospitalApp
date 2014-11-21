@@ -23,24 +23,28 @@ public class LoginDao {
         connection = DbUtil.getConnection();
     }
     
-    public boolean Login(String userName, String password)
+    public int Login(String userName, String password)
     {
         Statement stmt = null;
         ResultSet rs = null;
+        int userType = 0;
         String passwordInDatabase = null;
-        String query = "SELECT password FROM users where UserId = '" + userName + "'";
+        String query = "SELECT password,usertype FROM users where UserId = '" + userName + "'";
+        
         try{
             stmt = DbUtil.getConnection().createStatement();
             rs = stmt.executeQuery(query); 
             while (rs.next()) {
                 passwordInDatabase = rs.getString("Password");
+                userType = Integer.parseInt(rs.getString("UserType"));
             }
         } catch (SQLException e) {
                 e.printStackTrace();
         }
         
         if(password.equals(passwordInDatabase))
-            return true;
-        else return false;
+            return userType;
+        else 
+            return -1;
     }
 }

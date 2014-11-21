@@ -76,11 +76,17 @@ public class LoginController extends HttpServlet {
             throws ServletException, IOException {
         //processRequest(request, response);
         LoginDao authenticate = new LoginDao();
-        boolean succesfull = authenticate.Login(request.getParameter("userId"), request.getParameter("pwd"));
+        int userType = authenticate.Login(request.getParameter("userId"), request.getParameter("pwd"));
         String forward = "";
-        if(succesfull)
+        if(userType == 1) //Patient
+           forward = "/Views/PatientView/profile.jsp";
+        else if(userType == 2) //Doctor
+           forward = "/Views/DoctorView/profile_doc.jsp";
+        else if(userType == 3) //Staff
            forward = "/Views/test_login.jsp";
-        else
+        else if(userType == 4) //Finanace
+           forward = "/Views/test_login.jsp";
+        else 
             forward = "/Views/login_failed.jsp";
         RequestDispatcher view = request.getServletContext().getRequestDispatcher(forward);
         view.forward(request, response);
