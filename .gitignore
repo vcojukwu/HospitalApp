@@ -6,6 +6,4 @@ MIS/nbproject/private/private.properties
 MIS/build/.
 /MIS/dist/
 MIS/build/*
-/MIS/nbproject/project.properties
-/MIS/nbproject/project.xml
-/MIS/nbproject/genfiles.properties
+
