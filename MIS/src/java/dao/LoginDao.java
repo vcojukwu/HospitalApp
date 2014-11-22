@@ -5,10 +5,15 @@
  */
 package dao;
 
+import Model.UserModel;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import util.DbUtil;
 import util.Security;
 
@@ -24,31 +29,49 @@ public class LoginDao {
         connection = DbUtil.getConnection();
     }
     
-    public int Login(String userName, String password)
+    public UserModel Login(String userName, String password)
     {
         Statement stmt = null;
         ResultSet rs = null;
+        //ResultSet rs = null;
         int userType = 0;
         String passwordInDatabase = null;
-        String query = "SELECT password,usertype FROM users where UserId = '" + userName + "'";
-        
+        String query = "SELECT * FROM users where UserId = '" + userName + "'";
+        /*String query2 = "SELECT * FROM users X INNER JOIN "
+                + "patients Y ON " 
+                + "X.UserId=Y.PatientId "  
+                + "where UserId = '" + userName + "'";*/
+
         Security checkPassword = new Security();
         String hashedPassword = checkPassword.hashedPassword(password);
+        UserModel user = new UserModel();
         
-        try{
+        try
+        {
             stmt = DbUtil.getConnection().createStatement();
             rs = stmt.executeQuery(query); 
-            while (rs.next()) {
+            DateFormat date = DateFormat.getDateInstance(DateFormat.SHORT);
+            while (rs.next()) 
+            {
                 passwordInDatabase = rs.getString("Password");
-                userType = Integer.parseInt(rs.getString("UserType"));
+                userType = rs.getInt("UserType");
+                user.setUserId(userName);
+                user.setFirstName(rs.getString("FirstName"));
+                user.setLastName(rs.getString("LastName"));
+                user.setGender(Boolean.parseBoolean(rs.getString("Gender")));
+                user.setDateOfBirth(rs.getTimestamp("DateOfBirth"));
+                user.setUserType(userType);
+                user.setPhoneNumber(rs.getString("PhoneNumber"));
+                user.setEmergencyContactName(rs.getString("EmergencyContactName"));
+                user.setEmergencyContactPhoneNumber(rs.getString("EmergencyContactPhoneNumber"));
+                user.setAddressId(Integer.parseInt(rs.getString("AddressId")));
             }
         } catch (SQLException e) {
                 e.printStackTrace();
-        }
-        
+        } 
         if(hashedPassword.equals(passwordInDatabase))
-            return userType;
+            return user;
         else 
-            return -1;
+            return null;
     }
 }

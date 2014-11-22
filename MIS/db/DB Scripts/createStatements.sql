@@ -101,7 +101,7 @@ CREATE TABLE USERS
 	Gender BIT NOT NULL,
 	DateOfBirth DATE NOT NULL,
 	UserType INT NOT NULL,
-	Password VARCHAR(50) NOT NULL,
+	Password VARCHAR(64) NOT NULL,
 	PhoneNumber VARCHAR(50) NOT NULL,
 	AddressId INT NOT NULL,	
 	EmergencyContactName VARCHAR(100) NOT NULL,

@@ -12,8 +12,9 @@
 
 </head>
 <body>
+<jsp:useBean id="userData" class="Model.UserModel" scope="session"/>
 
-<div id="layout">
+<div id="layout"> 
     <!-- Menu toggle -->
     <a href="#menu" id="menuLink" class="menu-link">
         <!-- Hamburger icon -->
@@ -25,7 +26,7 @@
             <p class="pure-menu-heading" align="center">UWH</p>
             <a href="#"><img src="../../Images/uwhlogo.jpg" alt="Insert Logo Here" width="120" height="90" id="Insert_logo" style="margin-left:17px"/>
     </a>
-    <p align="center"><a style="padding-left:0" href="#">Username</a></p>
+    <p align="center"><a style="padding-left:0" href="#"><%= userData.getFirstName()%>  <%= userData.getLastName()%></a></p>
             <ul style="margin-top:20%">
             
                 <li class="menu-item-divided pure-menu-selected"><a href="profile.html">Profile</a></li>
@@ -82,12 +83,12 @@
         
         <div class="pure-control-group">
             <label for="phone">Phone Number :</label>
-            <input id="phone" type="tel" placeholder="123456789" disabled>
+            <input id="phone" type="tel" value=<%= userData.getPhoneNumber() %> disabled>
         </div>
         
         <div class="pure-control-group">
             <label for="email">Email Address :</label>
-            <input id="email" type="email" placeholder="Email Address" disabled>
+            <input id="email" type="email" value=<%= userData.getUserId()%> disabled>
         </div>
 
  

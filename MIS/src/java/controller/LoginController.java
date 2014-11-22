@@ -5,8 +5,9 @@
  */
 package controller;
 
+import Model.UserModel;
+import ViewModel.UserPatientVM;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import dao.LoginDao;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.http.HttpSession;
 /**
  *
  * @author TheKey
@@ -31,24 +33,24 @@ public class LoginController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet LoginController</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet LoginController at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
+//    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+//            throws ServletException, IOException {
+//        response.setContentType("text/html;charset=UTF-8");
+//        try (PrintWriter out = response.getWriter()) {
+//            /* TODO output your page here. You may use following sample code. */
+//            out.println("<!DOCTYPE html>");
+//            out.println("<html>");
+//            out.println("<head>");
+//            out.println("<title>Servlet LoginController</title>");            
+//            out.println("</head>");
+//            out.println("<body>");
+//            out.println("<h1>Servlet LoginController at " + request.getContextPath() + "</h1>");
+//            out.println("</body>");
+//            out.println("</html>");
+//        }
+//    }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    // <editor-fold  desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -60,7 +62,7 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+       // processRequest(request, response);
     }
 
     /**
@@ -76,18 +78,33 @@ public class LoginController extends HttpServlet {
             throws ServletException, IOException {
         //processRequest(request, response);
         LoginDao authenticate = new LoginDao();
-        int userType = authenticate.Login(request.getParameter("userId"), request.getParameter("pwd"));
+        UserModel user = authenticate.Login(request.getParameter("userId"), request.getParameter("pwd"));
         String forward = "";
-        if(userType == 1) //Patient
-           forward = "/Views/PatientView/profile.jsp";
-        else if(userType == 2) //Doctor
-           forward = "/Views/DoctorView/profile_doc.jsp";
-        else if(userType == 3) //Staff
-           forward = "/Views/test_login.jsp";
-        else if(userType == 4) //Finanace
-           forward = "/Views/test_login.jsp";
-        else 
-            forward = "/Views/login_failed.jsp";
+        HttpSession session = request.getSession(true);
+        forward = "/Views/login_failed.jsp";
+
+        if (user != null)
+        {
+            int userType = user.getUserType();
+            if(userType == 1) //Patient
+            {
+                session.setAttribute("userData", user);
+                forward = "/Views/PatientView/profile.jsp";
+            }
+            else if(userType == 2) //Doctor
+            {
+               forward = "/Views/DoctorView/profile_doc.jsp";
+            }
+            else if(userType == 3) //Staff
+            {
+               forward = "/Views/test_login.jsp";
+            }
+            else if(userType == 4) //Finanace
+            {
+               forward = "/Views/test_login.jsp";
+            }
+        }
+        
         RequestDispatcher view = request.getServletContext().getRequestDispatcher(forward);
         view.forward(request, response);
     }

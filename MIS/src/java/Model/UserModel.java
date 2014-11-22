@@ -1,14 +1,14 @@
 
 package Model;
 
-import java.sql.Timestamp;
+import java.util.Date;
 
 public class UserModel {
     private String UserId;
     private String FirstName;
     private String LastName;
     private boolean Gender;
-    private Timestamp DateOfBirth;
+    private Date DateOfBirth;
     private int UserType;
     private String Password;
     private String PhoneNumber;
@@ -48,11 +48,11 @@ public class UserModel {
         this.Gender = Gender;
     }
 
-    public Timestamp getDateOfBirth() {
+    public Date getDateOfBirth() {
         return DateOfBirth;
     }
 
-    public void setDateOfBirth(Timestamp DateOfBirth) {
+    public void setDateOfBirth(Date DateOfBirth) {
         this.DateOfBirth = DateOfBirth;
     }
 
