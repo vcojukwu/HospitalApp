@@ -1,11 +1,6 @@
 <!doctype html>
 <html lang="en">
-<%-- The following 4 lines are needed in every page from now on --%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<c:set var="url">${pageContext.request.requestURL}</c:set>
-<base href="${fn:substring(url, 0, fn:length(url) - fn:length(pageContext.request.requestURI))}${pageContext.request.contextPath}/" />
-    
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,7 +8,6 @@
     <title>Profile</title>
     
     <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css">
-        <%-- Whenever you write out the path do not put a front slash--%>
     <link rel="stylesheet" type="text/css" href="CSS/test.css">
     <script src="JS/test.js"></script>
 
