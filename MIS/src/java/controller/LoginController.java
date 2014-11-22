@@ -96,11 +96,11 @@ public class LoginController extends HttpServlet {
             }
             else if(userType == 3) //Staff
             {
-               forward = "/Views/test_login.jsp";
+               forward = "/Views/StaffView/profile_staff.jsp";
             }
             else if(userType == 4) //Finanace
             {
-               forward = "/Views/test_login.jsp";
+               forward = "/Views/FinanceView/profile_finance.jsp";
             }
         }
         
