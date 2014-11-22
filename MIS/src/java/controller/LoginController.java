@@ -5,8 +5,7 @@
  */
 package controller;
 
-import Model.UserModel;
-import ViewModel.UserPatientVM;
+import ViewModel.UserProfileVM;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -78,17 +77,17 @@ public class LoginController extends HttpServlet {
             throws ServletException, IOException {
         //processRequest(request, response);
         LoginDao authenticate = new LoginDao();
-        UserModel user = authenticate.Login(request.getParameter("userId"), request.getParameter("pwd"));
+        UserProfileVM user = authenticate.Login(request.getParameter("userId"), request.getParameter("pwd"));
         String forward = "";
         HttpSession session = request.getSession(true);
         forward = "/Views/login_failed.jsp";
 
         if (user != null)
         {
-            int userType = user.getUserType();
+            int userType = user.getUser().getUserType();
             if(userType == 1) //Patient
             {
-                session.setAttribute("userData", user);
+                session.setAttribute("patientProfile", user);
                 forward = "/Views/PatientView/profile.jsp";
             }
             else if(userType == 2) //Doctor

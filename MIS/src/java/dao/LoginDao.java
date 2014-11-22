@@ -5,15 +5,14 @@
  */
 package dao;
 
+import Model.AddressModel;
 import Model.UserModel;
+import ViewModel.UserProfileVM;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DateFormat;
-import java.text.ParseException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import util.DbUtil;
 import util.Security;
 
@@ -29,23 +28,24 @@ public class LoginDao {
         connection = DbUtil.getConnection();
     }
     
-    public UserModel Login(String userName, String password)
+    public UserProfileVM Login(String userName, String password)
     {
         Statement stmt = null;
         ResultSet rs = null;
         //ResultSet rs = null;
         int userType = 0;
         String passwordInDatabase = null;
-        String query = "SELECT * FROM users where UserId = '" + userName + "'";
-        /*String query2 = "SELECT * FROM users X INNER JOIN "
-                + "patients Y ON " 
-                + "X.UserId=Y.PatientId "  
-                + "where UserId = '" + userName + "'";*/
+        //String query = "SELECT * FROM users where UserId = '" + userName + "'";
+        String query = "SELECT * FROM users X INNER JOIN "
+                + "address Y ON " 
+                + "X.AddressId=Y.AddressId "  
+                + "where UserId = '" + userName + "'";
 
         Security checkPassword = new Security();
         String hashedPassword = checkPassword.hashedPassword(password);
         UserModel user = new UserModel();
-        
+        AddressModel address = new AddressModel();
+        UserProfileVM viewModel = new UserProfileVM();
         try
         {
             stmt = DbUtil.getConnection().createStatement();
@@ -65,12 +65,23 @@ public class LoginDao {
                 user.setEmergencyContactName(rs.getString("EmergencyContactName"));
                 user.setEmergencyContactPhoneNumber(rs.getString("EmergencyContactPhoneNumber"));
                 user.setAddressId(Integer.parseInt(rs.getString("AddressId")));
+                address.setAddressId(rs.getInt("AddressId"));
+                address.setStreetNumber(userType);
+                address.setStreetName(rs.getString("StreetName"));
+                address.setCity(rs.getString("City"));
+                address.setProvince(rs.getString("Province"));
+                address.setCountry(rs.getString("Country"));
+                address.setPostalCode(rs.getString("PostalCode"));
             }
         } catch (SQLException e) {
                 e.printStackTrace();
         } 
         if(hashedPassword.equals(passwordInDatabase))
-            return user;
+        {
+            viewModel.setAddress(address);
+            viewModel.setUser(user);
+            return viewModel;
+        }
         else 
             return null;
     }
