@@ -13,7 +13,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import dao.LoginDao;
+import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpSession;
 /**
  *
@@ -81,34 +83,35 @@ public class LoginController extends HttpServlet {
         String forward = "";
         HttpSession session = request.getSession(true);
         forward = "/Views/login_failed.jsp";
-
+        RequestDispatcher view = null;
         if (user != null)
         {
+           // forward = "/Views/loginRedirect.jsp"
             int userType = user.getUser().getUserType();
             if(userType == 1) //Patient
-            {
-                session.setAttribute("profile", user);
-                forward = "/Views/PatientView/profile.jsp";
-            }
+                forward = "Views/PatientView/profile.jsp";
             else if(userType == 2) //Doctor
-            {
-                session.setAttribute("profile", user);
                 forward = "/Views/DoctorView/profile_doc.jsp";
-            }
             else if(userType == 3) //Staff
-            {
-                session.setAttribute("profile", user);
                 forward = "/Views/StaffView/profile_staff.jsp";
-            }
             else if(userType == 4) //Finanace
-            {
-                session.setAttribute("profile", user);
                 forward = "/Views/FinancialView/profile_financial.jsp";
-            }
+            session.setAttribute("profile", user);
+            session.setMaxInactiveInterval(30*60); //30 mins
+            Cookie userName = new Cookie("user", user.getUser().getUserId());
+            userName.setMaxAge(30*60);
+            response.addCookie(userName);
+            response.sendRedirect(forward);
+        }else{
+            RequestDispatcher rd = getServletContext().getRequestDispatcher("/Login.jsp");
+            PrintWriter out= response.getWriter();
+            out.println("<font color=red>Either user name or password is wrong.</font>");
+            rd.include(request, response);
         }
         
-        RequestDispatcher view = request.getServletContext().getRequestDispatcher(forward);
-        view.forward(request, response);
+        
+       // view = request.getServletContext().getRequestDispatcher(forward);
+       // view.forward(request, response);
     }
 
     /**

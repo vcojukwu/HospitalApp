@@ -6,6 +6,7 @@
         <span></span>
     </a>
 
+    
     <div id="menu">
         <div class="pure-menu pure-menu-open">
             <p class="pure-menu-heading" align="center">UWH</p>
@@ -13,7 +14,7 @@
             </a>
             <p align="center">
                 <a style="padding-left:0" href="#">
-                    <%= profile.getUser().getFirstName()%>  <%= profile.getUser().getLastName()%>
+                    <%--<%= profile.getUser().getFirstName()%>  <%= profile.getUser().getLastName()%>--%>
                 </a>
             </p>
             <ul style="margin-top:20%">

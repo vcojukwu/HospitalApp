@@ -17,7 +17,13 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author TheKey
  */
-@WebServlet(name = "PatientController", urlPatterns = {"/Patient"})
+@WebServlet(name = "PatientController", 
+            urlPatterns = { "/Views/Patient",
+                            "/Views/Patient/profile",
+                            "/Views/Patient/appointments",
+                            "/Views/Patient/diagnosis",
+                            "/Views/Patient/prescriptions",
+                            "/Views/Patient/requests"})
 public class PatientController extends HttpServlet {
 
     /**
@@ -31,19 +37,40 @@ public class PatientController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet PatientController</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet PatientController at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        String userPath = request.getServletPath();
+        if(userPath.equals("/profile"))
+        {
+            
         }
+        else if(userPath.equals("/appointments"))
+        {
+            
+        }
+        else if(userPath.equals("/diagnosis"))
+        {
+            
+        }
+        else if(userPath.equals("/prescriptions"))
+        {
+            
+        }
+        else if(userPath.equals("/requests"))
+        {
+            
+        }
+//        response.setContentType("text/html;charset=UTF-8");
+//        try (PrintWriter out = response.getWriter()) {
+//            /* TODO output your page here. You may use following sample code. */
+//            out.println("<!DOCTYPE html>");
+//            out.println("<html>");
+//            out.println("<head>");
+//            out.println("<title>Servlet PatientController</title>");            
+//            out.println("</head>");
+//            out.println("<body>");
+//            out.println("<h1>Servlet PatientController at " + request.getContextPath() + "</h1>");
+//            out.println("</body>");
+//            out.println("</html>");
+//        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

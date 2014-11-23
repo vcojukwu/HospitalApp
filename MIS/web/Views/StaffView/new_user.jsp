@@ -1,4 +1,5 @@
 <%@include file="/WEB-INF/jspf/SideBars/staffSideBar.jspf" %>
+
 <div id="main">
     <div class="header">
         <h1>Add a New User</h1>

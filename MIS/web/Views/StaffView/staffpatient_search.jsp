@@ -1,5 +1,6 @@
 <%@include file="/WEB-INF/jspf/SideBars/staffSideBar.jspf" %>
 
+
 <div id="main">
     <div class="header">
         <h1>Search for a Patient</h1>
