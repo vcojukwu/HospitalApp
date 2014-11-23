@@ -12,15 +12,7 @@
             <a href="#"><img src="Images/uwhlogo.jpg" alt="Insert Logo Here" width="120" height="90" id="Insert_logo" style="margin-left:17px"/>
             </a>
             <p align="center"><a style="padding-left:0" href="#">Username</a></p>
-            <ul style="margin-top:20%">
-
-                <li class="menu-item-divided"><a href="profile.html">Profile</a></li>
-                <li class="menu-item-divided pure-menu-selected"><a href="appointments.html">Past Appointments</a></li>
-                <li><a href="prescriptions.html">Prescriptions</a> </li>
-                <li><a href="diagnosis.html">Diagnosis</a></li>
-                <li><a href="requests.html">Request Appointment</a></li>
-                <li><a href="#">Logout</a></li>   
-            </ul>
+            <%@include file="/WEB-INF/jspf/patientSideBar.jspf" %>
         </div>
     </div>
 

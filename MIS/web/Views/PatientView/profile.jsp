@@ -13,25 +13,7 @@
             <a href="#"><img src="Images/uwhlogo.jpg" alt="Insert Logo Here" width="120" height="90" id="Insert_logo" style="margin-left:17px"/>
             </a>
             <p align="center"><a style="padding-left:0" href="#"><%= patientProfile.getUser().getFirstName()%>  <%= patientProfile.getUser().getLastName()%></a></p>
-            <ul style="margin-top:20%">
-
-                <li class="menu-item-divided pure-menu-selected">
-                    <a href="Views/PatientView/profile.jsp">Profile</a>
-                </li>
-                <li>
-                    <a href="Views/PatientView/appointments.jsp">Past Appointments</a>
-                </li>
-                <li>
-                    <a href="Views/PatientView/prescriptions.jsp">Prescriptions</a> 
-                </li>
-                <li>
-                    <a href="Views/PatientView/diagnosis.jsp">Diagnosis</a>
-                </li>
-                <li>
-                    <a href="Views/PatientView/requests.jsp">Request Appointment</a>
-                </li>
-                <li><a href="#">Logout</a></li>
-            </ul>
+            <%@include file="/WEB-INF/jspf/patientSideBar.jspf" %>
         </div>
     </div>
 

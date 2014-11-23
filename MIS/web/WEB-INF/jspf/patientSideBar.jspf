@@ -1,3 +1,20 @@
 <%-- any content can be specified here e.g.: --%>
 <%@ page pageEncoding="UTF-8" %>
-<h2>Hello World!</h2>
+<ul style="margin-top:20%">
+    <li class="menu-item-divided pure-menu-selected">
+        <a href="Views/PatientView/profile.jsp">Profile</a>
+    </li>
+    <li>
+        <a href="Views/PatientView/appointments.jsp">Past Appointments</a>
+    </li>
+    <li>
+        <a href="Views/PatientView/prescriptions.jsp">Prescriptions</a> 
+    </li>
+    <li>
+        <a href="Views/PatientView/diagnosis.jsp">Diagnosis</a>
+    </li>
+    <li>
+        <a href="Views/PatientView/requests.jsp">Request Appointment</a>
+    </li>
+    <li><a href="#">Logout</a></li>
+</ul>
