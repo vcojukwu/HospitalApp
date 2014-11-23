@@ -7,13 +7,8 @@
             <p class="pure-menu-heading" align="center" style="background-color:#54F707">UWH</p>
             <a href="#"><img src="Images/uwhlogo.jpg" alt="Insert Logo Here" width="120" height="90" id="Insert_logo" style="margin-left:17px"/></a>
             <p align="center"><a style="padding-left:0" href="#"><%= financialProfile.getUser().getFirstName()%>  <%= financialProfile.getUser().getLastName()%></a></p>
-            <ul style="margin-top:20%">            
-                <li class="menu-item-divided pure-menu-selected" style="background-color:#54F707"><a href="profile_financial.jsp">Profile</a></li>
-                <li><a href="doctor_search.html">Doctor Search</a></li>
-                <li><a href="financialpatient_search.html">Patient Search</a></li>
-                <li><a href="revenue.html">Monthly Revenue</a></li>
-                <li><a href="#">Logout</a></li>
-            </ul>
+            <%@include file="/WEB-INF/jspf/SideBars/financialSideBar.jspf" %>
+
         </div>
     </div>
     <div id="main">

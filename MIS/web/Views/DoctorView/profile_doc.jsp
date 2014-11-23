@@ -7,13 +7,8 @@
             <p class="pure-menu-heading" align="center" style="background-color:#F4090D">UWH</p>
             <a href="#"><img src="Images/uwhlogo.jpg" alt="Insert Logo Here" width="120" height="90" id="Insert_logo" style="margin-left:17px"/></a>
             <p align="center"><a style="padding-left:0" href="#"><%= doctorProfile.getUser().getFirstName()%>  <%= doctorProfile.getUser().getLastName()%></a></p>
-            <ul style="margin-top:20%">            
-                <li class="menu-item-divided pure-menu-selected" style="background-color:#F4090D"><a href="profile_doc.html">Profile</a></li>
-                <li><a href="search_patients.html">Patients Search</a></li>
-                <li><a href="search_records.html">Past Records Search</a> </li>
-                <li><a href="enter_records.html">Enter New Record</a></li>
-                <li><a href="#">Logout</a></li>
-            </ul>
+            <%@include file="/WEB-INF/jspf/SideBars/doctorSideBar.jspf" %>
+
         </div>
     </div>
 

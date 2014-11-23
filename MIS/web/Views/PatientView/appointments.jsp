@@ -12,7 +12,7 @@
             <a href="#"><img src="Images/uwhlogo.jpg" alt="Insert Logo Here" width="120" height="90" id="Insert_logo" style="margin-left:17px"/>
             </a>
             <p align="center"><a style="padding-left:0" href="#">Username</a></p>
-            <%@include file="/WEB-INF/jspf/patientSideBar.jspf" %>
+            <%@include file="/WEB-INF/jspf/SideBars/patientSideBar.jspf" %>
         </div>
     </div>
 

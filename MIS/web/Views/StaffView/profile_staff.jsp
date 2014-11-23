@@ -6,14 +6,7 @@
             <p class="pure-menu-heading" align="center" style="background-color:#DDF10A">UWH</p>
             <a href="#"><img src="Images/uwhlogo.jpg" alt="Insert Logo Here" width="120" height="90" id="Insert_logo" style="margin-left:17px"/></a>
             <p align="center"><a style="padding-left:0" href="#"><%= staffProfile.getUser().getFirstName()%>  <%= staffProfile.getUser().getLastName()%></a></p>
-            <ul style="margin-top:20%">            
-                <li class="menu-item-divided pure-menu-selected" style="background-color:#DDF10A"><a href="profile_staff.jsp">Profile</a></li>
-                <li><a href="new_user.jsp">Add New User</a></li>
-                <li><a href="staff_appointments.html">Appointments</a> </li>
-                <li><a href="staffpatient_search.html">Patient Search</a></li>
-                <li><a href="assign.html">Assign Patients</a></li>
-                <li><a href="#">Logout</a></li>
-            </ul>
+            <%@include file="/WEB-INF/jspf/SideBars/staffSideBar.jspf" %>
         </div>
     </div>
     <div id="main">
