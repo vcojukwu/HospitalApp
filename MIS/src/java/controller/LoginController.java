@@ -89,8 +89,6 @@ public class LoginController extends HttpServlet {
             {
                 session.setAttribute("profile", user);
                 forward = "/Views/PatientView/profile.jsp";
-                                forward = "/Views/FinancialView/profile_financial.jsp";
-
             }
             else if(userType == 2) //Doctor
             {
