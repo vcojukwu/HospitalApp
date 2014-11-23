@@ -8,7 +8,7 @@
     <div id="menu">
         <div class="pure-menu pure-menu-open">
             <p class="pure-menu-heading" align="center">UWH</p>
-            <a href="#"><img src="../../Images/uwhlogo.jpg" alt="Insert Logo Here" width="120" height="90" id="Insert_logo" style="margin-left:17px"/>
+            <a href="#"><img src="Images/uwhlogo.jpg" alt="Insert Logo Here" width="120" height="90" id="Insert_logo" style="margin-left:17px"/>
             </a>
             <p align="center"><a style="padding-left:0" href="#">Username</a></p>
             <ul style="margin-top:20%">
