@@ -66,7 +66,7 @@ public class LoginDao {
                 user.setEmergencyContactPhoneNumber(rs.getString("EmergencyContactPhoneNumber"));
                 user.setAddressId(Integer.parseInt(rs.getString("AddressId")));
                 address.setAddressId(rs.getInt("AddressId"));
-                address.setStreetNumber(userType);
+                address.setStreetNumber(Integer.parseInt(rs.getString("StreetNumber")));
                 address.setStreetName(rs.getString("StreetName"));
                 address.setCity(rs.getString("City"));
                 address.setProvince(rs.getString("Province"));

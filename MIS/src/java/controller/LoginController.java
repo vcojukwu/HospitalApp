@@ -92,15 +92,18 @@ public class LoginController extends HttpServlet {
             }
             else if(userType == 2) //Doctor
             {
-               forward = "/Views/DoctorView/profile_doc.jsp";
+                session.setAttribute("doctorProfile", user);
+                forward = "/Views/DoctorView/profile_doc.jsp";
             }
             else if(userType == 3) //Staff
             {
-               forward = "/Views/StaffView/profile_staff.jsp";
+                session.setAttribute("staffProfile", user);
+                forward = "/Views/StaffView/profile_staff.jsp";
             }
             else if(userType == 4) //Finanace
             {
-               forward = "/Views/FinanceView/profile_finance.jsp";
+                session.setAttribute("financialProfile", user);
+                forward = "/Views/FinancialView/profile_financial.jsp";
             }
         }
         
