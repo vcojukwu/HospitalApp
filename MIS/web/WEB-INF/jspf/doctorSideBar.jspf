@@ -1,0 +1,9 @@
+<%-- any content can be specified here e.g.: --%>
+<%@ page pageEncoding="UTF-8" %>
+<ul style="margin-top:20%">            
+    <li class="menu-item-divided pure-menu-selected" style="background-color:#F4090D"><a href="profile_doc.html">Profile</a></li>
+    <li><a href="search_patients.html">Patients Search</a></li>
+    <li><a href="search_records.html">Past Records Search</a> </li>
+    <li><a href="enter_records.html">Enter New Record</a></li>
+    <li><a href="#">Logout</a></li>
+</ul>

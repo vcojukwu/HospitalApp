@@ -1,0 +1,10 @@
+<%-- any content can be specified here e.g.: --%>
+<%@ page pageEncoding="UTF-8" %>
+<ul style="margin-top:20%">            
+    <li class="menu-item-divided pure-menu-selected" style="background-color:#DDF10A"><a href="profile_staff.jsp">Profile</a></li>
+    <li><a href="new_user.jsp">Add New User</a></li>
+    <li><a href="staff_appointments.html">Appointments</a> </li>
+    <li><a href="staffpatient_search.html">Patient Search</a></li>
+    <li><a href="assign.html">Assign Patients</a></li>
+    <li><a href="#">Logout</a></li>
+</ul>
