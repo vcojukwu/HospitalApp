@@ -1,22 +1,4 @@
-<jsp:useBean id="patientProfile" class="ViewModel.UserProfileVM" scope="session"/>
-
-<div id="layout"> 
-    <!-- Menu toggle -->
-    <a href="#menu" id="menuLink" class="menu-link">
-        <!-- Hamburger icon -->
-        <span></span>
-    </a>
-
-    <div id="menu">
-        <div class="pure-menu pure-menu-open">
-            <p class="pure-menu-heading" align="center">UWH</p>
-            <a href="#"><img src="Images/uwhlogo.jpg" alt="Insert Logo Here" width="120" height="90" id="Insert_logo" style="margin-left:17px"/>
-            </a>
-            <p align="center"><a style="padding-left:0" href="#"><%= patientProfile.getUser().getFirstName()%>  <%= patientProfile.getUser().getLastName()%></a></p>
-            <%@include file="/WEB-INF/jspf/SideBars/patientSideBar.jspf" %>
-        </div>
-    </div>
-
+    <%@include file="/WEB-INF/jspf/SideBars/patientSideBar.jspf" %>
     <div id="main">
         <div class="header">
             <h1>Profile</h1>
@@ -39,32 +21,32 @@
                         <legend>Contact Information</legend>
                         <div class="pure-control-group">
                             <label for="address">Address :</label>
-                            <input id="address" type="text" value='<%= patientProfile.getAddress().getStreetNumber()%>  <%= patientProfile.getAddress().getStreetName()%>' disabled>
+                            <input id="address" type="text" value='<%= profile.getAddress().getStreetNumber()%>  <%= profile.getAddress().getStreetName()%>' disabled>
                         </div>
 
                         <div class="pure-control-group">
                             <label for="city">City :</label>
-                            <input id="city" type="text" value=<%= patientProfile.getAddress().getCity()%> disabled>
+                            <input id="city" type="text" value=<%= profile.getAddress().getCity()%> disabled>
                         </div>
 
                         <div class="pure-control-group">
                             <label for="state">Province :</label>
-                            <input id="state" type="text" value=<%= patientProfile.getAddress().getProvince()%> disabled>
+                            <input id="state" type="text" value=<%= profile.getAddress().getProvince()%> disabled>
                         </div>
 
                         <div class="pure-control-group">
                             <label for="zip">Postal Code :</label>
-                            <input id="zip" type="text" value=<%=patientProfile.getAddress().getPostalCode()%> disabled>
+                            <input id="zip" type="text" value=<%=profile.getAddress().getPostalCode()%> disabled>
                         </div>
 
                         <div class="pure-control-group">
                             <label for="phone">Phone Number :</label>
-                            <input id="phone" type="tel" value=<%= patientProfile.getUser().getPhoneNumber()%> disabled>
+                            <input id="phone" type="tel" value=<%= profile.getUser().getPhoneNumber()%> disabled>
                         </div>
 
                         <div class="pure-control-group">
                             <label for="email">Email Address :</label>
-                            <input id="email" type="email" value=<%= patientProfile.getUser().getUserId()%> disabled>
+                            <input id="email" type="email" value=<%= profile.getUser().getUserId()%> disabled>
                         </div>
 
 
@@ -78,5 +60,5 @@
             </div>
         </div>
     </div>
-</div>
+
 

@@ -87,22 +87,22 @@ public class LoginController extends HttpServlet {
             int userType = user.getUser().getUserType();
             if(userType == 1) //Patient
             {
-                session.setAttribute("patientProfile", user);
+                session.setAttribute("profile", user);
                 forward = "/Views/PatientView/profile.jsp";
             }
             else if(userType == 2) //Doctor
             {
-                session.setAttribute("doctorProfile", user);
+                session.setAttribute("profile", user);
                 forward = "/Views/DoctorView/profile_doc.jsp";
             }
             else if(userType == 3) //Staff
             {
-                session.setAttribute("staffProfile", user);
+                session.setAttribute("profile", user);
                 forward = "/Views/StaffView/profile_staff.jsp";
             }
             else if(userType == 4) //Finanace
             {
-                session.setAttribute("financialProfile", user);
+                session.setAttribute("profile", user);
                 forward = "/Views/FinancialView/profile_financial.jsp";
             }
         }

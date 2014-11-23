@@ -1,4 +1,3 @@
-<jsp:useBean id="financialProfile" class="ViewModel.UserProfileVM" scope="session"/>
 <div id="layout">
     <a href="#menu" id="menuLink" class="menu-link"></a>
 
@@ -6,7 +5,7 @@
         <div class="pure-menu pure-menu-open">
             <p class="pure-menu-heading" align="center" style="background-color:#54F707">UWH</p>
             <a href="#"><img src="Images/uwhlogo.jpg" alt="Insert Logo Here" width="120" height="90" id="Insert_logo" style="margin-left:17px"/></a>
-            <p align="center"><a style="padding-left:0" href="#"><%= financialProfile.getUser().getFirstName()%>  <%= financialProfile.getUser().getLastName()%></a></p>
+            <p align="center"><a style="padding-left:0" href="#"><%= profile.getUser().getFirstName()%>  <%= profile.getUser().getLastName()%></a></p>
             <%@include file="/WEB-INF/jspf/SideBars/financialSideBar.jspf" %>
 
         </div>
@@ -31,27 +30,27 @@
                         <legend>Contact Information</legend>
                         <div class="pure-control-group">
                             <label for="address">Address :</label>
-                            <input id="address" type="text" value='<%= financialProfile.getAddress().getStreetNumber()%>  <%= financialProfile.getAddress().getStreetName()%>' disabled>
+                            <input id="address" type="text" value='<%= profile.getAddress().getStreetNumber()%>  <%= profile.getAddress().getStreetName()%>' disabled>
                         </div>
                         <div class="pure-control-group">
                             <label for="city">City :</label>
-                            <input id="city" type="text" value=<%= financialProfile.getAddress().getCity()%> disabled>
+                            <input id="city" type="text" value=<%= profile.getAddress().getCity()%> disabled>
                         </div>        
                         <div class="pure-control-group">
                             <label for="state">Province :</label>
-                            <input id="state" type="text" value=<%= financialProfile.getAddress().getProvince()%> disabled>
+                            <input id="state" type="text" value=<%= profile.getAddress().getProvince()%> disabled>
                         </div>		
                         <div class="pure-control-group">
                             <label for="zip">Postal Code :</label>
-                            <input id="zip" type="text" value=<%=financialProfile.getAddress().getPostalCode()%> disabled>
+                            <input id="zip" type="text" value=<%=profile.getAddress().getPostalCode()%> disabled>
                         </div>        
                         <div class="pure-control-group">
                             <label for="phone">Phone Number :</label>
-                            <input id="phone" type="tel" value=<%= financialProfile.getUser().getPhoneNumber()%> disabled>
+                            <input id="phone" type="tel" value=<%= profile.getUser().getPhoneNumber()%> disabled>
                         </div>        
                         <div class="pure-control-group">
                             <label for="email">Email Address :</label>
-                            <input id="email" type="email" value=<%= financialProfile.getUser().getUserId()%> disabled>
+                            <input id="email" type="email" value=<%= profile.getUser().getUserId()%> disabled>
                         </div> 
                         <div class="pure-controls">
                              <button style="margin-left:5%" type="submit" class="pure-button pure-button-primary">Save</button>
