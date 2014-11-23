@@ -6,4 +6,4 @@ MIS/nbproject/private/
 MIS/build/.
 /MIS/dist/
 MIS/build/*
-
+MIS/nbproject/build-impl.xml
