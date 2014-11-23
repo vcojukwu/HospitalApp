@@ -7,6 +7,7 @@ package dao;
 
 import Model.AddressModel;
 import Model.UserModel;
+import ViewModel.UserProfileVM;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -56,4 +57,31 @@ public class UserDao {
                 e.printStackTrace();
         }
     }    
+    
+    public void ModifyUser(UserProfileVM userModified){
+        Statement stmt  = null;
+        String query    = null;
+        ResultSet rs    = null;
+
+        try{
+            stmt = DbUtil.getConnection().createStatement();
+            
+            query = "UPDATE users " +
+                    "SET PhoneNumber='" + userModified.getUser().getPhoneNumber() + "' " + 
+                    "WHERE UserId='" + userModified.getUser().getUserId() + "'; ";
+            System.out.println(query);
+            stmt.executeUpdate(query);
+            query = "UPDATE address " +
+                    "SET StreetNumber ='" + userModified.getAddress().getStreetNumber() + "', " + 
+                    "StreetName = '" + userModified.getAddress().getStreetName() + "', " +
+                    "City = '" + userModified.getAddress().getCity() + "', " +
+                    "Province = '" + userModified.getAddress().getProvince() + "', " +
+                    "PostalCode = '" + userModified.getAddress().getPostalCode() + "' " +
+                    "WHERE AddressId=" + userModified.getAddress().getAddressId()+ ";";
+            System.out.println(query);
+            stmt.executeUpdate(query);
+        } catch (SQLException e) {
+                e.printStackTrace();
+        }
+    }
 }

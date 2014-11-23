@@ -50,12 +50,13 @@ function showAdv1() {
 }
 
 function enable() {
-    document.getElementById("address").disabled = false;
+    document.getElementById("streetNumber").disabled = false;
+    document.getElementById("streetName").disabled = false;
     document.getElementById("city").disabled = false;
     document.getElementById("state").disabled = false;
     document.getElementById("zip").disabled = false;
     document.getElementById("phone").disabled = false;
-    document.getElementById("email").disabled = false;
+    //document.getElementById("email").disabled = false;
 }
 
 function showForm(elem){
