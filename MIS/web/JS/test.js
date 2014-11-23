@@ -50,10 +50,30 @@ function showAdv1() {
 }
 
 function enable() {
-    document.getElementById("address").disabled = false;
+    document.getElementById("streetNumber").disabled = false;
+    document.getElementById("streetName").disabled = false;
     document.getElementById("city").disabled = false;
     document.getElementById("state").disabled = false;
     document.getElementById("zip").disabled = false;
     document.getElementById("phone").disabled = false;
-    document.getElementById("email").disabled = false;
+    //document.getElementById("email").disabled = false;
+}
+
+function showForm(elem){
+	var selected = elem.value;
+	if(selected === 0){
+		document.getElementById("sinDiv").style.display = "none";
+		document.getElementById("healthDiv").style.display = "none";
+		document.getElementById("docDiv").style.display = "none";
+	}
+	else if(selected === 1){
+		document.getElementById("sinDiv").style.display = "block";
+		document.getElementById("healthDiv").style.display = "block";
+		document.getElementById("docDiv").style.display = "none";
+	}
+	else{
+		document.getElementById("sinDiv").style.display = "none";
+		document.getElementById("healthDiv").style.display = "none";
+		document.getElementById("docDiv").style.display = "block";
+	}
 }
