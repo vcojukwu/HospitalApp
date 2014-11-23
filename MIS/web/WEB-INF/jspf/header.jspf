@@ -22,3 +22,4 @@
     <body>
         <jsp:useBean id="profile" class="ViewModel.UserProfileVM" scope="session"/>
         <%-- closing tags are found in footer.jspf --%>
+        <div id="layout">
