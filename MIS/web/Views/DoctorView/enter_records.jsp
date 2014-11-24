@@ -14,27 +14,27 @@
 
                 <div class="pure-control-group">
                     <label for="diagnosis">Diagnosis</label>
-                    <input id="diagnosis" type="text" placeholder="Diagnosis">
+                    <input name="diagnosis" id="diagnosis" type="text" placeholder="Diagnosis">
                 </div>
 
                 <div class="pure-control-group">
                     <label for="prescriptions">Prescription</label>
-                    <input id="prescriptions" type="text" placeholder="Prescription">
+                    <input name="prescriptions" id="prescriptions" type="text" placeholder="Prescription">
                 </div>
 
                 <div class="pure-control-group">
                     <label for="timestarted">Time-Started</label>
-                    <input id="timestarted" type="time">
+                    <input name = "timestarted" id="timestarted" type="time">
                 </div>
 
                 <div class="pure-control-group">
                     <label for="timeended">Time-Ended</label>
-                    <input id="timeended" type="time">
+                    <input name = "timeended" id="timeended" type="time">
                 </div>
 
                 <div class="pure-control-group">
                     <label for="comment">Comments</label>
-                    <textarea name="comment" form=""></textarea>
+                    <textarea id ="comment" name="comment"></textarea>
                 </div>
                 
                 <div class="pure-control-group">

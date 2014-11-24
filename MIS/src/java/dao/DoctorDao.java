@@ -27,7 +27,7 @@ public class DoctorDao {
     }
     
     
-    public void AddVisitationRecord(VisitationRecordsModel visitationRecord, int procedureId){
+    public void AddVisitationRecord(VisitationRecordsModel visitationRecord){
         Statement stmt  = null;
         String query    = null;
         ResultSet rs    = null;
@@ -38,11 +38,12 @@ public class DoctorDao {
             //Add new record
             query = "INSERT INTO visitation_records ( OriginalRecordId, ProcedureId, PatientId, DoctorId, TimeStarted, TimeEnded, "
                     + "Prescriptions, Diagnosis, TreatmentSchedule, Notes) "
-                    + "VALUES ( '" + -1 + "', '" + procedureId + "' , '" +
-                    visitationRecord.getPatientId() + "'," + visitationRecord.getDoctorId() + ", '" + visitationRecord.getTimeStarted() +
+                    + "VALUES ( '" + -1 + "', '" + visitationRecord.getProcedureId() + "' , '" +
+                    visitationRecord.getPatientId() + "', '" + visitationRecord.getDoctorId() + "', '" + visitationRecord.getTimeStarted() +
                     "', '" + visitationRecord.getTimeEnded() + "', '" + visitationRecord.getPrescriptions() +  
                     "', '" + visitationRecord.getDiagnosis() + "' ,'" + visitationRecord.getTreatmentSchedule() + "' ,'" +
                     visitationRecord.getNotes() + "')";
+            System.out.print(query);
             stmt.executeUpdate(query);
         } catch (SQLException e) {
                 e.printStackTrace();
