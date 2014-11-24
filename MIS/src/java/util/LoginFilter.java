@@ -45,10 +45,12 @@ public class LoginFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
         HttpSession session = request.getSession(false);
+        String uri = request.getRequestURI();
 
-        if (session == null || session.getAttribute("profile") == null) {
+        if ((session == null || session.getAttribute("profile") == null) && !(uri.endsWith("html") || uri.endsWith("/"))) {
             response.sendRedirect(request.getContextPath() + "/Login"); // No logged-in user found, so redirect to login page.
         } else {
+            
             chain.doFilter(req, res); // Logged-in user found, so just continue request.
         }
     }

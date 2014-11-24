@@ -84,6 +84,7 @@ public class LoginController extends HttpServlet {
         HttpSession session = request.getSession(true);
         forward = "/Views/login_failed.jsp";
         RequestDispatcher view = null;
+        
         if (user != null)
         {
            // forward = "/Views/loginRedirect.jsp"
@@ -99,8 +100,9 @@ public class LoginController extends HttpServlet {
             session.setAttribute("profile", user);
             session.setMaxInactiveInterval(30*60); //30 mins
             Cookie userName = new Cookie("user", user.getUser().getUserId());
-            userName.setMaxAge(30*60);
+            userName.setMaxAge(-1);
             response.addCookie(userName);
+            
             response.sendRedirect(forward);
         }else{
             RequestDispatcher rd = getServletContext().getRequestDispatcher("/Login.jsp");
@@ -110,7 +112,7 @@ public class LoginController extends HttpServlet {
         }
         
         
-       // view = request.getServletContext().getRequestDispatcher(forward);
+        //view = request.getServletContext().getRequestDispatcher(forward);
        // view.forward(request, response);
     }
 

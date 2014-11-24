@@ -1,4 +1,17 @@
 <%@ page pageEncoding="UTF-8" %>
+    <%
+        //allow access only if session exists
+      //  String user =(String) session.getAttribute("profile");
+        String userName = null;
+        String sessionID = null;
+        Cookie[] cookies = request.getCookies();
+        if(cookies !=null){
+        for(Cookie cookie : cookies){
+            if(cookie.getName().equals("user")) userName = cookie.getValue();
+            if(cookie.getName().equals("JSESSIONID")) sessionID = cookie.getValue();
+        }
+    }
+%>
 
     <!-- Menu toggle -->
     <a href="#menu" id="menuLink" class="menu-link">
@@ -33,7 +46,12 @@
                 <li>
                     <a href="Views/PatientView/requests.jsp">Request Appointment</a>
                 </li>
-                <li><a href="#">Logout</a></li>
+                <li>
+                    <!--<a href="#">Logout</a>-->
+                    <form id="logout" action="LogoutController" method="post">
+                        <a href="javascript:{}" onclick="document.getElementById('logout').submit();">Logout</a>
+                    </form>
+                </li>
             </ul>
         </div>
     </div>
