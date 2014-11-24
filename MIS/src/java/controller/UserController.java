@@ -70,7 +70,17 @@ public class UserController extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
     }
-
+    
+    private void EditUser()
+    {
+        
+    }
+    
+    private void AddUser()
+    {
+        
+    }
+    
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -83,6 +93,10 @@ public class UserController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         UserDao userData = new UserDao();
+        if (request.getParameter("Edit") != null)
+            this.EditUser();
+        else if(request.getParameter("Add") != null)
+            this.AddUser();
         //HttpSession session = request.getSession(true);
         //UserProfileVM userModified = (UserProfileVM) session.getAttribute("profile");
         //userModified.getAddress().setStreetNumber(Integer.parseInt(request.getParameter("streetNumber")));
@@ -106,7 +120,7 @@ public class UserController extends HttpServlet {
         user.setUserId(request.getParameter("email"));
         user.setFirstName(request.getParameter("fname"));
         user.setLastName(request.getParameter("lname"));
-        user.setGender((Integer.parseInt(request.getParameter("gender")) == 0)? false : true);
+        user.setGender((Integer.parseInt(request.getParameter("gender")) != 0));
         user.setDateOfBirth(new java.sql.Date(date.getTime()));
         user.setUserType(userType);
         user.setPassword(hashPassword.hashedPassword(request.getParameter("password")));
