@@ -92,11 +92,11 @@ public class LoginController extends HttpServlet {
             if(userType == 1) //Patient
                 forward = "Views/PatientView/profile.jsp";
             else if(userType == 2) //Doctor
-                forward = "/Views/DoctorView/profile_doc.jsp";
+                forward = "Views/DoctorView/profile_doc.jsp";
             else if(userType == 3) //Staff
-                forward = "/Views/StaffView/profile_staff.jsp";
+                forward = "Views/StaffView/profile_staff.jsp";
             else if(userType == 4) //Finanace
-                forward = "/Views/FinancialView/profile_financial.jsp";
+                forward = "Views/FinancialView/profile_financial.jsp";
             session.setAttribute("profile", user);
             session.setMaxInactiveInterval(30*60); //30 mins
             Cookie userName = new Cookie("user", user.getUser().getUserId());
