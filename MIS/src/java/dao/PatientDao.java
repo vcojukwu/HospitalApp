@@ -27,9 +27,6 @@ public class PatientDao {
         connection = DbUtil.getConnection();
     }
     
-    /*
-    
-    */
     public PatientModel getPatient(int patientid)
     {
         Statement stmt = null;
@@ -57,21 +54,31 @@ public class PatientDao {
         return pm;
     }
     
-    public void updatePatient(PatientModel patient)
+    //This method will update all attributes as given in the patient model parameter
+    //Returns true if executed successfully, else false
+    public boolean updatePatient(PatientModel patient)
     {String[] PatientModelColumns = {"PatientId","DoctorId","HealthStateId","HealthCardNumber",
             "SocialInsuranceNumber","NumberOfVisits","IsActive","PatientNotes"};
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-        String query = "UPDATE patients SET HealthStateId = ?, HealthCardNumber = ?, "
+        String query = "UPDATE patients SET DoctorId = ?, HealthStateId = ?, HealthCardNumber = ?, "
                 + "SocialInsuranceNumber = ?, NumberOfVisits = ?, IsActive = ?, "
                 + "PatientNotes = ? where patientid = '" + patient.getPatientId() + "'";
-        PatientModel pm = new PatientModel();
         try{
             pstmt = DbUtil.getConnection().prepareStatement(query);
+            pstmt.setString(1, patient.getDoctorId());
+            pstmt.setInt(2, patient.getHealthStateId());
+            pstmt.setInt(3, patient.getHealthCardNumber());
+            pstmt.setInt(4, patient.getSocialInsuranceNumber());
+            pstmt.setInt(5, patient.getNumberOfVisits());
+            pstmt.setBoolean(6, patient.isIsActive());
+            pstmt.setString(7, patient.getPatientNotes());
             rs = pstmt.executeQuery(query); 
+            return true;
         } catch (Exception e) {
                 e.printStackTrace();
         }
+        return false;
     }
     
     public void deletePatient(int id)
