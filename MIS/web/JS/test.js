@@ -106,3 +106,42 @@ function deleteRow() {
         document.getElementById("remove").disabled = true;
     }
 }
+
+function enableRow(){
+	document.getElementById("patID").disabled = false;
+	document.getElementById("docID").disabled = false;
+	document.getElementById("patName").disabled = false;
+	document.getElementById("docName").disabled = false;
+	document.getElementById("time").disabled = false;
+	document.getElementById("duration").disabled = false;
+}
+
+function deleteRow2(r) {
+    var i = r.parentNode.parentNode.rowIndex;
+    document.getElementById("appointments").deleteRow(i);
+}
+
+function addRow2(r){
+	var i = r.parentNode.parentNode.rowIndex;
+	var table = document.getElementById("appointments");
+	var row = table.insertRow(i);
+	var cell1 = row.insertCell(0);
+	var cell2 = row.insertCell(1);
+	var cell3 = row.insertCell(2);
+	var cell4 = row.insertCell(3);
+	var cell5 = row.insertCell(4);
+	var cell6 = row.insertCell(5);
+	var cell7 = row.insertCell(6);
+	
+	cell1.innerHTML = '<input id="patID" type="number" value = "1" disabled>';
+	cell2.innerHTML = '<input id="patName" type="text" value = "Victor Ojukwu" disabled></td>';
+	cell3.innerHTML = '<input id="docID" type="number" value = "1" disabled></td>';
+	cell4.innerHTML = '<input id="docName" type="text" value = "John Doe" disabled>';
+	cell5.innerHTML = '<input id="time" type="datetime" value = "1:00" disabled>';
+	cell6.innerHTML = '<input id="duration" type="number" value = "60" disabled>';
+	cell7.innerHTML = '<button onClick="enableRow();return false" style="margin-right:15px" class="pure-button">\
+    <i class="fa fa-pencil"></i>\
+</button><button onClick="deleteRow2(this);return false" class="pure-button">\
+    <i class="fa fa-times-circle"></i>\
+</button>';
+}
