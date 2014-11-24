@@ -14,7 +14,11 @@
                 <li><a href="Views/DoctorView/search_patients.jsp">Patients Search</a></li>
                 <li><a href="Views/DoctorView/search_records.jsp">Past Records Search</a> </li>
                 <li><a href="Views/DoctorView/enter_records.jsp">Enter New Record</a></li>
-                <li><a href="#">Logout</a></li>
+                <li>
+                    <form id="logout" action="LogoutController" method="post">
+                        <a href="javascript:{}" onclick="document.getElementById('logout').submit();">Logout</a>
+                    </form>
+                </li>
             </ul>
         </div>
     </div>

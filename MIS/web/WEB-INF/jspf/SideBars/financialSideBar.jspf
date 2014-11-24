@@ -19,7 +19,11 @@
             <li><a href="Views/FinancialView/doctor_search.jsp">Doctor Search</a></li>
             <li><a href="Views/FinancialView/financialpatient_search.jsp">Patient Search</a></li>
             <li><a href="Views/FinancialView/revenue.jsp">Monthly Revenue</a></li>
-            <li><a href="#">Logout</a></li>
+            <li>
+                <form id="logout" action="LogoutController" method="post">
+                        <a href="javascript:{}" onclick="document.getElementById('logout').submit();">Logout</a>
+                    </form>
+            </li>
         </ul>
     </div>
 </div>
