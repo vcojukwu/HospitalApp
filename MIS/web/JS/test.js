@@ -1,4 +1,4 @@
-(function (window, document) {
+(function(window, document) {
 
     var layout = document.getElementById('layout'),
             menu = document.getElementById('menu'),
@@ -23,7 +23,7 @@
         element.className = classes.join(' ');
     }
 
-    menuLink.onclick = function (e) {
+    menuLink.onclick = function(e) {
         var active = 'active';
 
         e.preventDefault();
@@ -59,21 +59,44 @@ function enable() {
     //document.getElementById("email").disabled = false;
 }
 
-function showForm(elem){
-	var selected = elem.value;
-	if(selected === 0){
-		document.getElementById("sinDiv").style.display = "none";
-		document.getElementById("healthDiv").style.display = "none";
-		document.getElementById("docDiv").style.display = "none";
-	}
-	else if(selected === 1){
-		document.getElementById("sinDiv").style.display = "block";
-		document.getElementById("healthDiv").style.display = "block";
-		document.getElementById("docDiv").style.display = "none";
-	}
-	else{
-		document.getElementById("sinDiv").style.display = "none";
-		document.getElementById("healthDiv").style.display = "none";
-		document.getElementById("docDiv").style.display = "block";
-	}
+function showForm(elem) {
+    var selected = elem.value;
+    if (selected === 0) {
+        document.getElementById("sinDiv").style.display = "none";
+        document.getElementById("healthDiv").style.display = "none";
+        document.getElementById("docDiv").style.display = "none";
+    }
+    else if (selected === 1) {
+        document.getElementById("sinDiv").style.display = "block";
+        document.getElementById("healthDiv").style.display = "block";
+        document.getElementById("docDiv").style.display = "none";
+    }
+    else {
+        document.getElementById("sinDiv").style.display = "none";
+        document.getElementById("healthDiv").style.display = "none";
+        document.getElementById("docDiv").style.display = "block";
+    }
+}
+
+function addRow() {
+    var div = document.createElement('div');
+
+    div.innerHTML = '<label for="doctor"></label>\
+                <select id="doctor" class="pure-input-1-2">\
+                    <option>1</option>\
+                    <option>2</option>\
+                    <option>3</option>\
+                </select>';
+    div.style.width = "50%";
+    div.style.marginLeft = "50%";
+
+    document.getElementById('dynamic_content').appendChild(div);
+    document.getElementById("remove").disabled = false;
+}
+
+function deleteRow() {
+    document.getElementById('dynamic_content').lastChild.remove();
+    if (document.getElementById('dynamic_content').childNodes.length == 5) {
+        document.getElementById("remove").disabled = true;
+    }
 }
