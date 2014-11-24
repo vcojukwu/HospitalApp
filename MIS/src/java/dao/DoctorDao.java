@@ -27,10 +27,32 @@ public class DoctorDao {
     }
     
     
-    //This function should be used for updating a record as well, as we want to keep the old record, so no modify required --> Do we need to keep track of 
-    //modified records?
-    //Only need the prodecure id to add, have a finite list of procedures, so id has to exist
     public void AddVisitationRecord(VisitationRecordsModel visitationRecord, int procedureId){
+        Statement stmt  = null;
+        String query    = null;
+        ResultSet rs    = null;
+
+        try{
+            stmt = DbUtil.getConnection().createStatement();
+            
+            //Add new record
+            query = "INSERT INTO visitation_records ( OriginalRecordId, ProcedureId, PatientId, DoctorId, TimeStarted, TimeEnded, "
+                    + "Prescriptions, Diagnosis, TreatmentSchedule, Notes) "
+                    + "VALUES ( '" + -1 + "', '" + procedureId + "' , '" +
+                    visitationRecord.getPatientId() + "'," + visitationRecord.getDoctorId() + ", '" + visitationRecord.getTimeStarted() +
+                    "', '" + visitationRecord.getTimeEnded() + "', '" + visitationRecord.getPrescriptions() +  
+                    "', '" + visitationRecord.getDiagnosis() + "' ,'" + visitationRecord.getTreatmentSchedule() + "' ,'" +
+                    visitationRecord.getNotes() + "')";
+            stmt.executeUpdate(query);
+        } catch (SQLException e) {
+                e.printStackTrace();
+        }
+    }
+    
+    
+    //This is the same as above, except above we make originalrecorid = -1 as its a new record but here, we add the original recordId. 
+    //We could merge the two above, by forcing controller to assign origianl RecordId = -1 if new record else the id itself. 
+    public void ModifyVisitationRecord(VisitationRecordsModel visitationRecord, int procedureId){
         Statement stmt  = null;
         String query    = null;
         ResultSet rs    = null;
