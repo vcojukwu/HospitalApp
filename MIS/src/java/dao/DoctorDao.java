@@ -101,15 +101,13 @@ public class DoctorDao {
                         
             //get all procedures --> It is a finite list.
             query = "SELECT * FROM procedures";
-            stmt.executeUpdate(query);
-            
+            rs = stmt.executeQuery(query);
             while (rs.next()) {
                 ProceduresModel pm = new ProceduresModel();
                 pm.setProcedureId(rs.getInt("ProcedureId"));
                 pm.setProcedureType(rs.getString("ProcedureType"));
                 pm.setProcedureName(rs.getString("ProcedureName"));
                 pm.setProcedureCost(rs.getInt("ProcedureCost"));
-                
                 procedures.add(pm);
             }
         } catch (SQLException e) {

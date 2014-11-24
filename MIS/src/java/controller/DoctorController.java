@@ -5,8 +5,14 @@
  */
 package controller;
 
+import Model.ProceduresModel;
+import dao.DoctorDao;
+import dao.StaffDao;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author TheKey
  */
-@WebServlet(name = "DoctorController", urlPatterns = {"/Doctor"})
+@WebServlet(name = "DoctorController", urlPatterns = {"/Doctor", "/AddVisitationRecord"})
 public class DoctorController extends HttpServlet {
 
     /**
@@ -58,7 +64,11 @@ public class DoctorController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        //processRequest(request, response);
+        DoctorDao doctor = new DoctorDao();
+        request.setAttribute("procedures", doctor.GetProcedures());     
+        RequestDispatcher rd = getServletContext().getRequestDispatcher("/Views/DoctorView/enter_records.jsp");
+        rd.forward(request, response);
     }
 
     /**
@@ -72,7 +82,8 @@ public class DoctorController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        //processRequest(request, response);
+        System.out.print("Checking servlet connection is working");
     }
 
     /**
