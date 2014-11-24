@@ -5,8 +5,10 @@
  */
 package controller;
 
+import dao.StaffDao;
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author TheKey
  */
-@WebServlet(name = "StaffController", urlPatterns = {"/Staff"})
+@WebServlet(name = "StaffController", urlPatterns = {"/Staff", "/AddNewUser"})
 public class StaffController extends HttpServlet {
 
     /**
@@ -58,7 +60,11 @@ public class StaffController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        StaffDao staff = new StaffDao();
+        request.setAttribute("doctors", staff.getDoctors());
+        request.setAttribute("healthStates", staff.getHealthSates());        
+        RequestDispatcher rd = getServletContext().getRequestDispatcher("/Views/StaffView/new_user.jsp");
+        rd.forward(request, response);
     }
 
     /**

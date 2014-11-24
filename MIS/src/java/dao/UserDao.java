@@ -6,6 +6,9 @@
 package dao;
 
 import Model.AddressModel;
+import Model.DoctorModel;
+import Model.PatientModel;
+import Model.StaffModel;
 import Model.UserModel;
 import ViewModel.UserProfileVM;
 import java.sql.Connection;
@@ -25,10 +28,12 @@ public class UserDao {
         connection = DbUtil.getConnection();
     }
     
-    public void AddUser(UserModel user, AddressModel address){
+   public void AddUser(UserModel user, AddressModel address, PatientModel patient,DoctorModel doctor, StaffModel staff){
         Statement stmt  = null;
         String query    = null;
         ResultSet rs    = null;
+        int userType    = user.getUserType();
+        int addressId   = -1;
 
         try{
             stmt = DbUtil.getConnection().createStatement();
@@ -37,14 +42,11 @@ public class UserDao {
                     "VALUES ( " + address.getStreetNumber() + ", '" + address.getStreetName() + "' , '" +
                     address.getCity() + "', '" + address.getProvince() + "', '" + address.getCountry() +
                     "', '" + address.getPostalCode() + "');";           
-            stmt.executeUpdate(query);
-            
-            rs = stmt.executeQuery("SELECT LAST_INSERT_ID() as last_id"); 
-            int addressId = -1;
+            stmt.executeUpdate(query);            
+            rs = stmt.executeQuery("SELECT LAST_INSERT_ID() as last_id");
             while (rs.next()) {
                 addressId = rs.getInt("last_id");
-            }
-            
+            }            
             query = "INSERT INTO users ( UserId, FirstName, LastName, Gender, DateOfBirth, UserType, "
                     + "Password, PhoneNumber, AddressId, EmergencyContactName, EmergencyContactPhoneNumber) "
                     + "VALUES ( '" + user.getUserId() + "', '" + user.getFirstName() + "' , '" +
@@ -53,8 +55,29 @@ public class UserDao {
                     "', '" + user.getPhoneNumber() + "' ,'" + addressId + "' ,'" +
                     user.getEmergencyContactName() + "', '" + user.getEmergencyContactPhoneNumber() + "')";
             stmt.executeUpdate(query);
+            
+            if(userType == 1){
+                query = "INSERT INTO mis_db.patients (PatientId, DoctorId, HealthStateId, "
+                        + "HealthCardNumber, SocialInsuranceNumber, NumberOfVisits, IsActive, "
+                        + "PatientNotes) VALUES ('" + patient.getPatientId()+ "', '" + patient.getDoctorId()
+                        + "', " + patient.getHealthStateId() + ", " + patient.getHealthCardNumber()                      
+                        + ", " + patient.getSocialInsuranceNumber() + ", " + patient.getNumberOfVisits() + ", "
+                        + patient.isIsActive() + ", " + patient.getPatientNotes() + ");";
+                System.out.println(query);
+                stmt.executeUpdate(query);
+            } else if (userType == 2){
+                query = "INSERT INTO mis_db.doctors (DoctorId, DoctorType) VALUES ('"
+                        + doctor.getDoctorId()+ "' ,'" + doctor.getDoctorType() + "')";
+                System.out.println(query);
+                stmt.executeUpdate(query);
+            } else if (userType == 3){
+                query = "INSERT INTO mis_db.staff (StaffId) VALUES ('"
+                        + user.getUserId() + "')";
+                System.out.println(query);
+                stmt.executeUpdate(query);
+            }
         } catch (SQLException e) {
-                e.printStackTrace();
+            e.printStackTrace();
         }
     }    
     
