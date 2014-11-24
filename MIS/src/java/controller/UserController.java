@@ -6,6 +6,9 @@
 package controller;
 
 import Model.AddressModel;
+import Model.DoctorModel;
+import Model.PatientModel;
+import Model.StaffModel;
 import Model.UserModel;
 import ViewModel.UserProfileVM;
 import java.io.IOException;
@@ -79,68 +82,68 @@ public class UserController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        HttpSession session = request.getSession(true);
-        UserProfileVM userModified = (UserProfileVM) session.getAttribute("profile");
-        userModified.getAddress().setStreetNumber(Integer.parseInt(request.getParameter("streetNumber")));
-        userModified.getAddress().setStreetName(request.getParameter("streetName"));
-        userModified.getAddress().setCity(request.getParameter("city"));
-        userModified.getAddress().setProvince(request.getParameter("state"));
-        userModified.getAddress().setPostalCode(request.getParameter("zip"));
-        userModified.getUser().setPhoneNumber(request.getParameter("phone"));
-//        Security hashPassword = new Security();        
-//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");        
-//        java.util.Date date = null;
-//        try{
-//            date = sdf.parse(request.getParameter("dob"));
-//        } catch (ParseException e){
-//            e.printStackTrace();
-//        }        
-//               
-//
-//        String UserId = request.getParameter("email");
-//        String FirstName = request.getParameter("fname");
-//        String LastName = request.getParameter("lname");
-//        boolean Gender = (Integer.parseInt(request.getParameter("gender")) == 0)? false : true;        
-//        int UserType = Integer.parseInt(request.getParameter("userType"));
-//        String Password = hashPassword.hashedPassword(request.getParameter("password"));
-//        java.sql.Date dateOfBirth = new java.sql.Date(date.getTime());
-//        String PhoneNumber = request.getParameter("phone");
-//        String EmergencyContactName = request.getParameter("emergencyContactName");
-//        String EmergencyContactPhoneNumber = request.getParameter("emergencyContactNumber");
-//
-//        UserModel user = new UserModel();
-//        user.setUserId(UserId);
-//        user.setFirstName(FirstName);
-//        user.setLastName(LastName);
-//        user.setGender(Gender);
-//        user.setDateOfBirth(dateOfBirth);
-//        user.setUserType(UserType);
-//        user.setPassword(Password);
-//        user.setPhoneNumber(PhoneNumber);
-//        user.setEmergencyContactName(EmergencyContactName);
-//        user.setEmergencyContactPhoneNumber(EmergencyContactPhoneNumber);
-//       
-//        
-//        int StreetNumber = Integer.parseInt(request.getParameter("street_num"));
-//        String StreetName = request.getParameter("street_name");
-//        String City = request.getParameter("city");
-//        String Province = request.getParameter("province");
-//        String Country = request.getParameter("country");
-//        String PostalCode = request.getParameter("zip");
-//        
-//        AddressModel address = new AddressModel();
-//        address.setStreetNumber(StreetNumber);
-//        address.setStreetName(StreetName);
-//        address.setCity(City);
-//        address.setProvince(Province);
-//        address.setCountry(Country);
-//        address.setPostalCode(PostalCode);
-//        
         UserDao userData = new UserDao();
-        userData.ModifyUser(userModified);
+        //HttpSession session = request.getSession(true);
+        //UserProfileVM userModified = (UserProfileVM) session.getAttribute("profile");
+        //userModified.getAddress().setStreetNumber(Integer.parseInt(request.getParameter("streetNumber")));
+        //userModified.getAddress().setStreetName(request.getParameter("streetName"));
+        //userModified.getAddress().setCity(request.getParameter("city"));
+        //userModified.getAddress().setProvince(request.getParameter("state"));
+        //userModified.getAddress().setPostalCode(request.getParameter("zip"));
+        //userModified.getUser().setPhoneNumber(request.getParameter("phone"));
+        Security hashPassword = new Security();        
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");        
+        java.util.Date date = null;
+        try{
+            date = sdf.parse(request.getParameter("dob"));
+        } catch (ParseException e){
+            e.printStackTrace();
+        }
         
-//        userData.AddUser(user, address);        
+        int userType = Integer.parseInt(request.getParameter("userType"));
+
+        UserModel user = new UserModel();
+        user.setUserId(request.getParameter("email"));
+        user.setFirstName(request.getParameter("fname"));
+        user.setLastName(request.getParameter("lname"));
+        user.setGender((Integer.parseInt(request.getParameter("gender")) == 0)? false : true);
+        user.setDateOfBirth(new java.sql.Date(date.getTime()));
+        user.setUserType(userType);
+        user.setPassword(hashPassword.hashedPassword(request.getParameter("password")));
+        user.setPhoneNumber(request.getParameter("phone"));
+        user.setEmergencyContactName(request.getParameter("emergencyContactName"));
+        user.setEmergencyContactPhoneNumber(request.getParameter("emergencyContactNumber"));
+       
+        AddressModel address = new AddressModel();
+        address.setStreetNumber(Integer.parseInt(request.getParameter("street_num")));
+        address.setStreetName(request.getParameter("street_name"));
+        address.setCity(request.getParameter("city"));
+        address.setProvince(request.getParameter("province"));
+        address.setCountry(request.getParameter("country"));
+        address.setPostalCode(request.getParameter("zip"));
+        
+        if(userType == 1){
+            PatientModel patient = new PatientModel();
+            patient.setPatientId(request.getParameter("email"));
+            patient.setDoctorId(request.getParameter("doctorId"));
+            patient.setHealthStateId(Integer.parseInt(request.getParameter("healthStateId")));
+            patient.setHealthCardNumber(Integer.parseInt(request.getParameter("healthNum")));
+            patient.setSocialInsuranceNumber(Integer.parseInt(request.getParameter("sin")));
+            patient.setIsActive(true);
+            patient.setNumberOfVisits(0);
+            patient.setPatientNotes(null);
+            userData.AddUser(user, address, patient, null, null);            
+        } else if (userType == 2) {
+            DoctorModel doctor = new DoctorModel();
+            doctor.setDoctorId(request.getParameter("email"));
+            doctor.setDoctorType(request.getParameter("docType"));
+            userData.AddUser(user, address, null, doctor, null);
+        } else if (userType == 3) {
+            StaffModel staff = new StaffModel();
+            staff.setStaffId(request.getParameter("email"));
+            userData.AddUser(user, address, null, null, staff);
+        }      
+        //userData.ModifyUser(userModified);                
     }
 
     /**
