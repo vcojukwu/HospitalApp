@@ -42,12 +42,30 @@ public class AuthenticationFilter implements Filter {
          
         HttpSession session = req.getSession(false);
          
-        if(session == null && !(uri.endsWith("html") || uri.endsWith("/") )){
+        if(session == null && !(uri.endsWith("html") || uri.endsWith("/")  )){
             this.context.log("Unauthorized access request");
             res.sendRedirect("Login.jsp");
         }else{
             // pass the request along the filter chain
-            chain.doFilter(request, response);
+            if(!(uri.endsWith("html") || uri.endsWith("/")  ))
+            {
+                if (session != null)
+                {
+                    ViewModel.UserProfileVM test = ( ViewModel.UserProfileVM)session.getAttribute("profile");
+                    if (null != test.getUser())
+                    {
+                        chain.doFilter(request, response);
+                    }
+                    else
+                    {
+                        this.context.log("Unauthorized access request");
+                        res.sendRedirect(req.getContextPath() + "/");
+                    }
+                }
+            }
+            else
+                chain.doFilter(request, response);
+
         }    
     }
     public void destroy() {

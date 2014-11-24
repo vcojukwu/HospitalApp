@@ -17,8 +17,7 @@
         <div>   
             <a href="#" style="position:absolute; top:0">
                 <img src="Images/uwhlogo.jpg" alt="Insert Logo Here" width="120" height="90" id="Insert_logo"/></a>
-            <p style="text-align:right;">
-                <span style="font-family:Verdana;font-size:18px;font-style:italic;font-weight:bold;text-decoration:none;text-transform:uppercase;color:#2F2D2D;">
+            <p style="text-align:right;"><span style="font-family:Verdana;font-size:18px;font-style:italic;font-weight:bold;text-decoration:none;text-transform:uppercase;color:#2F2D2D;">
                     <span style="color:#E5EB13">University</span> of <span style="color:#E5EB13">Waterloo</span> Hospital <br><span style="padding-right:10% ;font-size:22px">(UWH)</span>
                 </span>
             </p>
@@ -47,4 +46,5 @@
             <a href="Views/StaffView/profile_staff.jsp">Go To Staff View</a>
         </div>
     </body>
+
 </html>
