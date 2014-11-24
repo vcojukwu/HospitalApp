@@ -40,3 +40,10 @@ INSERT INTO `mis_db`.`patients` (`PatientId`, `DoctorId`, `HealthStateId`, `Heal
 INSERT INTO `mis_db`.`patients` (`PatientId`, `DoctorId`, `HealthStateId`, `HealthCardNumber`, `SocialInsuranceNumber`, `NumberOfVisits`, `IsActive`, `PatientNotes`) VALUES ('7', '4', '3', '3212554', '416641325', '64', 1, 'Fracture to left ankle.');
 INSERT INTO `mis_db`.`patients` (`PatientId`, `DoctorId`, `HealthStateId`, `HealthCardNumber`, `SocialInsuranceNumber`, `NumberOfVisits`, `IsActive`, `PatientNotes`) VALUES ('8', '3', '3', '9788456', '987654321', '20', 0, 'Stitches.');
 INSERT INTO `mis_db`.`patients` (`PatientId`, `DoctorId`, `HealthStateId`, `HealthCardNumber`, `SocialInsuranceNumber`, `NumberOfVisits`, `IsActive`, `PatientNotes`) VALUES ('9', '1', '3', '5416816', '468946138', '16', 0, 'Patient is healthy and in great shape.');
+
+INSERT INTO `mis_db`.`address` (`AddressId`, `StreetNumber`, `StreetName`, `City`, `Province`, `Country`, `PostalCode`) VALUES ('0', '313', 'Spruce', 'Waterloo', 'ON', 'CAN', 'N2L3M6');
+
+INSERT INTO `mis_db`.`users` (`UserId`, `FirstName`, `LastName`, `Gender`, `DateOfBirth`, `UserType`, `Password`, `PhoneNumber`, `AddressId`, `EmergencyContactName`, `EmergencyContactPhoneNumber`) VALUES ('aahaji@waterloo.ca', 'Abbas', 'Haji', 1, '1992-07-06', '1', 'c775e7b757ede630cd0aa1113bd102661ab38829ca52a6422ab782862f268646', '6541236554', '0', 'ASfasdoj', '4598745695');
+INSERT INTO `mis_db`.`users` (`UserId`, `FirstName`, `LastName`, `Gender`, `DateOfBirth`, `UserType`, `Password`, `PhoneNumber`, `AddressId`, `EmergencyContactName`, `EmergencyContactPhoneNumber`) VALUES ('vojukwu@waterloo.ca', 'Victor', 'Ojukwu', 1, '1994-03-03', '2', 'c775e7b757ede630cd0aa1113bd102661ab38829ca52a6422ab782862f268646', '9741235468', '0', 'aefaefaeg', '4778456132');
+INSERT INTO `mis_db`.`users` (`UserId`, `FirstName`, `LastName`, `Gender`, `DateOfBirth`, `UserType`, `Password`, `PhoneNumber`, `AddressId`, `EmergencyContactName`, `EmergencyContactPhoneNumber`) VALUES ('a88patel@waterloo.ca', 'Anish', 'Patel', 1, '1993-10-30', '3', 'c775e7b757ede630cd0aa1113bd102661ab38829ca52a6422ab782862f268646', '2232452678', '0', 'adfiaufh', '1443456597');
+
