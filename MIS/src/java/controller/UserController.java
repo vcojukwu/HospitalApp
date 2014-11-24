@@ -18,9 +18,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import dao.UserDao;
-import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpSession;
 import util.Security;
 
@@ -71,10 +71,10 @@ public class UserController extends HttpServlet {
         processRequest(request, response);
     }
     
-    private void EditUser(HttpServletRequest request)
+    private void EditUser(HttpServletRequest request, HttpSession session)
     {
         UserDao userData = new UserDao();
-        HttpSession session = request.getSession(true);
+        //HttpSession session = request.getSession(false);
         UserProfileVM userModified = (UserProfileVM) session.getAttribute("profile");
         userModified.getAddress().setStreetNumber(Integer.parseInt(request.getParameter("streetNumber")));
         userModified.getAddress().setStreetName(request.getParameter("streetName"));
@@ -153,11 +153,26 @@ public class UserController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        HttpSession session = request.getSession(false);
+        RequestDispatcher view = null;
+
         if (request.getParameter("Edit") != null)
-            this.EditUser(request);
+            this.EditUser(request, session);
         else if(request.getParameter("Add") != null)
-            this.AddUser(request);                        
+            this.AddUser(request); 
+        UserProfileVM user = (UserProfileVM)session.getAttribute("profile");
+        int userType = user.getUser().getUserType();
+        String forward = "";
+        if(userType == 1) //Patient
+                forward = "/Views/PatientView/profile.jsp";
+            else if(userType == 2) //Doctor
+                forward = "/Views/DoctorView/profile_doc.jsp";
+            else if(userType == 3) //Staff
+                forward = "/Views/StaffView/profile_staff.jsp";
+            else if(userType == 4) //Finanace
+                forward = "/Views/FinancialView/profile_financial.jsp";
+        view = request.getServletContext().getRequestDispatcher(forward);
+        view.forward(request, response);
     }
 
     /**

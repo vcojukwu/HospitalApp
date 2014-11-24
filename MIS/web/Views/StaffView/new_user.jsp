@@ -115,8 +115,8 @@
                     <input name = "zip" id="zip" style="display:inline-block" type="text">
                 </div>
             </fieldset>
-
-            <button type="submit" class="pure-button pure-input-1-2 pure-button-primary">Create User</button>
+            <input  class="pure-button pure-input-1-2 pure-button-primary" type="submit" name="Add" value="Create User" />
+            <!--<button type="submit" class="pure-button pure-input-1-2 pure-button-primary">Create User</button>-->
         </form>
 
     </div>
