@@ -47,7 +47,7 @@
                 </div>
                 
                 <div class="pure-controls">
-                    <button type="submit" class="pure-button pure-button-primary">Submit</button>
+                    <button type="submit" class="pure-button pure-button-primary" name="AddVisitationRecord">Submit</button>
                 </div>
             </fieldset>
         </form>

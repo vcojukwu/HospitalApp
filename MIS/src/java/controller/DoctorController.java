@@ -86,35 +86,20 @@ public class DoctorController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
+        HttpSession session = request.getSession(false);
+        
+         if (request.getParameter("AddVisitationRecord") != null)
+            this.AddVisitationRecord(request, session, response);
+        
+
+    }
+    
+    private void AddVisitationRecord(HttpServletRequest request, HttpSession session, HttpServletResponse response)
+        throws ServletException, IOException{
+                
         DoctorDao doctor = new DoctorDao();
         VisitationRecordsModel visitationRecord = new VisitationRecordsModel();
-        HttpSession session = request.getSession(); 
-        
-        
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");        
-        Date timeStarted = null;
-        Date temp = null;
-        Date timeEnded = null;
-        try{                                                                                    //parsing time started
-            temp = sdf.parse(request.getParameter("timestarted"));
-            timeStarted = new Date();
-            timeStarted.setHours(temp.getHours());
-            timeStarted.setMinutes(temp.getMinutes());
-            timeStarted.setSeconds(0);
-        } catch (ParseException e){
-            e.printStackTrace();
-        }
-        
-        try{                                                                                       //Parsing time ended
-            temp = sdf.parse(request.getParameter("timeended"));
-            timeEnded = new Date();
-            timeEnded.setHours(temp.getHours());
-            timeEnded.setMinutes(temp.getMinutes());
-            timeEnded.setSeconds(0);
-        } catch (ParseException e){
-            e.printStackTrace();
-        }
-        
+ 
         visitationRecord.setProcedureId(Integer.parseInt(request.getParameter("procedureId")));
         UserModel user = ((UserProfileVM)session.getAttribute("profile")).getUser();                //Here I am assuming that the current logged in user is the doctor hence grab his id
         visitationRecord.setDoctorId(user.getUserId()); 
