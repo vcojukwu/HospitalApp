@@ -11,6 +11,7 @@ import Model.PatientModel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 /**
  *
@@ -70,7 +71,30 @@ public class PatientDao {
     }
     
     public List<PatientModel> getAllPatients(){
+        Statement stmt = null;
+        ResultSet rs = null;
+        String query = "SELECT * FROM patients";
+        PatientModel pm = null;
+        List<PatientModel> patients = new ArrayList<PatientModel>();
+        try{
+            stmt = DbUtil.getConnection().createStatement();
+            rs = stmt.executeQuery(query); 
+            while (rs.next()) {
+                pm = new PatientModel();
+                pm.setPatientId(rs.getString("PatientId"));
+                pm.setDoctorId(rs.getString("DoctorId"));
+                pm.setHealthStateId(rs.getInt("HealthStateId"));
+                pm.setHealthCardNumber(rs.getInt("HealthCardNumber"));
+                pm.setSocialInsuranceNumber(rs.getInt("SocialInsuranceNumber"));
+                pm.setNumberOfVisits(rs.getInt("NumberOfVisits"));
+                pm.setIsActive(rs.getBoolean("IsActive"));
+                pm.setPatientNotes(rs.getString("PatientNotes"));
+                patients.add(pm);
+            }
+        } catch (Exception e) {
+                e.printStackTrace();
+        }
         
-        return null;
+        return patients;
     }
 }
