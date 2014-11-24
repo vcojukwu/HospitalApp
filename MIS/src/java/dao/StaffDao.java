@@ -7,6 +7,8 @@ package dao;
 
 import Model.DoctorModel;
 import Model.HealthStateModel;
+import Model.PatientDropDownModel;
+import Model.PatientModel;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -67,5 +69,43 @@ public class StaffDao {
                 e.printStackTrace();
         }
         return healthStates;
+    }
+
+	public List<PatientDropDownModel> getAllPatientsDropdown(){
+        Statement stmt  = null;
+        String query    = null;
+        ResultSet rs    = null;
+        List<PatientDropDownModel> patients = new ArrayList<PatientDropDownModel>();
+        try{
+            stmt = DbUtil.getConnection().createStatement();            
+            query = "SELECT PatientId, FirstName, LastName FROM patients INNER JOIN users ON patients.PatientId = users.UserID";
+            rs = stmt.executeQuery(query);
+            while(rs.next()){
+                PatientDropDownModel patient = new PatientDropDownModel();
+                patient.setPatientId(rs.getString("PatientId"));
+                patient.setFirstName(rs.getString("FirstName"));
+                patient.setLastName(rs.getString("LastName"));                
+                patients.add(patient);
+            }
+        } catch (SQLException e) {
+                e.printStackTrace();
+        }
+        return patients;
+    }
+        
+    public void AssignPatients(PatientModel patient){
+        Statement stmt  = null;
+        String query    = null;
+
+        try{
+            stmt = DbUtil.getConnection().createStatement();            
+            query = "UPDATE patients " +
+                    "SET DoctorId='" + patient.getDoctorId() + "' " + 
+                    "WHERE PatientId='" + patient.getPatientId() + "'; ";
+            stmt.executeUpdate(query);
+
+        } catch (SQLException e) {
+                e.printStackTrace();
+        }
     }
 }

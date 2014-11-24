@@ -84,22 +84,6 @@ function showForm(elem){
     }
 }
 
-function addRow() {
-    var div = document.createElement('div');
-
-    div.innerHTML = '<label for="doctor"></label>\
-                <select id="doctor" class="pure-input-1-2">\
-                    <option>1</option>\
-                    <option>2</option>\
-                    <option>3</option>\
-                </select>';
-    div.style.width = "50%";
-    div.style.marginLeft = "50%";
-
-    document.getElementById('dynamic_content').appendChild(div);
-    document.getElementById("remove").disabled = false;
-}
-
 function deleteRow() {
     document.getElementById('dynamic_content').lastChild.remove();
     if (document.getElementById('dynamic_content').childNodes.length == 5) {

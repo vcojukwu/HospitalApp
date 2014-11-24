@@ -14,7 +14,7 @@
             <li><a href="AddNewUser">Add New User</a></li>
             <li><a href="Views/StaffView/staff_appointments.jsp">Appointments</a> </li>
             <li><a href="Views/StaffView/staffpatient_search.jsp">Patient Search</a></li>
-            <li><a href="Views/StaffView/assign.jsp">Assign Patients</a></li>
+            <li><a href="AssignPatients">Assign Patients</a></li>
             <li>
                 <form id="logout" action="LogoutController" method="post">
                         <a href="javascript:{}" onclick="document.getElementById('logout').submit();">Logout</a>

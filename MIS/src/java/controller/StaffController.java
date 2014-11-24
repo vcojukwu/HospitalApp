@@ -5,6 +5,8 @@
  */
 package controller;
 
+import Model.PatientModel;
+import dao.PatientDao;
 import dao.StaffDao;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -19,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author TheKey
  */
-@WebServlet(name = "StaffController", urlPatterns = {"/Staff", "/AddNewUser"})
+@WebServlet(name = "StaffController", urlPatterns = {"/Staff", "/AssignPatients", "/AddNewUser"})
 public class StaffController extends HttpServlet {
 
     /**
@@ -60,10 +62,19 @@ public class StaffController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String forward="";
+        String requestURL = request.getRequestURL().toString();
         StaffDao staff = new StaffDao();
-        request.setAttribute("doctors", staff.getDoctors());
-        request.setAttribute("healthStates", staff.getHealthSates());        
-        RequestDispatcher rd = getServletContext().getRequestDispatcher("/Views/StaffView/new_user.jsp");
+        if(requestURL.contains("AddNewUser")){
+            request.setAttribute("healthStates", staff.getHealthSates());
+            request.setAttribute("doctors", staff.getDoctors());
+            forward = "/Views/StaffView/new_user.jsp";
+        } else if (requestURL.contains("AssignPatients")){
+            request.setAttribute("doctors", staff.getDoctors());
+            request.setAttribute("patients", staff.getAllPatientsDropdown());
+            forward = "/Views/StaffView/assign.jsp";
+        }
+        RequestDispatcher rd = getServletContext().getRequestDispatcher(forward);            
         rd.forward(request, response);
     }
 
@@ -78,7 +89,15 @@ public class StaffController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        //processRequest(request, response);
+        PatientModel patient = new PatientModel();
+        String[] array = request.getParameter("patientIDs").split(","); 
+        patient.setDoctorId(request.getParameter("doctorId"));
+        StaffDao staff = new StaffDao();
+        for (String patientId : array) {
+            patient.setPatientId(patientId);
+            staff.AssignPatients(patient);
+        }
     }
 
     /**
