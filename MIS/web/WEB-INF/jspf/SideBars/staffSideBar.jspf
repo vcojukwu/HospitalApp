@@ -11,7 +11,7 @@
 
         <ul style="margin-top:20%">            
             <li class="menu-item-divided pure-menu-selected" style="background-color:#DDF10A"><a href="Views/StaffView/profile_staff.jsp">Profile</a></li>
-            <li><a href="Views/StaffView/new_user.jsp">Add New User</a></li>
+            <li><a href="AddNewUser">Add New User</a></li>
             <li><a href="Views/StaffView/staff_appointments.jsp">Appointments</a> </li>
             <li><a href="Views/StaffView/staffpatient_search.jsp">Patient Search</a></li>
             <li><a href="Views/StaffView/assign.jsp">Assign Patients</a></li>

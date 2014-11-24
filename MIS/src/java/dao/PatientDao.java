@@ -7,7 +7,9 @@ package dao;
 
 import java.sql.Connection;
 import util.DbUtil;
-import Model.PatientModel;
+import Model.*;
+import ViewModel.PatientUserVM;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -55,19 +57,121 @@ public class PatientDao {
         return pm;
     }
     
-    public void addPatient(PatientModel patient)
-    {
-        
-    }
-    
     public void updatePatient(PatientModel patient)
-    {
-        
+    {String[] PatientModelColumns = {"PatientId","DoctorId","HealthStateId","HealthCardNumber",
+            "SocialInsuranceNumber","NumberOfVisits","IsActive","PatientNotes"};
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        String query = "UPDATE patients SET HealthStateId = ?, HealthCardNumber = ?, "
+                + "SocialInsuranceNumber = ?, NumberOfVisits = ?, IsActive = ?, "
+                + "PatientNotes = ? where patientid = '" + patient.getPatientId() + "'";
+        PatientModel pm = new PatientModel();
+        try{
+            pstmt = DbUtil.getConnection().prepareStatement(query);
+            rs = pstmt.executeQuery(query); 
+        } catch (Exception e) {
+                e.printStackTrace();
+        }
     }
     
     public void deletePatient(int id)
     {
         
+    }
+    
+    
+    //This function returns a result 
+    public List<PatientUserVM> searchPatients(String[] PatientSearchAttr, String[] UserSearchAttr){
+        List<PatientUserVM> result = new ArrayList<PatientUserVM>();
+        ArrayList<String> elements = new ArrayList<String>();
+        String[] PatientModelColumns = {"PatientId","DoctorId","HealthStateId","HealthCardNumber",
+            "SocialInsuranceNumber","NumberOfVisits","IsActive","PatientNotes"};
+        String[] UserModelColumns = {"UserId", "FirstName", "LastName", "Gender", 
+            "DateOfBirth", "UserType", "Password", "PhoneNumber", "AddressId", 
+            "EmergencyContactName", "EmergencyContactPhoneNumber"};
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        String query = "select * from mis_db.patients left join mis_db.users on patients.PatientId = users.UserId ";
+        PatientUserVM puvm = null;
+        PatientModel patientmodel= null;
+        UserModel usermodel= null;
+        
+        boolean whereSet =false;
+        for(int i=0; i<PatientModelColumns.length; i++){
+            if(PatientSearchAttr[i] != null){
+                if(whereSet==false){
+                    query += " WHERE ";
+                    whereSet = true;
+                    query += "patients." + PatientModelColumns[i] + "LIKE ? ";
+                    elements.add(PatientSearchAttr[i]);
+                }
+                else{
+                     query += " AND patients." + PatientModelColumns[i] + "LIKE ? ";
+                     elements.add(PatientSearchAttr[i]);
+                }
+               
+            }
+        }
+        for(int i=0; i<UserModelColumns.length; i++){
+            if(UserSearchAttr[i] != null){
+                if(whereSet==false){
+                    query += " WHERE ";
+                    whereSet = true;
+                    query += "users." + UserModelColumns[i] + "LIKE ? ";
+                    elements.add(UserSearchAttr[i]);
+                }
+                else{
+                     query += " AND users." + UserModelColumns[i] + "LIKE ? ";
+                     elements.add(UserSearchAttr[i]);
+                }
+               
+            }
+        }
+        
+        
+        try{
+            pstmt = DbUtil.getConnection().prepareStatement(query);
+            for(int i=1;i<=elements.size(); i++){
+                pstmt.setString(i, "%"+elements.get(i-1)+"%");
+            }
+            rs = pstmt.executeQuery();
+            while(rs.next()){
+                puvm = new PatientUserVM();
+                
+                patientmodel = new PatientModel();
+                usermodel = new UserModel();
+                
+                patientmodel.setPatientId(rs.getString(PatientModelColumns[0]));
+                patientmodel.setDoctorId(rs.getString(PatientModelColumns[1]));
+                patientmodel.setHealthStateId(rs.getInt(PatientModelColumns[2]));
+                patientmodel.setHealthCardNumber(rs.getInt(PatientModelColumns[3]));
+                patientmodel.setSocialInsuranceNumber(rs.getInt(PatientModelColumns[4]));
+                patientmodel.setNumberOfVisits(rs.getInt(PatientModelColumns[5]));
+                patientmodel.setIsActive(rs.getBoolean(PatientModelColumns[6]));
+                patientmodel.setPatientNotes(rs.getString(PatientModelColumns[7]));
+               
+                usermodel.setUserId(rs.getString(UserModelColumns[0]));
+                usermodel.setFirstName(rs.getString(UserModelColumns[1]));
+                usermodel.setLastName(rs.getString(UserModelColumns[2]));
+                usermodel.setGender(rs.getBoolean(UserModelColumns[3]));
+                usermodel.setDateOfBirth(rs.getDate(UserModelColumns[4]));
+                usermodel.setUserType(rs.getInt(UserModelColumns[5]));
+                usermodel.setPassword(rs.getString(UserModelColumns[6]));
+                usermodel.setPhoneNumber(rs.getString(UserModelColumns[7]));
+                usermodel.setAddressId(rs.getInt(UserModelColumns[8]));
+                usermodel.setEmergencyContactName(rs.getString(UserModelColumns[9]));
+                usermodel.setEmergencyContactPhoneNumber(rs.getString(UserModelColumns[10]));
+
+                
+                puvm.setPatient(patientmodel);
+                puvm.setUser(usermodel);
+                
+                result.add(puvm);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return result;
     }
     
     public List<PatientModel> getAllPatients(){

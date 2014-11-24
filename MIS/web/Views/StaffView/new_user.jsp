@@ -6,32 +6,18 @@
     </div>
 
     <div class="content" style="padding-top:30px">
-        <form class="pure-form pure-form-aligned" method="post" action="../../User">
+        <form class="pure-form pure-form-aligned" method="post" action="User">
             <fieldset class="pure-group">
                 <legend>User Information</legend>
                 <div class="pure-input-1-2 pure-control-group">
                     <label for="user">User Type:</label>
                     <select name = "userType" id="user" style="display:inline-block" type="text" onChange="showForm(this);
                                 return false">
-                        <option value="0">Staff</option>
+                        <option value="3">Staff</option>
                         <option value="1">Patient</option>
                         <option value="2">Doctor</option>
                     </select>
                 </div>
-
-                <div class="pure-input-1-2 pure-control-group" id="sinDiv" style="display:none">
-                    <label for="sin">SIN :</label>
-                    <input name = "sin" id="sin" style="display:inline-block" type="number">
-                </div>
-                <div class="pure-input-1-2 pure-control-group" id="healthDiv" style="display:none">
-                    <label for="healthNum">Health Card # :</label>
-                    <input name = "healthNum" id="healthNum" style="display:inline-block" type="number">
-                </div>
-                <div class="pure-input-1-2 pure-control-group" id="docDiv" style="display:none">
-                    <label for="docType">Type of Doctor :</label>
-                    <input name = "docType" id="docType" style="display:inline-block" type="text" placeholder="Doctor Type">
-                </div>
-
                 <div class="pure-input-1-2 pure-control-group">
                     <label for="fname">First Name :</label>
                     <input name = "fname" id="fname" style="display:inline-block" type="text" placeholder="First Name">
@@ -47,6 +33,34 @@
                         <option value="1">Female</option>
                     </select>
                 </div>
+                <div class="pure-input-1-2 pure-control-group" id="doctorIdDiv" style="display:none">
+                    <label for="doctorId">Doctor :</label>
+                    <select id="doctorId" name = "doctorId"style="display:inline-block" type="text">
+                            <c:forEach items="${doctors}" var="doctor">
+                                <option value=${doctor.getDoctorId()}>${doctor.getFirstName()} ${doctor.getLastName()}</option>
+                            </c:forEach>
+                    </select>
+                </div>
+                <div class="pure-input-1-2 pure-control-group" id="healthStateIdDiv" style="display:none">
+                    <label for="healthStateId">Health State :</label>
+                    <select id="healthStateId" name = "healthStateId" style="display:inline-block" type="text">
+                            <c:forEach items="${healthStates}" var="healthState">
+                                <option value=${healthState.getHealthStateId()}>${healthState.getHealthStateName()}</option>
+                            </c:forEach>
+                    </select>
+                </div>     
+                <div class="pure-input-1-2 pure-control-group" id="sinDiv" style="display:none">
+                    <label for="sin">SIN :</label>
+                    <input name = "sin" id="sin" style="display:inline-block" type="number">
+                </div>
+                <div class="pure-input-1-2 pure-control-group" id="healthDiv" style="display:none">
+                    <label for="healthNum">Health Card # :</label>
+                    <input name = "healthNum" id="healthNum" style="display:inline-block" type="number">
+                </div>
+                <div class="pure-input-1-2 pure-control-group" id="docDiv" style="display:none">
+                    <label for="docType">Type of Doctor :</label>
+                    <input name = "docType" id="docType" style="display:inline-block" type="text" placeholder="Doctor Type">
+                </div>                
                 <div class="pure-input-1-2 pure-control-group">
                     <label for="dob">Date of Birth :</label>
                     <input name = "dob" id="dob" style="display:inline-block" type="date">
