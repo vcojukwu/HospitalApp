@@ -47,7 +47,7 @@
                         <input name = "email" id="email" type="email" value=<%= profile.getUser().getUserId()%> disabled>
                     </div> 
                     <div class="pure-controls">
-                         <button style="margin-left:5%" type="submit" class="pure-button pure-button-primary">Save</button>
+                             <input style="margin-left:5%" class="pure-button pure-button-primary" type="submit" name="Edit" value="Save" />
                          <button onClick="enable();return false" style="margin-left:5%" type="button" class="pure-button pure-button-primary">Edit</button>
                     </div>        
                 </fieldset>
