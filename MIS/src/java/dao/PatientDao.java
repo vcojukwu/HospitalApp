@@ -27,15 +27,16 @@ public class PatientDao {
         connection = DbUtil.getConnection();
     }
     
-    public PatientModel getPatient(int patientid)
+    public PatientModel getPatient(String patientid)
     {
-        Statement stmt = null;
+        PreparedStatement pstmt = null;
         ResultSet rs = null;
-        String query = "SELECT * FROM patients where patientid = '" + patientid + "'";
+        String query = "SELECT * FROM patients where patientid = ?";
         PatientModel pm = new PatientModel();
         try{
-            stmt = DbUtil.getConnection().createStatement();
-            rs = stmt.executeQuery(query); 
+            pstmt = DbUtil.getConnection().prepareStatement(query);
+            pstmt.setString(1, patientid);
+            rs = pstmt.executeQuery(query); 
             while (rs.next()) {
                 
                 pm.setPatientId(rs.getString("PatientId"));
@@ -60,7 +61,6 @@ public class PatientDao {
     {String[] PatientModelColumns = {"PatientId","DoctorId","HealthStateId","HealthCardNumber",
             "SocialInsuranceNumber","NumberOfVisits","IsActive","PatientNotes"};
         PreparedStatement pstmt = null;
-        ResultSet rs = null;
         String query = "UPDATE patients SET DoctorId = ?, HealthStateId = ?, HealthCardNumber = ?, "
                 + "SocialInsuranceNumber = ?, NumberOfVisits = ?, IsActive = ?, "
                 + "PatientNotes = ? where patientid = '" + patient.getPatientId() + "'";
@@ -73,7 +73,7 @@ public class PatientDao {
             pstmt.setInt(5, patient.getNumberOfVisits());
             pstmt.setBoolean(6, patient.isIsActive());
             pstmt.setString(7, patient.getPatientNotes());
-            rs = pstmt.executeQuery(query); 
+            pstmt.executeUpdate(); 
             return true;
         } catch (Exception e) {
                 e.printStackTrace();
