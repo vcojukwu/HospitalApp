@@ -6,8 +6,7 @@
 
         <div class="content" style="padding-top:30px">
             <img style="margin-left:40%" src="Images/profilepic.jpg"/>
-
-            <div style="float:right; width:45%; height:80%; margin-left:5%">
+<a href="${pageContext.request}/Patient?action=edit">Update</a>            <div style="float:right; width:45%; height:80%; margin-left:5%">
                 <p>Upcoming Appointments</p>
                 <ul>
                     <li>1</li>
@@ -16,7 +15,8 @@
                 </ul>
             </div>
 
-            <div style="float:left; width:50%"><form class="pure-form pure-form-aligned" method="post" action="User">
+            <div style="float:left; width:50%">
+                <form class="pure-form pure-form-aligned" method="post" action="User">
                     <fieldset>
                         <legend>Contact Information</legend>
                         <div class="pure-control-group">
@@ -48,7 +48,8 @@
                             <input name = "email" id="email" type="email" value=<%= profile.getUser().getUserId()%> disabled>
                         </div> 
                         <div class="pure-controls">
-                             <button style="margin-left:5%" type="submit" class="pure-button pure-button-primary">Save</button>
+<!--                             <button style="margin-left:5%" type="submit" class="pure-button pure-button-primary">Save</button>-->
+                             <input style="margin-left:5%" class="pure-button pure-button-primary" type="submit" name="Edit" value="Save" />
                              <button onClick="enable();return false" style="margin-left:5%" type="button" class="pure-button pure-button-primary">Edit</button>
                         </div>        
                     </fieldset>
