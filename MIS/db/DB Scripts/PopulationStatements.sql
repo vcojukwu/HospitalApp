@@ -1,27 +1,27 @@
 use mis_db;
 
-INSERT INTO `mis_db`.`procedures` (`ProcedureId`, `ProcedureType`, `ProcedureName`, `ProcedureCost`) VALUES ('0', 'Checkup', 'Health Checkup', '20');
-INSERT INTO `mis_db`.`procedures` (`ProcedureId`, `ProcedureType`, `ProcedureName`, `ProcedureCost`) VALUES ('1', 'Test', 'STI Test', '10');
-INSERT INTO `mis_db`.`procedures` (`ProcedureId`, `ProcedureType`, `ProcedureName`, `ProcedureCost`) VALUES ('2', 'Test', 'TB Test', '10');
-INSERT INTO `mis_db`.`procedures` (`ProcedureId`, `ProcedureType`, `ProcedureName`, `ProcedureCost`) VALUES ('3', 'X-Ray', 'Bone X-ray', '30');
-INSERT INTO `mis_db`.`procedures` (`ProcedureId`, `ProcedureType`, `ProcedureName`, `ProcedureCost`) VALUES ('4', 'Surgury', 'Heart Transplant', '50000');
-INSERT INTO `mis_db`.`procedures` (`ProcedureId`, `ProcedureType`, `ProcedureName`, `ProcedureCost`) VALUES ('5', 'Surgury', 'Bypass', '30000');
-INSERT INTO `mis_db`.`procedures` (`ProcedureId`, `ProcedureType`, `ProcedureName`, `ProcedureCost`) VALUES ('6', 'Physiotherapy', 'Mobility physiotherapy', '1000');
-INSERT INTO `mis_db`.`procedures` (`ProcedureId`, `ProcedureType`, `ProcedureName`, `ProcedureCost`) VALUES ('7', 'Chemotherapy', 'Type I Chemotherapy', '12000');
-INSERT INTO `mis_db`.`procedures` (`ProcedureId`, `ProcedureType`, `ProcedureName`, `ProcedureCost`) VALUES ('8', 'Vaccination', 'Flu vaccination', '50');
-INSERT INTO `mis_db`.`procedures` (`ProcedureId`, `ProcedureType`, `ProcedureName`, `ProcedureCost`) VALUES ('9', 'Vaccination', 'Travel vaccinations', '120');
+INSERT INTO `mis_db`.`procedures` (`ProcedureType`, `ProcedureName`, `ProcedureCost`) VALUES ('Checkup', 'Health Checkup', '20');
+INSERT INTO `mis_db`.`procedures` (`ProcedureType`, `ProcedureName`, `ProcedureCost`) VALUES ('Test', 'STI Test', '10');
+INSERT INTO `mis_db`.`procedures` (`ProcedureType`, `ProcedureName`, `ProcedureCost`) VALUES ('Test', 'TB Test', '10');
+INSERT INTO `mis_db`.`procedures` (`ProcedureType`, `ProcedureName`, `ProcedureCost`) VALUES ('X-Ray', 'Bone X-ray', '30');
+INSERT INTO `mis_db`.`procedures` (`ProcedureType`, `ProcedureName`, `ProcedureCost`) VALUES ('Surgury', 'Heart Transplant', '50000');
+INSERT INTO `mis_db`.`procedures` (`ProcedureType`, `ProcedureName`, `ProcedureCost`) VALUES ('Surgury', 'Bypass', '30000');
+INSERT INTO `mis_db`.`procedures` (`ProcedureType`, `ProcedureName`, `ProcedureCost`) VALUES ('Physiotherapy', 'Mobility physiotherapy', '1000');
+INSERT INTO `mis_db`.`procedures` (`ProcedureType`, `ProcedureName`, `ProcedureCost`) VALUES ('Chemotherapy', 'Type I Chemotherapy', '12000');
+INSERT INTO `mis_db`.`procedures` (`ProcedureType`, `ProcedureName`, `ProcedureCost`) VALUES ('Vaccination', 'Travel vaccinations', '120');
+INSERT INTO `mis_db`.`procedures` (`ProcedureType`, `ProcedureName`, `ProcedureCost`) VALUES ('Vaccination', 'Flu vaccination', '50');
 
 
-INSERT INTO `mis_db`.`health_state` (`HealthStateId`, `HealthStateName`) VALUES ('1', 'Good');
-INSERT INTO `mis_db`.`health_state` (`HealthStateId`, `HealthStateName`) VALUES ('2', 'Weak');
-INSERT INTO `mis_db`.`health_state` (`HealthStateId`, `HealthStateName`) VALUES ('3', 'Sick');
-INSERT INTO `mis_db`.`health_state` (`HealthStateId`, `HealthStateName`) VALUES ('4', 'Infected');
-INSERT INTO `mis_db`.`health_state` (`HealthStateId`, `HealthStateName`) VALUES ('5', 'Excellent');
-INSERT INTO `mis_db`.`health_state` (`HealthStateId`, `HealthStateName`) VALUES ('6', 'Immobile');
-INSERT INTO `mis_db`.`health_state` (`HealthStateId`, `HealthStateName`) VALUES ('7', 'Injured');
-INSERT INTO `mis_db`.`health_state` (`HealthStateId`, `HealthStateName`) VALUES ('8', 'Recovering');
-INSERT INTO `mis_db`.`health_state` (`HealthStateId`, `HealthStateName`) VALUES ('9', 'Quarantined');
-INSERT INTO `mis_db`.`health_state` (`HealthStateId`, `HealthStateName`) VALUES ('10', 'Urgent care');
+INSERT INTO `mis_db`.`health_state` (`HealthStateName`) VALUES ('Good');
+INSERT INTO `mis_db`.`health_state` (`HealthStateName`) VALUES ('Weak');
+INSERT INTO `mis_db`.`health_state` (`HealthStateName`) VALUES ('Sick');
+INSERT INTO `mis_db`.`health_state` (`HealthStateName`) VALUES ('Infected');
+INSERT INTO `mis_db`.`health_state` (`HealthStateName`) VALUES ('Excellent');
+INSERT INTO `mis_db`.`health_state` (`HealthStateName`) VALUES ('Immobile');
+INSERT INTO `mis_db`.`health_state` (`HealthStateName`) VALUES ('Injured');
+INSERT INTO `mis_db`.`health_state` (`HealthStateName`) VALUES ('Recovering');
+INSERT INTO `mis_db`.`health_state` (`HealthStateName`) VALUES ('Quarantined');
+INSERT INTO `mis_db`.`health_state` (`HealthStateName`) VALUES ('Urgent care');
 
 
 INSERT INTO `mis_db`.`doctors` (`DoctorId`, `DoctorType`) VALUES ('1', '1');
@@ -41,9 +41,9 @@ INSERT INTO `mis_db`.`patients` (`PatientId`, `DoctorId`, `HealthStateId`, `Heal
 INSERT INTO `mis_db`.`patients` (`PatientId`, `DoctorId`, `HealthStateId`, `HealthCardNumber`, `SocialInsuranceNumber`, `NumberOfVisits`, `IsActive`, `PatientNotes`) VALUES ('8', '3', '3', '9788456', '987654321', '20', 0, 'Stitches.');
 INSERT INTO `mis_db`.`patients` (`PatientId`, `DoctorId`, `HealthStateId`, `HealthCardNumber`, `SocialInsuranceNumber`, `NumberOfVisits`, `IsActive`, `PatientNotes`) VALUES ('9', '1', '3', '5416816', '468946138', '16', 0, 'Patient is healthy and in great shape.');
 
-INSERT INTO `mis_db`.`address` (`AddressId`, `StreetNumber`, `StreetName`, `City`, `Province`, `Country`, `PostalCode`) VALUES ('1', '313', 'Spruce', 'Waterloo', 'ON', 'CAN', 'N2L3M6');
-INSERT INTO `mis_db`.`address` (`AddressId`, `StreetNumber`, `StreetName`, `City`, `Province`, `Country`, `PostalCode`) VALUES ('2', '123', 'Bay Street', 'Toronto', 'ON', 'CAN', 'N2L3M7');
-INSERT INTO `mis_db`.`address` (`AddressId`, `StreetNumber`, `StreetName`, `City`, `Province`, `Country`, `PostalCode`) VALUES ('3', '684', 'Wall Street', 'Orange County', 'ON', 'CAN', 'N2L3Q6');
+INSERT INTO `mis_db`.`address` (`StreetNumber`, `StreetName`, `City`, `Province`, `Country`, `PostalCode`) VALUES ('313', 'Spruce', 'Waterloo', 'ON', 'CAN', 'N2L3M6');
+INSERT INTO `mis_db`.`address` (`StreetNumber`, `StreetName`, `City`, `Province`, `Country`, `PostalCode`) VALUES ('123', 'Bay Street', 'Toronto', 'ON', 'CAN', 'N2L3M7');
+INSERT INTO `mis_db`.`address` (`StreetNumber`, `StreetName`, `City`, `Province`, `Country`, `PostalCode`) VALUES ('684', 'Wall Street', 'Orange County', 'ON', 'CAN', 'N2L3Q6');
 
 INSERT INTO `mis_db`.`users` (`UserId`, `FirstName`, `LastName`, `Gender`, `DateOfBirth`, `UserType`, `Password`, `PhoneNumber`, `AddressId`, `EmergencyContactName`, `EmergencyContactPhoneNumber`) VALUES ('aahaji@waterloo.ca', 'Abbas', 'Haji', 1, '1992-07-06', '1', 'c775e7b757ede630cd0aa1113bd102661ab38829ca52a6422ab782862f268646', '6541236554', '1', 'ASfasdoj', '4598745695');
 INSERT INTO `mis_db`.`users` (`UserId`, `FirstName`, `LastName`, `Gender`, `DateOfBirth`, `UserType`, `Password`, `PhoneNumber`, `AddressId`, `EmergencyContactName`, `EmergencyContactPhoneNumber`) VALUES ('vojukwu@waterloo.ca', 'Victor', 'Ojukwu', 1, '1994-03-03', '2', 'c775e7b757ede630cd0aa1113bd102661ab38829ca52a6422ab782862f268646', '9741235468', '2', 'aefaefaeg', '4778456132');
