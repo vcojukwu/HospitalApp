@@ -111,8 +111,11 @@ function enableRow(elem){
 }
 
 function deleteRow2(r) {
-    var i = r.parentNode.parentNode.rowIndex;
+    var ans = confirm("Are you sure you want to delete appointment?");
+    if(ans == true){
+        var i = r.parentNode.parentNode.rowIndex;
     document.getElementById("appointments").deleteRow(i);
+    }    
 }
 
 function addRow2(r){
@@ -127,15 +130,15 @@ function addRow2(r){
 	var cell6 = row.insertCell(5);
 	var cell7 = row.insertCell(6);
 	
-	cell1.innerHTML = '<input class="patID" type="number" value = "1" disabled>';
-	cell2.innerHTML = '<input class="patName" type="text" value = "Victor Ojukwu" disabled></td>';
-	cell3.innerHTML = '<input class="docID" type="number" value = "1" disabled></td>';
-	cell4.innerHTML = '<input class="docName" type="text" value = "John Doe" disabled>';
-	cell5.innerHTML = '<input class="time" type="datetime" value = "1:00" disabled>';
-	cell6.innerHTML = '<input class="duration" style="width:100%" type="number" value = "60" disabled>';
-	cell7.innerHTML = '<button title="Edit" onClick="enableRow(this);return false"\
+	cell1.innerHTML = '<input class="patID" type="number" value = "1">';
+	cell2.innerHTML = '<input class="patName" type="text" value = "Victor Ojukwu"></td>';
+	cell3.innerHTML = '<input class="docID" type="number" value = "1"></td>';
+	cell4.innerHTML = '<input class="docName" type="text" value = "John Doe">';
+	cell5.innerHTML = '<input class="time" type="datetime" value = "1:00">';
+	cell6.innerHTML = '<input class="duration" style="width:100%" type="number" value = "60">';
+	cell7.innerHTML = '<button title="Save" onClick="enableRow(this);return false"\
 	 					style="margin-right:15%; margin-left:15%" class="pure-button">\
-    						<i class="fa fa-pencil"></i>\
+    						<i class="fa fa-floppy-o"></i>\
 					  </button><button onClick="deleteRow2(this);return false" class="pure-button">\
    							<i class="fa fa-times-circle"></i>\
 					  </button>';
