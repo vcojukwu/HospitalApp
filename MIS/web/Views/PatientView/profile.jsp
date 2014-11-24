@@ -15,7 +15,8 @@
                 </ul>
             </div>
 
-            <div style="float:left; width:50%"><form class="pure-form pure-form-aligned" method="post" action="User">
+            <div style="float:left; width:50%">
+                <form class="pure-form pure-form-aligned" method="post" action="User">
                     <fieldset>
                         <legend>Contact Information</legend>
                         <div class="pure-control-group">
