@@ -71,40 +71,23 @@ public class UserController extends HttpServlet {
         processRequest(request, response);
     }
     
-    private void EditUser()
+    private void EditUser(HttpServletRequest request)
     {
-        
-    }
-    
-    private void AddUser()
-    {
-        
-    }
-    
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
         UserDao userData = new UserDao();
-        if (request.getParameter("Edit") != null)
-            this.EditUser();
-        else if(request.getParameter("Add") != null)
-            this.AddUser();
-        //HttpSession session = request.getSession(true);
-        //UserProfileVM userModified = (UserProfileVM) session.getAttribute("profile");
-        //userModified.getAddress().setStreetNumber(Integer.parseInt(request.getParameter("streetNumber")));
-        //userModified.getAddress().setStreetName(request.getParameter("streetName"));
-        //userModified.getAddress().setCity(request.getParameter("city"));
-        //userModified.getAddress().setProvince(request.getParameter("state"));
-        //userModified.getAddress().setPostalCode(request.getParameter("zip"));
-        //userModified.getUser().setPhoneNumber(request.getParameter("phone"));
+        HttpSession session = request.getSession(true);
+        UserProfileVM userModified = (UserProfileVM) session.getAttribute("profile");
+        userModified.getAddress().setStreetNumber(Integer.parseInt(request.getParameter("streetNumber")));
+        userModified.getAddress().setStreetName(request.getParameter("streetName"));
+        userModified.getAddress().setCity(request.getParameter("city"));
+        userModified.getAddress().setProvince(request.getParameter("state"));
+        userModified.getAddress().setPostalCode(request.getParameter("zip"));
+        userModified.getUser().setPhoneNumber(request.getParameter("phone"));        
+        userData.ModifyUser(userModified);
+    }
+    
+    private void AddUser(HttpServletRequest request)
+    {
+        UserDao userData = new UserDao();
         Security hashPassword = new Security();        
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");        
         java.util.Date date = null;
@@ -157,7 +140,24 @@ public class UserController extends HttpServlet {
             staff.setStaffId(request.getParameter("email"));
             userData.AddUser(user, address, null, null, staff);
         }      
-        //userData.ModifyUser(userModified);                
+    }
+    
+    /**
+     * Handles the HTTP <code>POST</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        
+        if (request.getParameter("Edit") != null)
+            this.EditUser(request);
+        else if(request.getParameter("Add") != null)
+            this.AddUser(request);                        
     }
 
     /**
