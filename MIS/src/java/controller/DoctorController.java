@@ -117,8 +117,7 @@ public class DoctorController extends HttpServlet {
         
         visitationRecord.setProcedureId(Integer.parseInt(request.getParameter("procedureId")));
         UserModel user = ((UserProfileVM)session.getAttribute("profile")).getUser();                //Here I am assuming that the current logged in user is the doctor hence grab his id
-        //visitationRecord.setDoctorId(user.getUserId()); 
-        visitationRecord.setDoctorId("doctor1@email.com");                                          //HARD CODED FOR TESTING, REMOVE AND UNCOMMENT ABOVE LINE
+        visitationRecord.setDoctorId(user.getUserId()); 
         visitationRecord.setPatientId("patient1@email.com");                                              //need to get the patient id, either from current patient being viewed or someother way
         visitationRecord.setTimeStarted(ParseTime(request.getParameter("timestarted")));
         visitationRecord.setTimeEnded(ParseTime(request.getParameter("timeended")));
