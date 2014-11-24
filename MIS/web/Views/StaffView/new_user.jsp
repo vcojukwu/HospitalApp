@@ -11,8 +11,27 @@
                 <legend>User Information</legend>
                 <div class="pure-input-1-2 pure-control-group">
                     <label for="user">User Type:</label>
-                    <input name = "userType" id="user" style="display:inline-block" type="number">
+                    <select name = "userType" id="user" style="display:inline-block" type="text" onChange="showForm(this);
+                                return false">
+                        <option value="0">Staff</option>
+                        <option value="1">Patient</option>
+                        <option value="2">Doctor</option>
+                    </select>
                 </div>
+
+                <div class="pure-input-1-2 pure-control-group" id="sinDiv" style="display:none">
+                    <label for="sin">SIN :</label>
+                    <input name = "sin" id="sin" style="display:inline-block" type="number">
+                </div>
+                <div class="pure-input-1-2 pure-control-group" id="healthDiv" style="display:none">
+                    <label for="healthNum">Health Card # :</label>
+                    <input name = "healthNum" id="healthNum" style="display:inline-block" type="number">
+                </div>
+                <div class="pure-input-1-2 pure-control-group" id="docDiv" style="display:none">
+                    <label for="docType">Type of Doctor :</label>
+                    <input name = "docType" id="docType" style="display:inline-block" type="text" placeholder="Doctor Type">
+                </div>
+
                 <div class="pure-input-1-2 pure-control-group">
                     <label for="fname">First Name :</label>
                     <input name = "fname" id="fname" style="display:inline-block" type="text" placeholder="First Name">
