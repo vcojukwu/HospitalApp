@@ -18,9 +18,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import dao.UserDao;
-import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpSession;
 import util.Security;
 
@@ -70,27 +70,24 @@ public class UserController extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
     }
-
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    
+    private void EditUser(HttpServletRequest request, HttpSession session)
+    {
         UserDao userData = new UserDao();
-        //HttpSession session = request.getSession(true);
-        //UserProfileVM userModified = (UserProfileVM) session.getAttribute("profile");
-        //userModified.getAddress().setStreetNumber(Integer.parseInt(request.getParameter("streetNumber")));
-        //userModified.getAddress().setStreetName(request.getParameter("streetName"));
-        //userModified.getAddress().setCity(request.getParameter("city"));
-        //userModified.getAddress().setProvince(request.getParameter("state"));
-        //userModified.getAddress().setPostalCode(request.getParameter("zip"));
-        //userModified.getUser().setPhoneNumber(request.getParameter("phone"));
+        //HttpSession session = request.getSession(false);
+        UserProfileVM userModified = (UserProfileVM) session.getAttribute("profile");
+        userModified.getAddress().setStreetNumber(Integer.parseInt(request.getParameter("streetNumber")));
+        userModified.getAddress().setStreetName(request.getParameter("streetName"));
+        userModified.getAddress().setCity(request.getParameter("city"));
+        userModified.getAddress().setProvince(request.getParameter("state"));
+        userModified.getAddress().setPostalCode(request.getParameter("zip"));
+        userModified.getUser().setPhoneNumber(request.getParameter("phone"));        
+        userData.ModifyUser(userModified);
+    }
+    
+    private void AddUser(HttpServletRequest request)
+    {
+        UserDao userData = new UserDao();
         Security hashPassword = new Security();        
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");        
         java.util.Date date = null;
@@ -106,7 +103,7 @@ public class UserController extends HttpServlet {
         user.setUserId(request.getParameter("email"));
         user.setFirstName(request.getParameter("fname"));
         user.setLastName(request.getParameter("lname"));
-        user.setGender((Integer.parseInt(request.getParameter("gender")) == 0)? false : true);
+        user.setGender((Integer.parseInt(request.getParameter("gender")) != 0));
         user.setDateOfBirth(new java.sql.Date(date.getTime()));
         user.setUserType(userType);
         user.setPassword(hashPassword.hashedPassword(request.getParameter("password")));
@@ -143,7 +140,39 @@ public class UserController extends HttpServlet {
             staff.setStaffId(request.getParameter("email"));
             userData.AddUser(user, address, null, null, staff);
         }      
-        //userData.ModifyUser(userModified);                
+    }
+    
+    /**
+     * Handles the HTTP <code>POST</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+        RequestDispatcher view = null;
+
+        if (request.getParameter("Edit") != null)
+            this.EditUser(request, session);
+        else if(request.getParameter("Add") != null)
+            this.AddUser(request); 
+        UserProfileVM user = (UserProfileVM)session.getAttribute("profile");
+        int userType = user.getUser().getUserType();
+        String forward = "";
+        if(userType == 1) //Patient
+                forward = "/Views/PatientView/profile.jsp";
+            else if(userType == 2) //Doctor
+                forward = "/Views/DoctorView/profile_doc.jsp";
+            else if(userType == 3) //Staff
+                forward = "/Views/StaffView/profile_staff.jsp";
+            else if(userType == 4) //Finanace
+                forward = "/Views/FinancialView/profile_financial.jsp";
+        view = request.getServletContext().getRequestDispatcher(forward);
+        view.forward(request, response);
     }
 
     /**

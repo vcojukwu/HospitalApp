@@ -9,8 +9,8 @@ public class VisitationRecordsModel {
     private int ProcedureId;
     private String PatientId;
     private String DoctorId;
-    private Timestamp DateTime;
-    private Timestamp DateTimeEnded;
+    private Timestamp TimeStarted;
+    private Timestamp TimeEnded;
     private String Prescriptions;
     private String Diagnosis;
     private String TreatmentSchedule;
@@ -56,20 +56,20 @@ public class VisitationRecordsModel {
         this.DoctorId = DoctorId;
     }
 
-    public Timestamp getDateTime() {
-        return DateTime;
+    public Timestamp getTimeStarted() {
+        return TimeStarted;
     }
 
-    public void setDateTime(Timestamp DateTime) {
-        this.DateTime = DateTime;
+    public void setTimeStarted(Timestamp TimeStarted) {
+        this.TimeStarted = TimeStarted;
     }
 
-    public Timestamp getDateTimeEnded() {
-        return DateTimeEnded;
+    public Timestamp getTimeEnded() {
+        return TimeEnded;
     }
 
-    public void setDateTimeEnded(Timestamp DateTimeEnded) {
-        this.DateTimeEnded = DateTimeEnded;
+    public void setTimeEnded(Timestamp TimeEnded) {
+        this.TimeEnded = TimeEnded;
     }
 
     public String getPrescriptions() {
