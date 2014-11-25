@@ -39,33 +39,52 @@ public class PatientDao {
         "String", "String"};
     
     
-    public PatientModel getPatient(String patientid)
+    public PatientUserVM getPatient(String patientid)
     {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-        String query = "SELECT * FROM patients where patientid = ?";
+        String query = "select * from mis_db.patients left join mis_db.users on patients.PatientId = users.UserId "
+                + "where PatientId = ?";
         PatientModel pm = new PatientModel();
+        UserModel um = new UserModel();
+        PatientUserVM puvm = null;
         try{
             pstmt = DbUtil.getConnection().prepareStatement(query);
             pstmt.setString(1, patientid);
             rs = pstmt.executeQuery(query); 
             while (rs.next()) {
                 
-                pm.setPatientId(rs.getString("PatientId"));
-                pm.setDoctorId(rs.getString("DoctorId"));
-                pm.setHealthStateId(rs.getInt("HealthStateId"));
-                pm.setHealthCardNumber(rs.getInt("HealthCardNumber"));
-                pm.setSocialInsuranceNumber(rs.getInt("SocialInsuranceNumber"));
-                pm.setNumberOfVisits(rs.getInt("NumberOfVisits"));
-                pm.setIsActive(rs.getBoolean("IsActive"));
-                pm.setLastVisitDate(rs.getTimestamp("LastVisitDate"));
-                pm.setPatientNotes(rs.getString("PatientNotes"));
+                pm.setPatientId(rs.getString(PatientModelColumns[0]));
+                pm.setDoctorId(rs.getString(PatientModelColumns[1]));
+                pm.setHealthStateId(rs.getInt(PatientModelColumns[2]));
+                pm.setHealthCardNumber(rs.getInt(PatientModelColumns[3]));
+                pm.setSocialInsuranceNumber(rs.getInt(PatientModelColumns[4]));
+                pm.setNumberOfVisits(rs.getInt(PatientModelColumns[5]));
+                pm.setIsActive(rs.getBoolean(PatientModelColumns[6]));
+                pm.setLastVisitDate(rs.getTimestamp(PatientModelColumns[7]));
+                pm.setPatientNotes(rs.getString(PatientModelColumns[8]));
+                
+                um.setUserId(rs.getString(UserModelColumns[0]));
+                um.setFirstName(rs.getString(UserModelColumns[1]));
+                um.setLastName(rs.getString(UserModelColumns[2]));
+                um.setGender(rs.getBoolean(UserModelColumns[3]));
+                um.setDateOfBirth(rs.getDate(UserModelColumns[4]));
+                um.setUserType(rs.getInt(UserModelColumns[5]));
+                um.setPassword(rs.getString(UserModelColumns[6]));
+                um.setPhoneNumber(rs.getString(UserModelColumns[7]));
+                um.setAddressId(rs.getInt(UserModelColumns[8]));
+                um.setEmergencyContactName(rs.getString(UserModelColumns[9]));
+                um.setEmergencyContactPhoneNumber(rs.getString(UserModelColumns[10]));
+                
+                puvm=new PatientUserVM();
+                puvm.setPatient(pm);
+                puvm.setUser(um);
             }
         } catch (Exception e) {
                 e.printStackTrace();
         }
         
-        return pm;
+        return puvm;
     }
     
     //This method will update all attributes as given in the patient model parameter
