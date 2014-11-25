@@ -8,6 +8,7 @@ package dao;
 import Model.VisitationRecordsModel;
 import Model.ProceduresModel;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -28,23 +29,34 @@ public class DoctorDao {
     
     
     public void AddVisitationRecord(VisitationRecordsModel visitationRecord){
-        Statement stmt  = null;
-        String query    = null;
-        ResultSet rs    = null;
-
+        PreparedStatement pstmt = null;
+        String query = null;
         try{
-            stmt = DbUtil.getConnection().createStatement();
-            
-            //Add new record
+            //Form prepared statment query
             query = "INSERT INTO visitation_records ( OriginalRecordId, ProcedureId, PatientId, DoctorId, TimeStarted, TimeEnded, "
                     + "Prescriptions, Diagnosis, TreatmentSchedule, Notes) "
-                    + "VALUES ( '" + -1 + "', '" + visitationRecord.getProcedureId() + "' , '" +
-                    visitationRecord.getPatientId() + "', '" + visitationRecord.getDoctorId() + "', '" + visitationRecord.getTimeStarted() +
-                    "', '" + visitationRecord.getTimeEnded() + "', '" + visitationRecord.getPrescriptions() +  
-                    "', '" + visitationRecord.getDiagnosis() + "' ,'" + visitationRecord.getTreatmentSchedule() + "' ,'" +
-                    visitationRecord.getNotes() + "')";
-            System.out.print(query);
-            stmt.executeUpdate(query);
+                    + "VALUES (?,?,?,?,?,?,?,?,?,?)";
+            
+            //Form preparedstatement from query
+            pstmt = DbUtil.getConnection().prepareStatement(query);
+            
+            //Add elements of prepared statement
+            pstmt.setInt(1, visitationRecord.getOriginalRecordId());                                        //Set OriginalRecordId
+            pstmt.setInt(2, visitationRecord.getProcedureId());         //Set ProcedureId
+            pstmt.setString(3, visitationRecord.getPatientId());        //Set PatientId
+            pstmt.setString(4, visitationRecord.getDoctorId());         //Set DoctorId
+            pstmt.setTimestamp(5, visitationRecord.getTimeStarted());   //Set TimeStarted
+            pstmt.setTimestamp(6, visitationRecord.getTimeEnded());     //Set TimeEnded
+            pstmt.setString(7, visitationRecord.getPrescriptions());    //Set Prescriptions
+            pstmt.setString(8, visitationRecord.getDiagnosis());        //Set Diagnosis
+            pstmt.setString(9, visitationRecord.getTreatmentSchedule());//Set TreatmentSchedule
+            pstmt.setString(10, visitationRecord.getNotes());           //Set Notes
+            
+            System.out.print(pstmt.toString());
+            
+            //Execute prepared statement
+            pstmt.executeUpdate();
+            
         } catch (SQLException e) {
                 e.printStackTrace();
         }
@@ -53,37 +65,73 @@ public class DoctorDao {
     
     //This is the same as above, except above we make originalrecorid = -1 as its a new record but here, we add the original recordId. 
     //We could merge the two above, by forcing controller to assign origianl RecordId = -1 if new record else the id itself. 
-    public void ModifyVisitationRecord(VisitationRecordsModel visitationRecord, int procedureId){
-        Statement stmt  = null;
-        String query    = null;
-        ResultSet rs    = null;
-
+    
+    //THIS logic can be done in controller, in the visitationRecord, just ensure OriginalRecordId is 
+    //-1 if the UI is in add new, or the current RecordId of the record being modified. Then this function
+    //is not needed
+    public void ModifyVisitationRecord(VisitationRecordsModel visitationRecord, int OriginalRecordId){
+        PreparedStatement pstmt = null;
+        String query = null;
         try{
-            stmt = DbUtil.getConnection().createStatement();
-            
             //Add new record
             query = "INSERT INTO visitation_records ( OriginalRecordId, ProcedureId, PatientId, DoctorId, TimeStarted, TimeEnded, "
                     + "Prescriptions, Diagnosis, TreatmentSchedule, Notes) "
-                    + "VALUES ( '" + visitationRecord.getOriginalRecordId() + "', '" + procedureId + "' , '" +
-                    visitationRecord.getPatientId() + "'," + visitationRecord.getDoctorId() + ", '" + visitationRecord.getTimeStarted() +
-                    "', '" + visitationRecord.getTimeEnded() + "', '" + visitationRecord.getPrescriptions() +  
-                    "', '" + visitationRecord.getDiagnosis() + "' ,'" + visitationRecord.getTreatmentSchedule() + "' ,'" +
-                    visitationRecord.getNotes() + "')";
-            stmt.executeUpdate(query);
+                    + "VALUES ( ?,?,?,?,?,?,?,?,?,?)";
+            
+            //Form preparedstatement from query
+            pstmt = DbUtil.getConnection().prepareStatement(query);
+            
+            //Add elements of prepared statement
+            pstmt.setInt(1, visitationRecord.getOriginalRecordId()); //Set OriginalRecordId
+            pstmt.setInt(2, visitationRecord.getProcedureId());         //Set ProcedureId
+            pstmt.setString(3, visitationRecord.getPatientId());        //Set PatientId
+            pstmt.setString(4, visitationRecord.getDoctorId());         //Set DoctorId
+            pstmt.setTimestamp(5, visitationRecord.getTimeStarted());   //Set TimeStarted
+            pstmt.setTimestamp(6, visitationRecord.getTimeEnded());     //Set TimeEnded
+            pstmt.setString(7, visitationRecord.getPrescriptions());    //Set Prescriptions
+            pstmt.setString(8, visitationRecord.getDiagnosis());        //Set Diagnosis
+            pstmt.setString(9, visitationRecord.getTreatmentSchedule());//Set TreatmentSchedule
+            pstmt.setString(10, visitationRecord.getNotes());           //Set Notes
+            
+            System.out.print(pstmt.toString());
+            
+            //Execute prepared statement
+            pstmt.executeUpdate();
         } catch (SQLException e) {
                 e.printStackTrace();
         }
     }
     
     public List<VisitationRecordsModel> FindRecords(){
+        Statement stmt  = null;
+        String query    = null;
+        ResultSet rs    = null;
+        List<VisitationRecordsModel> vr = new ArrayList<VisitationRecordsModel>();
+        try{
+            stmt = DbUtil.getConnection().createStatement();
+            
+            //Add new record
+            query = "select * FROM visitation_records WHERE PatientId=" + "'" + "patient1@email.com" + "'";
+            rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                VisitationRecordsModel vrm = new VisitationRecordsModel();
+                vrm.setRecordId(rs.getInt("RecordId"));
+                vrm.setOriginalRecordId(rs.getInt("OriginalRecordId"));
+                vrm.setProcedureId(rs.getInt("ProcedureId"));
+                vrm.setPatientId(rs.getString("PatientId"));
+                vrm.setDoctorId(rs.getString("DoctorId"));
+                vrm.setTimeStarted(rs.getTimestamp("TimeStarted"));
+                vrm.setTimeEnded(rs.getTimestamp("TimeEnded"));
+                vrm.setPrescriptions(rs.getString("Prescriptions"));
+                vrm.setDiagnosis(rs.getString("Diagnosis"));
+                vrm.setNotes(rs.getString("Notes"));
+                
+                vr.add(vrm);   
+            }
+        } catch (SQLException e) {
+                e.printStackTrace();
+        }
         
-        
-        /*
-        Procedure:
-        From the patient table we need to get all the patients with the name provided. 
-        
-        
-        */
         
         
         return null;

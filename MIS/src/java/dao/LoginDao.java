@@ -9,6 +9,7 @@ import Model.AddressModel;
 import Model.UserModel;
 import ViewModel.UserProfileVM;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -30,7 +31,7 @@ public class LoginDao {
     
     public UserProfileVM Login(String userName, String password)
     {
-        Statement stmt = null;
+        PreparedStatement pstmt = null;
         ResultSet rs = null;
         //ResultSet rs = null;
         int userType = 0;
@@ -39,7 +40,7 @@ public class LoginDao {
         String query = "SELECT * FROM users X INNER JOIN "
                 + "address Y ON " 
                 + "X.AddressId=Y.AddressId "  
-                + "where UserId = '" + userName + "'";
+                + "where UserId = ?";
 
         Security checkPassword = new Security();
         String hashedPassword = checkPassword.hashedPassword(password);
@@ -48,8 +49,12 @@ public class LoginDao {
         UserProfileVM viewModel = new UserProfileVM();
         try
         {
-            stmt = DbUtil.getConnection().createStatement();
-            rs = stmt.executeQuery(query); 
+            //Form preparedstatement from query
+            pstmt = DbUtil.getConnection().prepareStatement(query);
+            //Add elements to PreparedStatement
+            pstmt.setString(1, userName);
+            //Execute prepared statement
+            rs = pstmt.executeQuery(); 
             DateFormat date = DateFormat.getDateInstance(DateFormat.SHORT);
             while (rs.next()) 
             {

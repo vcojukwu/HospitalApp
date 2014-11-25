@@ -68,6 +68,7 @@ CREATE TABLE PATIENTS
 	SocialInsuranceNumber INT NOT NULL,
 	NumberOfVisits INT NOT NULL,
 	IsActive BIT NOT NULL,
+	LastVisitDate DATETIME NOT NULL,
 	PatientNotes LONGTEXT,
 	PRIMARY KEY (PatientId),
 	FOREIGN KEY (HealthStateId) REFERENCES HEALTH_STATE(HealthStateId),

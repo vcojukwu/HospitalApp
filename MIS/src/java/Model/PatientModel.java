@@ -1,6 +1,8 @@
 
 package Model;
 
+import java.sql.Timestamp;
+
 public class PatientModel {
     private String PatientId;
     private String DoctorId;
@@ -8,6 +10,7 @@ public class PatientModel {
     private int HealthCardNumber;
     private int SocialInsuranceNumber;
     private int NumberOfVisits;
+    private Timestamp LastVisitDate;
     private boolean IsActive;
     private String PatientNotes;
 
@@ -66,7 +69,14 @@ public class PatientModel {
     public void setIsActive(boolean IsActive) {
         this.IsActive = IsActive;
     }
+    
+    public Timestamp getLastVisitDate() {
+        return LastVisitDate;
+    }
 
+    public void setLastVisitDate(Timestamp LastVisitDate) {
+        this.LastVisitDate = LastVisitDate;
+    }
     public String getPatientNotes() {
         return PatientNotes;
     }
@@ -74,5 +84,7 @@ public class PatientModel {
     public void setPatientNotes(String PatientNotes) {
         this.PatientNotes = PatientNotes;
     }
+
+  
     
 }
