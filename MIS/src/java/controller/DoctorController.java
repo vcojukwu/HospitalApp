@@ -109,8 +109,17 @@ public class DoctorController extends HttpServlet {
             
             PatientDao patientdao = new PatientDao();
             //PatientUserVM puvm = patientdao.getPatient("");
-            String temp = request.getParameter("ViewPatientDetail");
-            String test = "";
+            String patientId = request.getParameter("ViewPatientDetail");
+           
+            //get the patient info to diplay on top currently ill display id only - we can add first name and last name later on
+            request.setAttribute("patientID", patientId);
+            
+            DoctorDao doctor = new DoctorDao();
+            request.setAttribute("records", doctor.FindRecords());
+            request.setAttribute("procedures", doctor.GetProcedures());
+            
+        RequestDispatcher rd = getServletContext().getRequestDispatcher("/Views/DoctorView/patient_records.jsp");
+        rd.forward(request, response);
         }
     private void SearchPatients(HttpServletRequest request, HttpSession session, HttpServletResponse response)
         throws ServletException, IOException{
