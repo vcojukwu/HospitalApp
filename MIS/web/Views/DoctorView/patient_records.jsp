@@ -14,7 +14,7 @@
             </fieldset>
         
 
-            <table class="pure-table pure-table-bordered" id="appointments">
+            <table class="pure-table pure-table-bordered" id="records">
                 <thead>
                     <tr>
                         <th>Procedure</th>
@@ -55,7 +55,7 @@
                             <input id="recordType" type="hidden" type="number" value="0" disabled >
                             <td>
                                 <button title="Edit" value="PatientRecord" name="PatientRecord" onclick="enableRowPatientRecord(this); 
-                                    return false" style="margin-right:15%; margin-left:15%" class="pure-button">
+                                    return false;" style="margin-right:15%; margin-left:15%" class="pure-button">
                                     <i class="fa fa-pencil"></i>
                                 </button>
                             </td>
@@ -63,7 +63,10 @@
                         </c:forEach>
                 </tbody>
             </table>
-        
+            <button title="AddNewRecord" class="button-success pure-button" style="float:right" onClick="addRowPatientRecord(this);
+                return false;">
+            <i class="fa fa-plus"></i>
+            </button>
             <fieldset>
                 <input type="hidden" id="selectedProcedureId" name="selectedProcedureId" type="number">
                 <input type="hidden" id="selectedDate" name="selectedDate" type="date">
