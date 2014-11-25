@@ -22,7 +22,6 @@ import java.util.List;
  * @author Abbasali
  */
 public class DoctorDao {
-    private Connection connection;
     
     private static String[] UserModelColumns = {"UserId", "FirstName", "LastName", "Gender", 
         "DateOfBirth", "UserType", "Password", "PhoneNumber", "AddressId", 
@@ -36,11 +35,6 @@ public class DoctorDao {
     private static String[] VisitationRecordModelTypes = {"int","int",
         "int","String","String","Timestamp","Timestamp","String",
         "String","String"};
-    
-    public DoctorDao()
-    {
-        connection = DbUtil.getConnection();
-    }
     
     
     public void AddVisitationRecord(VisitationRecordsModel visitationRecord){
