@@ -154,7 +154,7 @@ public class DoctorDao {
             //if a specific PatientId is given
             allowedIds += "'" + VRecordParams[3] + "') ";
         }
-        query += " WHERE patients.PatientId IN"+allowedIds;
+        query += " WHERE visitation_records.PatientId IN"+allowedIds;
         
         for(int i=0; i<VisitationRecordModelColumns.length; i++){
             if(VisitationRecordModelColumns[i].equalsIgnoreCase("DoctorId")||VisitationRecordModelColumns[i].equalsIgnoreCase("PatientId")){
@@ -164,10 +164,10 @@ public class DoctorDao {
             if(VRecordParams[i] != null){
                 query += " AND ";
                 if(VisitationRecordModelTypes[i].equals("boolean") || VisitationRecordModelTypes[i].equals("int")){
-                    query += "patients." + VisitationRecordModelColumns[i] + " = ? ";
+                    query += "visitation_records." + VisitationRecordModelColumns[i] + " = ? ";
                 }
                 else{
-                    query += "patients." + VisitationRecordModelColumns[i] + " LIKE ? ";
+                    query += "visitation_records." + VisitationRecordModelColumns[i] + " LIKE ? ";
                 }
                 elements.add(VRecordParams[i]);
                 elementType.add(VisitationRecordModelTypes[i]);

@@ -121,9 +121,9 @@ public class DoctorController extends HttpServlet {
            
             //get the patient info to diplay on top currently ill display id only - we can add first name and last name later on
             request.setAttribute("patientId", patId);
-            String[] VisitationRecordSA = {null,null,
+            String[] VisitationRecordSA = {null,null, null,
                 patId,user.getUserId(),null,null,null,null,
-                null,null};
+                null};
             String[] UserModelSA = {null, null, null , null, 
                 null, null, null, null, null, 
                 null, null};
