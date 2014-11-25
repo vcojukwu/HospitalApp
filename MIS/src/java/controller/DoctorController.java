@@ -70,11 +70,13 @@ public class DoctorController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         //processRequest(request, response);
+
         
-        DoctorDao doctor = new DoctorDao();
-        request.setAttribute("procedures", doctor.GetProcedures());     
-        RequestDispatcher rd = getServletContext().getRequestDispatcher("/Views/DoctorView/enter_records.jsp");
-        rd.forward(request, response);
+            DoctorDao doctor = new DoctorDao();
+            request.setAttribute("procedures", doctor.GetProcedures());     
+            RequestDispatcher rd = getServletContext().getRequestDispatcher("/Views/DoctorView/enter_records.jsp");
+            rd.forward(request, response);
+        
     }
 
     /**
@@ -95,18 +97,28 @@ public class DoctorController extends HttpServlet {
             this.AddVisitationRecord(request, session, response);
          else if (request.getParameter("SearchPatients") != null)
             this.SearchPatients(request, session, response);
+         else if (request.getParameter("ViewPatientDetail") != null){
+            this.NavigateToPatientView(request, session, response);
+        }
         
 
     }
     
-    
+    private void NavigateToPatientView(HttpServletRequest request, HttpSession session, HttpServletResponse response)
+        throws ServletException, IOException{
+            
+            PatientDao patientdao = new PatientDao();
+            //PatientUserVM puvm = patientdao.getPatient("");
+            String temp = request.getParameter("ViewPatientDetail");
+            String test = "";
+        }
     private void SearchPatients(HttpServletRequest request, HttpSession session, HttpServletResponse response)
         throws ServletException, IOException{
         String firstname = request.getParameter("firstname");
         String lastname = request.getParameter("lastname");
-        
+        UserModel user = ((UserProfileVM)session.getAttribute("profile")).getUser();                                //Get Doctor Id  
         PatientDao patientdao = new PatientDao();
-        String[] PatientModelSA = {null,null, null,null,
+        String[] PatientModelSA = {null,user.getUserId(), null,null,
             null,null, null,null};
         String[] UserModelSA = {null, (firstname == "")?  null : firstname , (lastname == "")?  null : lastname, null, 
             null, null, null, null, null, 

@@ -76,14 +76,35 @@ public class DoctorDao {
     }
     
     public List<VisitationRecordsModel> FindRecords(){
+        Statement stmt  = null;
+        String query    = null;
+        ResultSet rs    = null;
+        List<VisitationRecordsModel> vr = new ArrayList<VisitationRecordsModel>();
+        try{
+            stmt = DbUtil.getConnection().createStatement();
+            
+            //Add new record
+            query = "select * FROM visitation_records WHERE PatientId=" + "'" + "patient1@email.com" + "'";
+            rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                VisitationRecordsModel vrm = new VisitationRecordsModel();
+                vrm.setRecordId(rs.getInt("RecordId"));
+                vrm.setOriginalRecordId(rs.getInt("OriginalRecordId"));
+                vrm.setProcedureId(rs.getInt("ProcedureId"));
+                vrm.setPatientId(rs.getString("PatientId"));
+                vrm.setDoctorId(rs.getString("DoctorId"));
+                vrm.setTimeStarted(rs.getTimestamp("TimeStarted"));
+                vrm.setTimeEnded(rs.getTimestamp("TimeEnded"));
+                vrm.setPrescriptions(rs.getString("Prescriptions"));
+                vrm.setDiagnosis(rs.getString("Diagnosis"));
+                vrm.setNotes(rs.getString("Notes"));
+                
+                vr.add(vrm);   
+            }
+        } catch (SQLException e) {
+                e.printStackTrace();
+        }
         
-        
-        /*
-        Procedure:
-        From the patient table we need to get all the patients with the name provided. 
-        
-        
-        */
         
         
         return null;
