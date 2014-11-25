@@ -45,6 +45,18 @@
                 return false">
             <i class="fa fa-plus"></i>
         </button>
+        <form style="display:none" class="pure-form pure-form-stacked">
+            <fieldset>
+                <input type="hidden" id="patId" type="number">
+                <input type="hidden" id="patName" type="text">
+                <input type="hidden" id="docId" type="number">      
+                <input type="hidden" id="docName" type="text">
+                <input type="hidden" id="time" type="datetime">
+                <input type="hidden" id="duration" type="number">
+
+                <button type="submit" class="pure-button pure-button-primary">Submit</button>
+            </fieldset>
+        </form>
     </div>
 </div>
 
