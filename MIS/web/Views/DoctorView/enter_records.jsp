@@ -5,7 +5,7 @@
     </div>
 
     <div class="content" style="padding-top:30px">
-        <form class="pure-form pure-form-aligned" method="post" action="AddVisitationRecord">
+        <form class="pure-form pure-form-aligned" method="post" action="Doctor">
             <fieldset>
                 <div class="pure-control-group">
                     <label for="name">Patient Name</label>

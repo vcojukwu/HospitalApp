@@ -5,11 +5,12 @@
     </div>
 
     <div class="content" style="padding-top:30px; margin:5% !important">
-        <form class="pure-form" method="post" action="DoctorSearchPatient">
+        <form class="pure-form" method="post" action="Doctor">
             <fieldset>
                 <legend>Search for a Patient</legend>
 
-                <input type="search" class="pure-input-rounded" placeholder="Patient Name">
+                <input name ="firstname" id="firstname" type="text" class="pure-input-rounded" placeholder="Patient First Name">
+                <input name ="lastname" id="lastname" type="text" class="pure-input-rounded" placeholder="Patient Last Name">
                 <input id="adv1" type="hidden" placeholder="Patient ID">
                 <label id="adv2" for="date" style="display:none">Last Visit :</label>
                 <input id="adv3" type="hidden">
@@ -44,10 +45,14 @@
                                     return false" style="margin-right:15px" class="pure-button">
                                 <i class="fa fa-pencil"></i>
                             </button>
-                            <button onClick="deleteRow2(this);
+                            <button value ="showPatient" onClick="">
                                     return false" class="pure-button">
                                 <i class="fa fa-times-circle"></i>
                             </button>
+                            <!--<button onClick="deleteRow2(this);
+                                    return false" class="pure-button">
+                                <i class="fa fa-times-circle"></i>
+                            </button> -->
                         </td>
                     </tr>
                     </c:forEach>

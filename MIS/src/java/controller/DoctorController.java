@@ -28,7 +28,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author TheKey
  *///, 
-@WebServlet(name = "DoctorController", urlPatterns = {"/AddVisitationRecord", "/DoctorSearchPatient"})
+@WebServlet(name = "DoctorController", urlPatterns = {"/AddVisitationRecord" , "/Doctor"})
 public class DoctorController extends HttpServlet {
 
     /**
@@ -102,11 +102,13 @@ public class DoctorController extends HttpServlet {
     
     private void SearchPatients(HttpServletRequest request, HttpSession session, HttpServletResponse response)
         throws ServletException, IOException{
+        String firstname = request.getParameter("firstname");
+        String lastname = request.getParameter("lastname");
         
         PatientDao patientdao = new PatientDao();
         String[] PatientModelSA = {null,null, null,null,
             null,null, null,null};
-        String[] UserModelSA = {null, null, null, null, 
+        String[] UserModelSA = {null, (firstname == "")?  null : firstname , (lastname == "")?  null : lastname, null, 
             null, null, null, null, null, 
             null, null};
         //For now just get all patients, not sending in search criteria
