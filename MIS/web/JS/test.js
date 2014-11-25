@@ -107,6 +107,12 @@ function enableRow(elem){
 		for(var i=0;i<row.length;i++){
 			row[i].disabled = true;
 		}
+                document.getElementById("patId").value = row[0].value;
+		document.getElementById("patName").value = row[1].value;
+		document.getElementById("docId").value = row[2].value;
+		document.getElementById("docName").value = row[3].value;
+		document.getElementById("time").value = row[4].value;
+		document.getElementById("duration").value = row[5].value;
 	}	
 }
 
