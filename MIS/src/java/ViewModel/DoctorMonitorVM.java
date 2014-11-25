@@ -15,6 +15,31 @@ import java.util.List;
  */
 public class DoctorMonitorVM 
 {
-    List<VisitationRecordsModel> VisitRecords;
-    List<ProceduresModel> ProcedureList;
+    private List<VisitationRecordsModel> VisitRecords;
+    private List<ProceduresModel> ProcedureList;
+    private int UniquePatientCount;
+
+    public List<VisitationRecordsModel> getVisitRecords() {
+        return VisitRecords;
+    }
+
+    public void setVisitRecords(List<VisitationRecordsModel> VisitRecords) {
+        this.VisitRecords = VisitRecords;
+    }
+
+    public List<ProceduresModel> getProcedureList() {
+        return ProcedureList;
+    }
+
+    public void setProcedureList(List<ProceduresModel> ProcedureList) {
+        this.ProcedureList = ProcedureList;
+    }
+
+    public int getUniquePatientCount() {
+        return UniquePatientCount;
+    }
+
+    public void setUniquePatientCount(int PatientSeenCount) {
+        this.UniquePatientCount = PatientSeenCount;
+    }
 }

@@ -6,9 +6,9 @@
 package dao;
 
 import Model.DoctorModel;
-import Model.PatientModel;
 import Model.ProceduresModel;
 import Model.VisitationRecordsModel;
+import ViewModel.DoctorMonitorVM;
 import ViewModel.RevenueVM;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,6 +16,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import util.DbUtil;
 
@@ -52,7 +53,7 @@ public class FinanceDao {
         return doctors;
     }
     
-    public List<PatientModel> getPatientList(String doctorId, String startDate, String endDate )
+    public DoctorMonitorVM getPatientList(String doctorId, String startDate, String endDate )
     {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -66,6 +67,8 @@ public class FinanceDao {
         what the diagnosis/result was, any drugs prescribed,etc*/ 
         String query2 = "SELECT * FROM procedures";
         List<ProceduresModel> procedureList = new ArrayList<ProceduresModel>();
+        DoctorMonitorVM vm = new DoctorMonitorVM();
+
         try
         {
             pstmt = DbUtil.getConnection().prepareStatement(query2); 
@@ -77,6 +80,7 @@ public class FinanceDao {
                 procedure.setProcedureType(rs.getString("ProcedureType"));
                 procedure.setProcedureName(rs.getString("ProcedureName"));
                 procedure.setProcedureCost(rs.getInt("ProcedureCost"));
+                procedureList.add(procedure);
             }
             
             pstmt = DbUtil.getConnection().prepareStatement(query);            
@@ -110,20 +114,26 @@ public class FinanceDao {
                 record.setDiagnosis(rs.getString("Diagnosis"));
                 record.setTreatmentSchedule(rs.getString("TreatmentSchedule"));
                 record.setNotes(rs.getString("Notes"));
-                result.add(record);
-                
+                result.add(record);                
             }
+            HashSet uniquePatients = new HashSet();
+            for(VisitationRecordsModel p : result)
+            {
+                uniquePatients.add(p.getPatientId());
+            }
+            vm.setUniquePatientCount(uniquePatients.size());
+            vm.setProcedureList(procedureList);
+            vm.setVisitRecords(result);
+            return vm;
         } catch (SQLException e) {
                 e.printStackTrace();
         }
-        return null;
+        vm.setProcedureList(new ArrayList<ProceduresModel>());
+        vm.setUniquePatientCount(0);
+        vm.setVisitRecords(new ArrayList<VisitationRecordsModel>());
+        return vm;
     }
-    
-    public List<VisitationRecordsModel> getPatientVisitInfo(int patientId)
-    {
-        return null;
-    }
-    
+ 
     public RevenueVM getRevenue()
     {
         return null;
