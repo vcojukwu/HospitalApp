@@ -5,8 +5,9 @@
  */
 package dao;
 
-import Model.VisitationRecordsModel;
+import Model.*;
 import Model.ProceduresModel;
+import ViewModel.DoctorVisitationRecordVM;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -22,6 +23,20 @@ import java.util.List;
  */
 public class DoctorDao {
     private Connection connection;
+    
+    private static String[] UserModelColumns = {"UserId", "FirstName", "LastName", "Gender", 
+        "DateOfBirth", "UserType", "Password", "PhoneNumber", "AddressId", 
+        "EmergencyContactName", "EmergencyContactPhoneNumber"};
+    private static String[] UserModelTypes = {"String", "String", "String", "boolean", 
+        "Date", "int", "String", "String", "int", 
+        "String", "String"};
+    private static String[] VisitationRecordModelColumns = {"RecordId","OriginalRecordId",
+        "ProcedureId","PatientId","DoctorId","TimeStarted","TimeEnded","Prescriptions",
+        "Diagnosis","TreatmentSchedule"};
+    private static String[] VisitationRecordModelTypes = {"int","int",
+        "int","String","String","Timestamp","Timestamp","String",
+        "String","String"};
+    
     public DoctorDao()
     {
         connection = DbUtil.getConnection();
@@ -117,39 +132,134 @@ public class DoctorDao {
         }
     }
     
-    public List<VisitationRecordsModel> FindRecords(){
-        Statement stmt  = null;
-        String query    = null;
+    public List<DoctorVisitationRecordVM> FindRecords(String[] VRecordParams, String[] UserParams){
+        ArrayList<String> elements = new ArrayList<String>();
+        ArrayList<String> elementType = new ArrayList<String>();
+        PreparedStatement pstmt = null;
         ResultSet rs    = null;
-        List<VisitationRecordsModel> vr = new ArrayList<VisitationRecordsModel>();
-        try{
-            stmt = DbUtil.getConnection().createStatement();
+        DoctorVisitationRecordVM vrum = null;
+        VisitationRecordsModel vrm = null;
+        UserModel um = null;
+        String query = "select * from mis_db.visitation_records left join mis_db.users "
+                    + "on visitation_records.PatientId = users.UserId ";
+        List<DoctorVisitationRecordVM> result = new ArrayList<DoctorVisitationRecordVM>();
+        String allowedIds = " (";
+        //If a specific PatientId is not provided, we only display all patients which the doctor is
+        //allowed to see
+        if(VRecordParams[3]==null){
+            //This request will get a list of PatientIds for which the given DoctorId is allowed to view
+            List<String> AllowedPatientIds = GetAllowedPatientList(VRecordParams[4]);
+            //The result is formatted to fit an SQL in condition
             
-            //Add new record
-            query = "select * FROM visitation_records WHERE PatientId=" + "'" + "patient1@email.com" + "'";
-            rs = stmt.executeQuery(query);
-            while (rs.next()) {
-                VisitationRecordsModel vrm = new VisitationRecordsModel();
-                vrm.setRecordId(rs.getInt("RecordId"));
-                vrm.setOriginalRecordId(rs.getInt("OriginalRecordId"));
-                vrm.setProcedureId(rs.getInt("ProcedureId"));
-                vrm.setPatientId(rs.getString("PatientId"));
-                vrm.setDoctorId(rs.getString("DoctorId"));
-                vrm.setTimeStarted(rs.getTimestamp("TimeStarted"));
-                vrm.setTimeEnded(rs.getTimestamp("TimeEnded"));
-                vrm.setPrescriptions(rs.getString("Prescriptions"));
-                vrm.setDiagnosis(rs.getString("Diagnosis"));
-                vrm.setNotes(rs.getString("Notes"));
-                
-                vr.add(vrm);   
+            for(String id:AllowedPatientIds){
+                allowedIds += "'" + id + "',";
             }
-        } catch (SQLException e) {
-                e.printStackTrace();
+            allowedIds = allowedIds.substring(0, allowedIds.length()-1)+") ";
+        }
+        else{
+            //if a specific PatientId is given
+            allowedIds += "'" + VRecordParams[3] + "') ";
+        }
+        query += " WHERE patients.PatientId IN"+allowedIds;
+        
+        for(int i=0; i<VisitationRecordModelColumns.length; i++){
+            if(VisitationRecordModelColumns[i].equalsIgnoreCase("DoctorId")||VisitationRecordModelColumns[i].equalsIgnoreCase("PatientId")){
+                //since patient and doctor id 
+                continue;
+            }
+            if(VRecordParams[i] != null){
+                query += " AND ";
+                if(VisitationRecordModelTypes[i].equals("boolean") || VisitationRecordModelTypes[i].equals("int")){
+                    query += "patients." + VisitationRecordModelColumns[i] + " = ? ";
+                }
+                else{
+                    query += "patients." + VisitationRecordModelColumns[i] + " LIKE ? ";
+                }
+                elements.add(VRecordParams[i]);
+                elementType.add(VisitationRecordModelTypes[i]);
+            }
+        }
+        //User Model column search gets handled here
+        for(int i=0; i<UserModelColumns.length; i++){
+            if(UserParams[i] != null){
+                query += " AND ";
+                if(UserModelTypes[i].equals("boolean") || UserModelTypes[i].equals("int")){
+                    query += "users." + UserModelColumns[i] + " = ? ";
+                }
+                else{
+                    query += "users." + UserModelColumns[i] + " LIKE ? ";
+                }
+                elements.add(UserParams[i]);
+                elementType.add(UserModelTypes[i]);
+            }
         }
         
-        
-        
-        return null;
+        try{
+            pstmt = DbUtil.getConnection().prepareStatement(query);
+            for(int i=1;i<=elements.size(); i++){
+                switch(elementType.get(i-1)){
+                    case "String":
+                        pstmt.setString(i, "%"+elements.get(i-1)+"%");
+                        break;
+                    case "int":
+                        pstmt.setInt(i, Integer.parseInt(elements.get(i-1)));
+                        break;
+                    case "boolean":
+                        if(elements.get(i-1).equalsIgnoreCase("true")||elements.get(i-1).equalsIgnoreCase("1")){
+                            pstmt.setBoolean(i, true);
+                        }
+                        else{
+                            pstmt.setBoolean(i, false);
+                        }
+                        break;
+                    case "Date":
+                        pstmt.setString(i,elements.get(i-1).substring(0, 10)+"%");
+                        break;
+                    case "Timestamp":
+                        pstmt.setString(i,elements.get(i-1).substring(0, 10)+"%");
+                        break;
+                }
+                
+            }
+            rs = pstmt.executeQuery();
+            while(rs.next()){
+                vrum = new DoctorVisitationRecordVM();
+                vrm = new VisitationRecordsModel();
+                um = new UserModel();
+                
+                vrm.setRecordId(rs.getInt(VisitationRecordModelColumns[0]));
+                vrm.setOriginalRecordId(rs.getInt(VisitationRecordModelColumns[1]));
+                vrm.setProcedureId(rs.getInt(VisitationRecordModelColumns[2]));
+                vrm.setPatientId(rs.getString(VisitationRecordModelColumns[3]));
+                vrm.setDoctorId(rs.getString(VisitationRecordModelColumns[4]));
+                vrm.setTimeStarted(rs.getTimestamp(VisitationRecordModelColumns[5]));
+                vrm.setTimeEnded(rs.getTimestamp(VisitationRecordModelColumns[6]));
+                vrm.setPrescriptions(rs.getString(VisitationRecordModelColumns[7]));
+                vrm.setDiagnosis(rs.getString(VisitationRecordModelColumns[8]));
+                vrm.setTreatmentSchedule(rs.getString(VisitationRecordModelColumns[9]));
+               
+                um.setUserId(rs.getString(UserModelColumns[0]));
+                um.setFirstName(rs.getString(UserModelColumns[1]));
+                um.setLastName(rs.getString(UserModelColumns[2]));
+                um.setGender(rs.getBoolean(UserModelColumns[3]));
+                um.setDateOfBirth(rs.getDate(UserModelColumns[4]));
+                um.setUserType(rs.getInt(UserModelColumns[5]));
+                um.setPassword(rs.getString(UserModelColumns[6]));
+                um.setPhoneNumber(rs.getString(UserModelColumns[7]));
+                um.setAddressId(rs.getInt(UserModelColumns[8]));
+                um.setEmergencyContactName(rs.getString(UserModelColumns[9]));
+                um.setEmergencyContactPhoneNumber(rs.getString(UserModelColumns[10]));
+
+                
+                vrum.setVisitationRecord(vrm);
+                vrum.setUser(um);
+                
+                result.add(vrum);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return result;
     }
     
     public List<ProceduresModel> GetProcedures(){
