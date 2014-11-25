@@ -149,15 +149,3 @@ function addRow2(r){
    							<i class="fa fa-times-circle"></i>\
 					  </button>';
 }
-
-function isChecked(){
-	var check = document.getElementById("docbyID");
-	if(check.checked){
-		document.getElementById("docID").style.display = "initial";
-		document.getElementById("doc").style.display = "none";
-	}
-	else {
-		document.getElementById("docID").style.display = "none";
-		document.getElementById("doc").style.display = "initial";
-	}
-}
