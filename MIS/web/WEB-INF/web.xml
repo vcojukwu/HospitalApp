@@ -29,6 +29,12 @@
         <servlet-name>UserController</servlet-name>
         <url-pattern>/User</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DoctorController</servlet-name>
+        <url-pattern>/Doctor</url-pattern>
+    </servlet-mapping>
+   
+    
     <session-config>
         <session-timeout>
             30
