@@ -250,3 +250,7 @@ Hides the menu at `48em`, but modify this based on your app's needs.
 .button-success {
 	background: rgb(28, 184, 65); /* this is a green */
 }
+
+#bill tr{
+	line-height:60px;
+}
