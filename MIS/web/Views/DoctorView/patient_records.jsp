@@ -76,8 +76,8 @@
                 <input type="hidden" id="selectedRecordId" name="selectedRecordId" type="number">
                 <input type="hidden" id="selectedRecordType" name="selectedRecordType" type="number">
                 
-                <button type="submit" id="submitRecords" name="PatientRecord" class="pure-button pure-button-primary">Submit</button>
             </fieldset>
+            <button type="hidden" id="submitRecords" name="PatientRecord" class="pure-button pure-button-primary">Submit</button>
         </form>
     </div>
 </div>
