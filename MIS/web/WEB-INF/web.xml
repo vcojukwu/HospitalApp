@@ -33,6 +33,7 @@
         <servlet-name>DoctorController</servlet-name>
         <url-pattern>/Doctor</url-pattern>
         <url-pattern>/AddVisitationRecord</url-pattern>
+        <url-pattern>/PatientRecords</url-pattern>
     </servlet-mapping>
    
     
