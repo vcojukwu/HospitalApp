@@ -107,7 +107,7 @@ public class DoctorController extends HttpServlet {
         
         PatientDao patientdao = new PatientDao();
         String[] PatientModelSA = {null,null, null,null,
-            null,null, null,null};
+            null,null, null, null, null};
         String[] UserModelSA = {null, (firstname == "")?  null : firstname , (lastname == "")?  null : lastname, null, 
             null, null, null, null, null, 
             null, null};
