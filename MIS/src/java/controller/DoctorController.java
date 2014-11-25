@@ -102,7 +102,7 @@ public class DoctorController extends HttpServlet {
             this.NavigateToPatientView(request, session, response, patientId);
          }
          else if (request.getParameter("PatientRecord") != null){
-                   String patientId = (String)request.getAttribute("ViewPatientDetail");
+                   String patientId = (String)request.getAttribute("patientId");
                    this.AddVisitationRecord(request, session, response, patientId);
                    this.NavigateToPatientView(request, session, response, patientId);
             }
@@ -121,7 +121,7 @@ public class DoctorController extends HttpServlet {
            
             //get the patient info to diplay on top currently ill display id only - we can add first name and last name later on
             request.setAttribute("patientId", patId);
-            String[] VisitationRecordSA = {null,null,null,
+            String[] VisitationRecordSA = {null,null, null,
                 patId,user.getUserId(),null,null,null,null,
                 null};
             String[] UserModelSA = {null, null, null , null, 
