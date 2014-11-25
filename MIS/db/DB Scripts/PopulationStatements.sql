@@ -45,6 +45,20 @@ INSERT INTO `mis_db`.`patients` (`PatientId`, `DoctorId`, `HealthStateId`, `Heal
 INSERT INTO `mis_db`.`patients` (`PatientId`, `DoctorId`, `HealthStateId`, `HealthCardNumber`, `SocialInsuranceNumber`, `NumberOfVisits`, `IsActive`, `LastVisitDate`, `PatientNotes`) VALUES ('patient8@email.com', 'doctor5@email.com', '8', '9788456', '987654321', '20', 0, NOW(), 'Stitches.');
 INSERT INTO `mis_db`.`patients` (`PatientId`, `DoctorId`, `HealthStateId`, `HealthCardNumber`, `SocialInsuranceNumber`, `NumberOfVisits`, `IsActive`, `LastVisitDate`, `PatientNotes`) VALUES ('patient9@email.com', 'doctor9@email.com', '7', '5416816', '468946138', '16', 0, NOW(), 'Patient is healthy and in great shape.');
 
+INSERT INTO `mis_db`.`doctor_permissions` (`PatientId`, `DoctorId`) VALUES ('patient1@email.com', 'doctor1@email.com');
+INSERT INTO `mis_db`.`doctor_permissions` (`PatientId`, `DoctorId`) VALUES ('patient2@email.com', 'doctor2@email.com');
+INSERT INTO `mis_db`.`doctor_permissions` (`PatientId`, `DoctorId`) VALUES ('patient3@email.com', 'doctor5@email.com');
+INSERT INTO `mis_db`.`doctor_permissions` (`PatientId`, `DoctorId`) VALUES ('patient4@email.com', 'doctor2@email.com');
+INSERT INTO `mis_db`.`doctor_permissions` (`PatientId`, `DoctorId`) VALUES ('patient5@email.com', 'doctor4@email.com');
+INSERT INTO `mis_db`.`doctor_permissions` (`PatientId`, `DoctorId`) VALUES ('patient6@email.com', 'doctor7@email.com');
+INSERT INTO `mis_db`.`doctor_permissions` (`PatientId`, `DoctorId`) VALUES ('patient7@email.com', 'doctor1@email.com');
+INSERT INTO `mis_db`.`doctor_permissions` (`PatientId`, `DoctorId`) VALUES ('patient8@email.com', 'doctor5@email.com');
+INSERT INTO `mis_db`.`doctor_permissions` (`PatientId`, `DoctorId`) VALUES ('patient9@email.com', 'doctor9@email.com');
+
+INSERT INTO `mis_db`.`doctor_permissions` (`PatientId`, `DoctorId`) VALUES ('patient9@email.com', 'doctor1@email.com');
+INSERT INTO `mis_db`.`doctor_permissions` (`PatientId`, `DoctorId`) VALUES ('patient2@email.com', 'doctor1@email.com');
+
+
 INSERT INTO `mis_db`.`address` (`StreetNumber`, `StreetName`, `City`, `Province`, `Country`, `PostalCode`) VALUES ('313', 'Spruce', 'Waterloo', 'ON', 'CAN', 'N2L3M6');
 INSERT INTO `mis_db`.`address` (`StreetNumber`, `StreetName`, `City`, `Province`, `Country`, `PostalCode`) VALUES ('123', 'Bay Street', 'Toronto', 'ON', 'CAN', 'N2L3M7');
 INSERT INTO `mis_db`.`address` (`StreetNumber`, `StreetName`, `City`, `Province`, `Country`, `PostalCode`) VALUES ('684', 'Wall Street', 'Orange County', 'ON', 'CAN', 'N2L3Q6');

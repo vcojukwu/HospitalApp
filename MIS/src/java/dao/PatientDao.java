@@ -12,11 +12,13 @@ import ViewModel.PatientUserVM;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.text.DateFormat;
 import java.text.FieldPosition;
 import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 /**
@@ -93,12 +95,6 @@ public class PatientDao {
         return false;
     }
     
-    public void deletePatient(int id)
-    {
-        
-    }
-    
-    
     //This function returns a result 
     public List<PatientUserVM> searchPatients(String[] PatientSearchAttr, String[] UserSearchAttr){
         List<PatientUserVM> result = new ArrayList<PatientUserVM>();
@@ -110,19 +106,33 @@ public class PatientDao {
         PatientUserVM puvm = null;
         PatientModel patientmodel= null;
         UserModel usermodel= null;
+        String allowedIds = " (";
+        //If a specific PatientId is not provided, we only display all patients which the doctor is
+        //allowed to see
+        if(PatientSearchAttr[0]==null){
+            //This request will get a list of PatientIds for which the given DoctorId is allowed to view
+            List<String> AllowedPatientIds = GetAllowedPatientList(PatientSearchAttr[1]);
+            //The result is formatted to fit an SQL in condition
+            
+            for(String id:AllowedPatientIds){
+                allowedIds += "'" + id + "',";
+            }
+            allowedIds = allowedIds.substring(0, allowedIds.length()-1)+") ";
+        }
+        else{
+            //if a specific PatientId is given
+            allowedIds += "'" + PatientSearchAttr[0] + "') ";
+        }
+        query += " WHERE patients.PatientId IN"+allowedIds;
         
-        boolean whereSet =false;
+        //Patient Model column search gets handled here
         for(int i=0; i<PatientModelColumns.length; i++){
+            if(PatientModelColumns[i].equalsIgnoreCase("DoctorId")||PatientModelColumns[i].equalsIgnoreCase("PatientId")){
+                //since patient and doctor id 
+                continue;
+            }
             if(PatientSearchAttr[i] != null){
-                if(whereSet==false){
-                    query += " WHERE ";
-                    whereSet = true;
-                }
-                else{
-                     query += " AND ";
-                    
-                }
-                
+                query += " AND ";
                 if(PatientModelTypes[i].equals("boolean") || PatientModelTypes[i].equals("int")){
                     query += "patients." + PatientModelColumns[i] + " = ? ";
                 }
@@ -133,23 +143,13 @@ public class PatientDao {
                 elementType.add(PatientModelTypes[i]);
             }
         }
+        //User Model column search gets handled here
         for(int i=0; i<UserModelColumns.length; i++){
             if(UserSearchAttr[i] != null){
-                if(whereSet==false){
-                    query += " WHERE ";
-                    whereSet = true;
-                }
-                else{
-                     query += " AND ";
-                    
-                }
-            
+                query += " AND ";
                 if(UserModelTypes[i].equals("boolean") || UserModelTypes[i].equals("int")){
                     query += "users." + UserModelColumns[i] + " = ? ";
                 }
-                /*else if(UserModelTypes[i].equals("Date")){
-                    query += "(users." + UserModelColumns[i] + " BETWEEN ? AND ?) ";
-                }*/
                 else{
                     query += "users." + UserModelColumns[i] + " LIKE ? ";
                 }
@@ -179,7 +179,10 @@ public class PatientDao {
                         }
                         break;
                     case "Date":
-                        pstmt.setDate(i, new java.sql.Date(Long.parseLong(elements.get(i-1))));
+                        pstmt.setString(i,elements.get(i-1).substring(0, 10)+"%");
+                        break;
+                    case "Timestamp":
+                        pstmt.setString(i,elements.get(i-1).substring(0, 10)+"%");
                         break;
                 }
                 
@@ -252,4 +255,23 @@ public class PatientDao {
         
         return patients;
     }
+    
+    public List<String> GetAllowedPatientList(String doctorid){
+        List<String> patientsAllowed = new ArrayList<String>();
+        PreparedStatement pstmt=null;
+        ResultSet rs = null;
+        String query = "SELECT * FROM mis_db.doctor_permissions where DoctorId = ?";
+        try{
+            pstmt = DbUtil.getConnection().prepareStatement(query);
+            pstmt.setString(1, doctorid);
+            rs = pstmt.executeQuery();
+            
+            while(rs.next()){
+                patientsAllowed.add(rs.getString("PatientId"));
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return patientsAllowed;
+    } 
 }

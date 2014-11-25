@@ -52,6 +52,9 @@ public class DoctorDao {
             pstmt.setString(9, visitationRecord.getTreatmentSchedule());//Set TreatmentSchedule
             pstmt.setString(10, visitationRecord.getNotes());           //Set Notes
             
+            //Increment NumOfVisits and update LastVisitDate
+            UpdateVisitation(visitationRecord.getPatientId());
+            
             System.out.print(pstmt.toString());
             
             //Execute prepared statement
@@ -61,7 +64,19 @@ public class DoctorDao {
                 e.printStackTrace();
         }
     }
-    
+       
+    public void UpdateVisitation(String patientid)
+    {
+        PreparedStatement pstmt = null;
+        String query = "UPDATE mis_db.patients SET NumberOfVisits = NumberOfVisits+1, LastVisitDate = NOW() where patientid = ?";
+        try{
+            pstmt = DbUtil.getConnection().prepareStatement(query);
+            pstmt.setString(1, patientid);
+            pstmt.executeUpdate(); 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     
     //This is the same as above, except above we make originalrecorid = -1 as its a new record but here, we add the original recordId. 
     //We could merge the two above, by forcing controller to assign origianl RecordId = -1 if new record else the id itself. 
@@ -165,4 +180,22 @@ public class DoctorDao {
         return procedures;
     }
     
+    public List<String> GetAllowedPatientList(String doctorid){
+        List<String> patientsAllowed = new ArrayList<String>();
+        PreparedStatement pstmt=null;
+        ResultSet rs = null;
+        String query = "SELECT * FROM mis_db.doctor_permissions where DoctorId = ?";
+        try{
+            pstmt = DbUtil.getConnection().prepareStatement(query);
+            pstmt.setString(1, doctorid);
+            rs = pstmt.executeQuery();
+            
+            while(rs.next()){
+                patientsAllowed.add(rs.getString("PatientId"));
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return patientsAllowed;
+    } 
 }
