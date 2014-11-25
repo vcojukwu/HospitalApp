@@ -118,7 +118,7 @@ public class DoctorController extends HttpServlet {
         String lastname = request.getParameter("lastname");
         UserModel user = ((UserProfileVM)session.getAttribute("profile")).getUser();                                //Get Doctor Id  
         PatientDao patientdao = new PatientDao();
-        String[] PatientModelSA = {null,null, null,null,
+        String[] PatientModelSA = {null,user.getUserId(), null,null,
             null,null, null, null, null};
         String[] UserModelSA = {null, (firstname == "")?  null : firstname , (lastname == "")?  null : lastname, null, 
             null, null, null, null, null, 
