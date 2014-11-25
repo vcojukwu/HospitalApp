@@ -6,6 +6,7 @@
 package controller;
 
 import Model.*;
+import ViewModel.PatientUserVM;
 import ViewModel.UserProfileVM;
 import dao.*;
 import java.io.IOException;
@@ -14,6 +15,7 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -25,8 +27,8 @@ import javax.servlet.http.HttpSession;
 /**
  *
  * @author TheKey
- */
-@WebServlet(name = "DoctorController", urlPatterns = {"/Doctor", "/AddVisitationRecord"})
+ *///, 
+@WebServlet(name = "DoctorController", urlPatterns = {"/AddVisitationRecord", "/DoctorSearchPatient"})
 public class DoctorController extends HttpServlet {
 
     /**
@@ -68,6 +70,7 @@ public class DoctorController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         //processRequest(request, response);
+        
         DoctorDao doctor = new DoctorDao();
         request.setAttribute("procedures", doctor.GetProcedures());     
         RequestDispatcher rd = getServletContext().getRequestDispatcher("/Views/DoctorView/enter_records.jsp");
@@ -90,8 +93,27 @@ public class DoctorController extends HttpServlet {
         
          if (request.getParameter("AddVisitationRecord") != null)
             this.AddVisitationRecord(request, session, response);
+         else if (request.getParameter("SearchPatients") != null)
+            this.SearchPatients(request, session, response);
         
 
+    }
+    
+    
+    private void SearchPatients(HttpServletRequest request, HttpSession session, HttpServletResponse response)
+        throws ServletException, IOException{
+        
+        PatientDao patientdao = new PatientDao();
+        String[] PatientModelSA = {null,null, null,null,
+            null,null, null,null};
+        String[] UserModelSA = {null, null, null, null, 
+            null, null, null, null, null, 
+            null, null};
+        //For now just get all patients, not sending in search criteria
+         request.setAttribute("patients", patientdao.searchPatients(PatientModelSA, UserModelSA));
+         
+        RequestDispatcher rd = getServletContext().getRequestDispatcher("/Views/DoctorView/search_patients.jsp");
+        rd.forward(request, response);
     }
     
     private void AddVisitationRecord(HttpServletRequest request, HttpSession session, HttpServletResponse response)
