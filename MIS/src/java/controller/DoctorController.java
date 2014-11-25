@@ -6,7 +6,6 @@
 package controller;
 
 import Model.*;
-import ViewModel.PatientUserVM;
 import ViewModel.UserProfileVM;
 import dao.*;
 import java.io.IOException;
@@ -28,7 +27,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author TheKey
  *///, 
-@WebServlet(name = "DoctorController", urlPatterns = {"/AddVisitationRecord" , "/Doctor"})
+@WebServlet(name = "DoctorController", urlPatterns = {"/AddVisitationRecord" , "/Doctor", "/PatientRecords"})
 public class DoctorController extends HttpServlet {
 
     /**
@@ -91,30 +90,40 @@ public class DoctorController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        HttpSession session = request.getSession(false);
+        HttpSession session = request.getSession(false);       
         
-         if (request.getParameter("AddVisitationRecord") != null)
-            this.AddVisitationRecord(request, session, response);
+         if (request.getParameter("AddVisitationRecord") != null){
+           this.AddVisitationRecord(request, session, response, "NULL");
+         }
          else if (request.getParameter("SearchPatients") != null)
             this.SearchPatients(request, session, response);
          else if (request.getParameter("ViewPatientDetail") != null){
-            this.NavigateToPatientView(request, session, response);
-        }
+             String patientId = request.getParameter("ViewPatientDetail");
+            this.NavigateToPatientView(request, session, response, patientId);
+         }
+         else if (request.getParameter("PatientRecord") != null){
+                   String patientId = (String)request.getAttribute("patientId");
+                   this.AddVisitationRecord(request, session, response, patientId);
+                   this.NavigateToPatientView(request, session, response, patientId);
+            }
+        
+        
         
 
     }
-    
-    private void NavigateToPatientView(HttpServletRequest request, HttpSession session, HttpServletResponse response)
+
+    private void NavigateToPatientView(HttpServletRequest request, HttpSession session, HttpServletResponse response, String patId)
         throws ServletException, IOException{
             
             PatientDao patientdao = new PatientDao();
             //PatientUserVM puvm = patientdao.getPatient("");
-            String patientId = request.getParameter("ViewPatientDetail");
+            
            
             //get the patient info to diplay on top currently ill display id only - we can add first name and last name later on
-            request.setAttribute("patientID", patientId);
+            request.setAttribute("patientId", patId);
             
             DoctorDao doctor = new DoctorDao();
+            List<VisitationRecordsModel> temp = doctor.FindRecords();
             request.setAttribute("records", doctor.FindRecords());
             request.setAttribute("procedures", doctor.GetProcedures());
             
@@ -139,27 +148,42 @@ public class DoctorController extends HttpServlet {
         rd.forward(request, response);
     }
     
-    private void AddVisitationRecord(HttpServletRequest request, HttpSession session, HttpServletResponse response)
+    private void AddVisitationRecord(HttpServletRequest request, HttpSession session, HttpServletResponse response, String patientId)
         throws ServletException, IOException{
                 
         DoctorDao doctor = new DoctorDao();
+        
+        String temp = request.getParameter("selectedNotes");
+        
         VisitationRecordsModel visitationRecord = new VisitationRecordsModel();
- 
-        visitationRecord.setProcedureId(Integer.parseInt(request.getParameter("procedureId")));
-        UserModel user = ((UserProfileVM)session.getAttribute("profile")).getUser();                //Here I am assuming that the current logged in user is the doctor hence grab his id
+        
+        int recordType = Integer.parseInt(request.getParameter("selectedRecordType"));                   //0 = existing record, 1 = new record
+        int originalRecordId = Integer.parseInt(request.getParameter("selectedOriginalRecordId"));
+        int recordId = Integer.parseInt(request.getParameter("selectedRecordId"));
+        int finalOriginalRecordId = 0;
+        
+        if(recordType == 0){
+            if (originalRecordId == -1)                                                             
+                finalOriginalRecordId = recordId;
+            else
+                finalOriginalRecordId = originalRecordId;
+        }
+        else{
+            finalOriginalRecordId = -1;
+        }
+        visitationRecord.setOriginalRecordId(finalOriginalRecordId);
+        visitationRecord.setProcedureId(Integer.parseInt(request.getParameter("selectedProcedureId")));
+        UserModel user = ((UserProfileVM)session.getAttribute("profile")).getUser();                    //Here I am assuming that the current logged in user is the doctor hence grab his id
         visitationRecord.setDoctorId(user.getUserId()); 
-        visitationRecord.setPatientId("patient1@email.com");                                              //need to get the patient id, either from current patient being viewed or someother way
-        visitationRecord.setTimeStarted(ParseTime(request.getParameter("timestarted")));
-        visitationRecord.setTimeEnded(ParseTime(request.getParameter("timeended")));
-        visitationRecord.setPrescriptions(request.getParameter("prescriptions"));
-        visitationRecord.setDiagnosis(request.getParameter("diagnosis"));
+        visitationRecord.setPatientId(patientId);                                              
+        visitationRecord.setTimeStarted(ParseTimeRecords(request.getParameter("selectedDate"), request.getParameter("selectedTimeStarted")));
+        visitationRecord.setTimeEnded(ParseTimeRecords(request.getParameter("selectedDate"), request.getParameter("selectedTimeEnded")));
+        visitationRecord.setPrescriptions(request.getParameter("selectedPrecriptions"));
+        visitationRecord.setDiagnosis(request.getParameter("selectedDiagnosis"));
         visitationRecord.setTreatmentSchedule("EMPTY");                                             // no treatment schedule field has been added yet
-        visitationRecord.setNotes(request.getParameter("comment"));
+        visitationRecord.setNotes(request.getParameter("selectedNotes"));
         
         doctor.AddVisitationRecord(visitationRecord);
-        
-        //Temp sending to profile page
-        response.sendRedirect("Views/DoctorView/profile_doc.jsp");
     }
 
     /**
@@ -183,6 +207,26 @@ public class DoctorController extends HttpServlet {
             time.setHours(temp.getHours());
             time.setMinutes(temp.getMinutes());
             time.setSeconds(0);
+        } catch (ParseException e){
+            e.printStackTrace();
+        }
+        return new Timestamp(time.getTime());
+    }
+    
+        public Timestamp ParseTimeRecords(String strDate, String strTime){
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");   
+        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = null;
+        Date temp = null;
+        Date time = null;
+        try{                                                                                    //parsing time started
+            temp = sdf.parse(strTime);
+            date = sdf1.parse(strDate);
+            time = new Date();
+            time.setHours(temp.getHours());
+            time.setMinutes(temp.getMinutes());
+            time.setSeconds(0);
+            time.setDate(date.getDate());
         } catch (ParseException e){
             e.printStackTrace();
         }

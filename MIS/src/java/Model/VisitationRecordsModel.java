@@ -2,6 +2,8 @@
 package Model;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class VisitationRecordsModel {
     private int RecordId;
@@ -56,8 +58,17 @@ public class VisitationRecordsModel {
         this.DoctorId = DoctorId;
     }
 
+    public String getDate(){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return sdf.format(TimeStarted);
+    }
     public Timestamp getTimeStarted() {
         return TimeStarted;
+    }
+    
+    public String getTimeStartedUI() {
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm"); 
+        return sdf.format(TimeStarted);
     }
 
     public void setTimeStarted(Timestamp TimeStarted) {
@@ -66,6 +77,11 @@ public class VisitationRecordsModel {
 
     public Timestamp getTimeEnded() {
         return TimeEnded;
+    }
+    
+    public String getTimeEndedUI() {
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm"); 
+        return sdf.format(TimeEnded);
     }
 
     public void setTimeEnded(Timestamp TimeEnded) {

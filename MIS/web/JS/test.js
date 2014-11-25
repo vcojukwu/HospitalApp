@@ -116,6 +116,44 @@ function enableRow(elem){
 	}	
 }
 
+function enableRowPatientRecord(elem){
+	if(elem.getAttribute("title") == "Edit"){
+		elem.innerHTML='<i class="fa fa-floppy-o"></i>';
+		elem.setAttribute('title', 'Save');
+		var row = elem.parentNode.parentNode.getElementsByTagName("input");
+                var row2 = elem.parentNode.parentNode.getElementsByTagName("select");
+		for(var i=0;i<row.length;i++){
+			row[i].disabled = false;
+		}
+                row2[0].disabled = false;
+	}
+	else{
+		elem.innerHTML='<i class="fa fa-pencil"></i>';
+		elem.setAttribute('title', 'Edit');
+		var row = elem.parentNode.parentNode.getElementsByTagName("input");
+                var row2 = elem.parentNode.parentNode.getElementsByTagName("select");
+		for(var i=0;i<row.length;i++){
+			row[i].disabled = true;
+		}
+                row2[0].disabled = true;
+                document.getElementById("selectedProcedureId").value = row2[0].value;
+                document.getElementById("selectedDate").value = row[0].value;
+		document.getElementById("selectedTimeStarted").value = row[1].value;
+		document.getElementById("selectedTimeEnded").value = row[2].value;
+                document.getElementById("selectedPrecriptions").value = row[3].value;
+		document.getElementById("selectedDiagnosis").value = row[4].value;
+		document.getElementById("selectedNotes").value = row[5].value;
+                document.getElementById("selectedOriginalRecordId").value = row[6].value;
+                document.getElementById("selectedRecordId").value = row[7].value;
+                document.getElementById("selectedRecordType").value = row[8].value;
+                
+                
+                //Submit form
+                document.getElementById('submitRecords').click();
+	}	
+        
+}
+
 function deleteRow2(r) {
     var ans = confirm("Are you sure you want to delete appointment?");
     if(ans == true){

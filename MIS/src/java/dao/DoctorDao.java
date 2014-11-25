@@ -149,7 +149,7 @@ public class DoctorDao {
         
         
         
-        return null;
+        return vr;
     }
     
     public List<ProceduresModel> GetProcedures(){
