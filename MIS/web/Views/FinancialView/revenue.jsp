@@ -12,15 +12,18 @@
                 <legend>Time Period</legend>
 
                 <label for="start">Start Date: </label>
-                <input id="startDate" type="date">
+                <input id="startDate" name="startDate" type="date" >
 
                 <label style="margin-left:5%" for="end">End Date: </label>
-                <input id="endDate" type="date">
+                <input id="endDate" name="endDate" type="date">
 
                 <button style="margin-left:5%" type="submit" class="pure-button pure-button-primary">Search</button>
             </fieldset>
         </form>
-
+        
+        <div>
+            Bill for <%= request.getAttribute("startDate") %> to <%= request.getAttribute("endDate") %>
+        </div>
         <table style="margin-top:10%" id="bill">
             <tr>
                 <td align="right">Cost Per Visit :</td>

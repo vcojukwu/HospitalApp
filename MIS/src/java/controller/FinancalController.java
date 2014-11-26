@@ -94,10 +94,12 @@ public class FinancalController extends HttpServlet {
             request.setAttribute("visitCount", vm.getVisitCount());
             request.setAttribute("totalRevenue", vm.getTotalRevenue());
             request.setAttribute("procedureRevenue", vm.getTotalProcedureRevenue());
-
+            request.setAttribute("startDate", startDate);
+            request.setAttribute("endDate", endDate);
         }
             RequestDispatcher rd = getServletContext().getRequestDispatcher(forward);            
             rd.forward(request, response);
+            
     }
 
     /**

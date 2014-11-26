@@ -149,7 +149,7 @@ public class FinanceDao {
         has its own listed fee.*/
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-         String query = "SELECT Y.ProcedureCost FROM visitation_records X INNER JOIN procedures Y ON " +
+         String query = "SELECT Y.ProcedureCost, X.OriginalRecordId FROM visitation_records X INNER JOIN procedures Y ON " +
                         "X.ProcedureId = Y.ProcedureID where TimeStarted BETWEEN '" + startDate +
                         "' and '" + endDate + "'";
         RevenueVM vm = new RevenueVM();
