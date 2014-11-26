@@ -13,6 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import util.DbUtil;
 import java.util.List;
@@ -31,26 +32,28 @@ public class DoctorDao {
         "String", "String"};
     private static String[] VisitationRecordModelColumns = {"RecordId","OriginalRecordId",
         "ProcedureId","PatientId","DoctorId","TimeStarted","TimeEnded","Prescriptions",
-        "Diagnosis","TreatmentSchedule"};
+        "Diagnosis","TreatmentSchedule", "Notes"};
     private static String[] VisitationRecordModelTypes = {"int","int",
         "int","String","String","Timestamp","Timestamp","String",
-        "String","String"};
+        "String","String", "String"};
     
     
     public void AddVisitationRecord(VisitationRecordsModel visitationRecord){
         PreparedStatement pstmt = null;
         String query = null;
+        ResultSet rs = null;
+        long OrigId;
         try{
             //Form prepared statment query
-            query = "INSERT INTO visitation_records ( OriginalRecordId, ProcedureId, PatientId, DoctorId, TimeStarted, TimeEnded, "
+            query = "INSERT INTO mis_db.visitation_records ( OriginalRecordId, ProcedureId, PatientId, DoctorId, TimeStarted, TimeEnded, "
                     + "Prescriptions, Diagnosis, TreatmentSchedule, Notes) "
                     + "VALUES (?,?,?,?,?,?,?,?,?,?)";
             
             //Form preparedstatement from query
-            pstmt = DbUtil.getConnection().prepareStatement(query);
+            pstmt = DbUtil.getConnection().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             
             //Add elements of prepared statement
-            pstmt.setInt(1, visitationRecord.getOriginalRecordId());                                        //Set OriginalRecordId
+            pstmt.setInt(1, visitationRecord.getOriginalRecordId());    //Set OriginalRecordId
             pstmt.setInt(2, visitationRecord.getProcedureId());         //Set ProcedureId
             pstmt.setString(3, visitationRecord.getPatientId());        //Set PatientId
             pstmt.setString(4, visitationRecord.getDoctorId());         //Set DoctorId
@@ -69,11 +72,22 @@ public class DoctorDao {
             //Execute prepared statement
             pstmt.executeUpdate();
             
+            if(visitationRecord.getOriginalRecordId()==-1){
+                rs = pstmt.getGeneratedKeys();
+                OrigId = -1;
+                while(rs.next()){
+                    OrigId = rs.getLong(1);
+                }
+                query = "UPDATE mis_db.visitation_records SET OriginalRecordId = '"+OrigId+"' WHERE RecordId = '"+OrigId+"'";
+                pstmt.executeQuery(query);
+            }
+            
         } catch (SQLException e) {
                 e.printStackTrace();
         }
     }
        
+    //This updates the patients table for the given patient to increment the number of visits and update the lastvisitdate
     public void UpdateVisitation(String patientid)
     {
         PreparedStatement pstmt = null;
@@ -136,6 +150,7 @@ public class DoctorDao {
         UserModel um = null;
         String query = "select * from mis_db.visitation_records left join mis_db.users "
                     + "on visitation_records.PatientId = users.UserId ";
+        String query2 = "SELECT ";
         List<DoctorVisitationRecordVM> result = new ArrayList<DoctorVisitationRecordVM>();
         String allowedIds = " (";
         //If a specific PatientId is not provided, we only display all patients which the doctor is
@@ -231,6 +246,7 @@ public class DoctorDao {
                 vrm.setPrescriptions(rs.getString(VisitationRecordModelColumns[7]));
                 vrm.setDiagnosis(rs.getString(VisitationRecordModelColumns[8]));
                 vrm.setTreatmentSchedule(rs.getString(VisitationRecordModelColumns[9]));
+                vrm.setNotes(rs.getString(VisitationRecordModelColumns[10]));
                
                 um.setUserId(rs.getString(UserModelColumns[0]));
                 um.setFirstName(rs.getString(UserModelColumns[1]));
@@ -255,6 +271,34 @@ public class DoctorDao {
         }
         return result;
     }
+    
+    public List<AppointmentsModel> getAllAppointments(String doctorid){
+        PreparedStatement stmt  = null;
+        String query    = null;
+        ResultSet rs    = null;
+        List<AppointmentsModel> appointments = new ArrayList<AppointmentsModel>();
+        try{
+            query = "SELECT AppointmentId, PatientId, DoctorId, TimeScheduled, DurationScheduled FROM appointments "
+                    + "WHERE DoctorId = ? AND TimeScheduled >= NOW()";
+            stmt = DbUtil.getConnection().prepareStatement(query);  
+            stmt.setString(1, doctorid);
+            rs = stmt.executeQuery(query);
+            
+            while(rs.next()){
+                AppointmentsModel appointment = new AppointmentsModel();
+                appointment.setAppointmentId(rs.getInt("AppointmentId"));
+                appointment.setDoctorId(rs.getString("DoctorId"));
+                appointment.setPatientId(rs.getString("PatientId"));
+                appointment.setTimeScheduled(rs.getTimestamp("TimeScheduled"));
+                appointment.setDurationScheduled(rs.getInt("DurationScheduled"));
+                appointments.add(appointment);
+            }
+        } catch (SQLException e) {
+                e.printStackTrace();
+        }
+        return appointments;
+    }
+    
     
     public List<ProceduresModel> GetProcedures(){
                
