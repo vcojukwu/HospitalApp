@@ -76,7 +76,7 @@ public class PatientModel {
     }
     
     public String getLastVisitDateUI() {
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm"); 
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");; 
         return sdf.format(LastVisitDate);
     }
 

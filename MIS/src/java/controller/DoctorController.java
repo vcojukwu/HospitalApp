@@ -128,19 +128,25 @@ public class DoctorController extends HttpServlet {
             request.setAttribute("records", doctor.FindRecords(VisitationRecordSA, UserModelSA));
             request.setAttribute("procedures", doctor.GetProcedures());
             
-        RequestDispatcher rd = getServletContext().getRequestDispatcher("/Views/DoctorView/patient_records.jsp");
-        rd.forward(request, response);
+            RequestDispatcher rd = getServletContext().getRequestDispatcher("/Views/DoctorView/patient_records.jsp");
+            rd.forward(request, response);
         }
     private void SearchPatients(HttpServletRequest request, HttpSession session, HttpServletResponse response)
         throws ServletException, IOException{
+        
         String firstname = request.getParameter("firstname");
         String lastname = request.getParameter("lastname");
-        UserModel user = ((UserProfileVM)session.getAttribute("profile")).getUser();                                //Get Doctor Id  
+        String patientId = request.getParameter("email");
+        String isActive = request.getParameter("current");
+        String lastVisit = request.getParameter("lastvisit");
+        
+        UserModel user = ((UserProfileVM)session.getAttribute("profile")).getUser();
+        //Get Doctor Id  
         PatientDao patientdao = new PatientDao();
-        String[] PatientModelSA = {null,user.getUserId(), null,null,
-            null,null, null, null, null};
+        String[] PatientModelSA = {(patientId == "")? null : patientId, user.getUserId(), null,null,
+            null,null,  (isActive.equals("1"))? isActive : null, (lastVisit == "")?  null : lastVisit , null};
         String[] UserModelSA = {null, (firstname == "")?  null : firstname , (lastname == "")?  null : lastname, null, 
-            null, null, null, null, null, 
+            null, null, null, null,null, 
             null, null};
         //For now just get all patients, not sending in search criteria
          request.setAttribute("patients", patientdao.searchPatients(PatientModelSA, UserModelSA));

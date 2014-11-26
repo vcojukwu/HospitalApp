@@ -10,19 +10,19 @@
                 <legend>Search for a Patient</legend>
 
                 <div style="margin-bottom:5px">
-                    <select id="current">
-                        <option value="0">Active Patients</option>
-                        <option value="1">All Patients</option>
+                    <select name="current" id="current">
+                        <option value="1" selected>Active Patients</option>
+                        <option value="0">All Patients</option>
                     </select>
 
-                    <input id="email" type="email" class="pure-input-rounded" placeholder="patient@email.com">
+                    <input id="email" type="email" name="email" class="pure-input-rounded" placeholder="patient@email.com">
                 </div>
 
                 <input  type="hidden" name="firstname" id="firstname" class="pure-input-rounded" placeholder="First Name">
                 <input  type="hidden" name="lastname" id="lastname" class="pure-input-rounded" placeholder="Last Name">
 
                 <label id="adv2" for="date" style="display:none">Last Visit :</label>
-                <input id="adv3" type="hidden">
+                <input id="adv3" name="lastvisit" type="hidden">
 
                 <button type="submit" class="pure-button pure-button-primary" name="SearchPatients">Search</button>
                 <button type="button" id="advSearch" onClick="showAdv1();
@@ -45,11 +45,21 @@
                 <tbody>
                     <c:forEach items="${patients}" var="item" >
                         <tr>
-                            <td><input id="patID" type="text" value = ${item.getPatient().getPatientId()} disabled></td>
+                            <td><input id="patID" type="text" value = "${item.getPatient().getPatientId()}" disabled></td>
                             <td><input id="patName" type="text" value = "${item.getUser().getFirstName()} ${item.getUser().getLastName()}" disabled></td>
-                            <td><input id="docName" type="text" value = "John Doe" disabled></td>
-                            <td><input id="lastVisit" type="date" value = "" disabled></td>                
-                            <td align="center"><input id="isActive" type="checkbox" value = "1" disabled></td>
+                            <td><input id="docName" type="text" value = "${item.getPatient().getDoctorId()}" disabled></td>
+                            <td><input id="lastVisit" type="date" value = "${item.getPatient().getLastVisitDateUI()}" disabled></td>                
+                            <td align="center">
+                                <c:choose>
+                                    <c:when test="${item.getPatient().isIsActive()==true}">
+                                         <input id="isActive" type="checkbox" checked disabled>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <input id="isActive" type="checkbox"  disabled>
+                                    </c:otherwise>
+                                </c:choose>
+                            
+                            </td>
                             <td align="center">
 
                                 <button type="submit" class="pure-button" value =${item.getPatient().getPatientId()} name="ViewPatientDetail" onClick="">
