@@ -23,7 +23,7 @@
     </div>
      <form class="pure-form" method="post" action="Views/StaffViewSearchPatients">
         <div style="margin-left:15%">
-            <input type="hidden" name="function" value="SearchPatient"/>
+            <input type="hidden" name="function" value="SearchPatients"/>
             <table class="pure-table pure-table-bordered" id="appointments">
                 <thead>
                     <tr>
