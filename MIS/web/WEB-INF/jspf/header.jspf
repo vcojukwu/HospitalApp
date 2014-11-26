@@ -22,7 +22,6 @@
         
         <script type="text/javascript">
         function codeAddress() {
-            alert("test");
             var url = document.URL;
             var li = document.getElementsByTagName("li");
             if(url.indexOf("profile_doc")!=-1){
