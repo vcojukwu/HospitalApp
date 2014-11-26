@@ -94,7 +94,7 @@ public class LoginController extends HttpServlet {
             else if(userType == 2) //Doctor
                 forward = "Views/DoctorView/profile_doc.jsp";
             else if(userType == 3) //Staff
-                forward = "Views/StaffView/profile_staff.jsp";
+                forward = "Views/StaffView/Profile";
             else if(userType == 4) //Finanace
                 forward = "Views/FinancialView/profile_financial.jsp";
             session.setAttribute("profile", user);
