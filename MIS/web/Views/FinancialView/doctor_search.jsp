@@ -1,36 +1,5 @@
 <%@include file="/WEB-INF/jspf/SideBars/financialSideBar.jspf" %>
-<!--<script>
-    function search() {
-        var doctorId = $("#doctor").val();
-        var startDate = $("#start").val();
-        var endDate = $("#end").val();
-        $.get('/MIS/Financial/PatientSearch', {userId: doctorId, startDate: startDate, endDate: endDate}, function (data) {
-            if (data.VisitRecords.length != 0)
-            {
-                
-            }
-            
-//$('#results').html(data).hide().slideDown('slow');
-//            if (data.VisitRecords.length != 0)
-//            {
-//                $('#record').dataTable({
-//                    "data": data.VisitRecords,
-//                    "columns": [
-//                        {"title": "RecordId"},
-//                        {"title": "ProcedureType"},
-//                        {"title": "TimeStarted"},
-//                        {"title": "TimeEnded"},
-//                        {"title": "Prescription"},
-//                        {"title": "Diagnosis"},                   
-//                        {"title": "TreatmentSchedule"},
-//                        {"title": "Notes"}
-//                    ]
-//                });
-//            }
-//        });
 
-    }
-</script>-->
 <div id="main">
     <div class="header">
         <h1>Monitor Doctor</h1>
@@ -60,13 +29,29 @@
                 </div>
             </fieldset>
         </form>
-
     </div>
 
     <div>
+        <c:set var="inputDisplay" value='<%= request.getAttribute("invalid")%>' />
+        <c:set var="count" value='<%= request.getAttribute("patientCount")%>' />
+        <c:choose>
+            <c:when test="${count != 0}">
+               <div> 
+                   <%= request.getAttribute("patientCount")%> patient(s) was seen by <%= request.getAttribute("doctorUserId")%>   between <%= request.getAttribute("startDate")%> and <%= request.getAttribute("endDate")%>
+                </div>
+            </c:when>
+            <c:when test="${inputDisplay == 1}">
+                <div>
+                    Invalid date selection
+                </div>
+            </c:when>     
+        </c:choose>
+        
+        
+
         <c:forEach items="${requestScope.searchRecords}" var="entry" >
             <table style="margin-left:4%" class="pure-table pure-table-bordered" id="record">
-                <caption>Patient Id: ${entry.key}</caption>
+                <caption>Patient Id: ${entry.key} (Seen by doctor ${entry.value.size()} times)</caption>
                 <thead>
                     <tr>                       
                         <th>Procedure Name</th>
@@ -83,7 +68,7 @@
                     <c:forEach var="item" items="${entry.value}" varStatus="loop">
                         <tr>
                             <td>${item.getProcedureName()}</td>
-                            <td>${item.getProcedureCost()}</td>
+                            <td>$${item.getProcedureCost()}.00</td>
                             <td>${item.getTimeStarted()}</td>
                             <td>${item.getTimeEnded()}</td>
                             <td>${item.getPrescriptions()}</td>
@@ -91,13 +76,11 @@
                             <td>${item.getTreatmentSchedule()}</td>
                             <td>${item.getNotes()}</td>        
                         </tr>
-                    </c:forEach><br>
-                    
-
+                </c:forEach><br>
                 </tbody>
             </table>
         </c:forEach>
-        
+
 
 
     </div>

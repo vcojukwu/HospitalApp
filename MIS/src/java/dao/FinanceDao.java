@@ -158,7 +158,7 @@ public class FinanceDao {
         has its own listed fee.*/
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-         String query = "SELECT Y.ProcedureCost, X.OriginalRecordId FROM visitation_records X INNER JOIN procedures Y ON " +
+         String query = "SELECT Y.ProcedureCost, X.PatientId, X.OriginalRecordId FROM visitation_records X INNER JOIN procedures Y ON " +
                         "X.ProcedureId = Y.ProcedureID where TimeStarted BETWEEN '" + startDate +
                         "' and '" + endDate + "'";
         RevenueVM vm = new RevenueVM();
@@ -170,7 +170,8 @@ public class FinanceDao {
             
             while(rs.next())
             {
-                if (rs.getInt("OriginalRecordId") != 0)
+                String test = rs.getString("PatientId");
+                if (rs.getInt("OriginalRecordId") == 0)
                 {
                     vm.setVisitCount(vm.getVisitCount() + 1);
                     vm.setTotalProcedureRevenue(vm.getVisitRevenue() + rs.getInt("ProcedureCost"));

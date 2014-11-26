@@ -79,9 +79,18 @@ public class FinancalController extends HttpServlet {
             request.setAttribute("searchRecords", vm.getVisitRecords());
             request.setAttribute("procedureList", vm.getProcedureList());
             request.setAttribute("doctors", finance.getDoctors());
+            request.setAttribute("startDate",startDate);
+            request.setAttribute("endDate",endDate);
+            request.setAttribute("doctorUserId",doctorId);
+            if(startDate.equals("") || endDate.equals(""))
+                request.setAttribute("invalid", 1); 
+            else
+                request.setAttribute("invalid", 0);
         }
         else if(requestURL.contains("Monitor")){
             request.setAttribute("doctors", finance.getDoctors());
+            request.setAttribute("patientCount", 0);
+
             forward = "/Views/FinancialView/doctor_search.jsp";
 
         }  
@@ -98,6 +107,10 @@ public class FinancalController extends HttpServlet {
             request.setAttribute("procedureRevenue", vm.getTotalProcedureRevenue());
             request.setAttribute("startDate", startDate);
             request.setAttribute("endDate", endDate);
+            if(startDate == null || endDate == null)
+                request.setAttribute("invalid", 1); 
+            else
+                request.setAttribute("invalid", 0);
         }
             RequestDispatcher rd = getServletContext().getRequestDispatcher(forward);            
             rd.forward(request, response);
