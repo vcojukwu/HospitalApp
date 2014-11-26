@@ -8,6 +8,7 @@ package dao;
 import Model.AddressModel;
 import Model.DoctorModel;
 import Model.PatientModel;
+import Model.StaffDoctorModel;
 import Model.StaffModel;
 import Model.UserModel;
 import ViewModel.UserProfileVM;
@@ -104,6 +105,20 @@ public class UserDao {
                     "PostalCode = '" + userModified.getAddress().getPostalCode() + "' " +
                     "WHERE AddressId=" + userModified.getAddress().getAddressId()+ ";";
             System.out.println(query);
+            stmt.executeUpdate(query);
+        } catch (SQLException e) {
+                e.printStackTrace();
+        }
+    }
+    
+    public void AddStaffDoctor(StaffDoctorModel staff){
+        Statement stmt  = null;
+        String query    = null;
+  
+        try{
+            stmt = DbUtil.getConnection().createStatement();            
+            query = "INSERT INTO mis_db.staff_doctor (StaffId, DoctorId)  VALUES ('" + 
+                    staff.getStaffId() + "', '" + staff.getDoctorId() + "')";
             stmt.executeUpdate(query);
         } catch (SQLException e) {
                 e.printStackTrace();
