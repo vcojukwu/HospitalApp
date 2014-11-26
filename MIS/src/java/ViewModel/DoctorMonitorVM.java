@@ -8,6 +8,7 @@ package ViewModel;
 import Model.ProceduresModel;
 import Model.VisitationRecordsModel;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -15,18 +16,19 @@ import java.util.List;
  */
 public class DoctorMonitorVM 
 {
-    private List<VisitationRecordsModel> VisitRecords;
+    private Map<String, List<VisitRecordVM>> VisitRecords;
     private List<ProceduresModel> ProcedureList;
     private int UniquePatientCount;
 
-    public List<VisitationRecordsModel> getVisitRecords() {
+    public Map<String, List<VisitRecordVM>> getVisitRecords() {
         return VisitRecords;
     }
 
-    public void setVisitRecords(List<VisitationRecordsModel> VisitRecords) {
+    public void setVisitRecords(Map<String, List<VisitRecordVM>> VisitRecords) {
         this.VisitRecords = VisitRecords;
     }
 
+   
     public List<ProceduresModel> getProcedureList() {
         return ProcedureList;
     }

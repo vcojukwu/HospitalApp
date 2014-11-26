@@ -70,16 +70,27 @@ public class FinancalController extends HttpServlet {
         
         if(request.getParameter("SearchRecords") != null)
         {     
-            String doctorId = request.getParameter("userId");
+            String doctorId = request.getParameter("doctorId");
             String startDate = request.getParameter("startDate");
             String endDate = request.getParameter("endDate");
             forward = "/Views/FinancialView/doctor_search.jsp";
             DoctorMonitorVM vm = finance.getPatientList(doctorId, startDate, endDate);
-            request.setAttribute("searchRecords", vm);
-
+            request.setAttribute("patientCount", vm.getUniquePatientCount());
+            request.setAttribute("searchRecords", vm.getVisitRecords());
+            request.setAttribute("procedureList", vm.getProcedureList());
+            request.setAttribute("doctors", finance.getDoctors());
+            request.setAttribute("startDate",startDate);
+            request.setAttribute("endDate",endDate);
+            request.setAttribute("doctorUserId",doctorId);
+            if(startDate.equals("") || endDate.equals(""))
+                request.setAttribute("invalid", 1); 
+            else
+                request.setAttribute("invalid", 0);
         }
         else if(requestURL.contains("Monitor")){
             request.setAttribute("doctors", finance.getDoctors());
+            request.setAttribute("patientCount", 0);
+
             forward = "/Views/FinancialView/doctor_search.jsp";
 
         }  
@@ -96,6 +107,10 @@ public class FinancalController extends HttpServlet {
             request.setAttribute("procedureRevenue", vm.getTotalProcedureRevenue());
             request.setAttribute("startDate", startDate);
             request.setAttribute("endDate", endDate);
+            if(startDate == null || endDate == null)
+                request.setAttribute("invalid", 1); 
+            else
+                request.setAttribute("invalid", 0);
         }
             RequestDispatcher rd = getServletContext().getRequestDispatcher(forward);            
             rd.forward(request, response);

@@ -20,6 +20,26 @@
         <link rel="stylesheet" type="text/css" href="CSS/test.css">
         <script src="JS/test.js"></script>
         
+        <script type="text/javascript">
+        function codeAddress() {
+            var url = document.URL;
+            var li = document.getElementsByTagName("li");
+            if(url.indexOf("profile_doc")!=-1){
+                li[0].style.backgroundColor = "#F4090D";
+                li[0].setAttribute("class", "menu-item-divided pure-menu-selected");
+            }
+            else if(url.indexOf("search_patients")!=-1){
+                li[1].style.backgroundColor = "#F4090D";
+                li[1].setAttribute("class", "pure-menu-selected");
+            }
+            else if(url.indexOf("SearchRecords")!=-1){
+                li[2].style.backgroundColor = "#F4090D";
+                li[2].setAttribute("class", "pure-menu-selected");
+            }
+        }
+        window.onload = codeAddress;
+        </script>
+        
     </head>
     <body>
         <jsp:useBean id="profile" class="ViewModel.UserProfileVM" scope="session"/>

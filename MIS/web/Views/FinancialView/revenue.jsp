@@ -21,10 +21,22 @@
             </fieldset>
         </form>
         
-        <div id="startend" align="center" style="margin:0 auto;width:50%; margin-top:5%">
-            Bill for <%= request.getAttribute("startDate") %> to <%= request.getAttribute("endDate") %>
-        </div>
-        <table style="margin-top:5%" id="bill">
+        <c:set var="inputDisplay" value='<%= request.getAttribute("invalid")%>' /> <!-- This same as your request attribute -->
+        <c:set var="count" value='<%= request.getAttribute("visitCount")%>' />
+        <c:choose>
+            <c:when test="${count != 0}">
+               <div id="startend" align="center" style="margin:0 auto;width:50%; margin-top:5%">
+                    Bill for <%= request.getAttribute("startDate") %> to <%= request.getAttribute("endDate") %>
+                </div>
+            </c:when>
+            <c:when test="${inputDisplay == 1}">
+                <div id="startend" align="center" style="margin:0 auto;width:50%; margin-top:5%">
+                    Incomplete date selection
+                </div>
+            </c:when>      
+        </c:choose>
+        
+        <table style="margin-top:10%" id="bill">
             <tr>
                 <td align="right">Cost Per Visit :</td>
                 <td align="right">$10.00</td>
