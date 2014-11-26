@@ -191,7 +191,7 @@ function addRow2(r){
 function addRowPatientRecord(r){
     
         var dt = new Date();
-        var newdate =dt.getFullYear() + "-" + dt.getMonth() + 1 + "-" + dt.getDate();
+        var newdate =dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + dt.getDate();
         var timenow = dt.getHours() + ":" + dt.getMinutes();
 	var i = r.parentNode.parentNode.rowIndex;
 	var table = document.getElementById("records");
@@ -203,10 +203,13 @@ function addRowPatientRecord(r){
 	var cell5 = row.insertCell(4);
 	var cell6 = row.insertCell(5);
 	var cell7 = row.insertCell(6);
+        var tmp = '${procedures.getProcedureId()}';
+        var tmp2 = '${procedures.getProcedureName()}';
+        var tmp3 = '${procedures}';
 	
 	cell1.innerHTML = '<select id="procedureId" name="procedureId">\
-                                    <c:forEach items="${procedures}" var="procedures" >\
-                                        <option value=${procedures.getProcedureId()}>${procedures.getProcedureName()}</option>\
+                                    <c:forEach items="'+ tmp3 +'" var="procedures" >\
+                                        <option value="' + tmp + '">' + tmp2 +'</option>\
                                     </c:forEach>\
                                 </select>';
 	cell2.innerHTML = '<input id="date" type="date" value ="' + newdate + '">';
@@ -220,4 +223,5 @@ function addRowPatientRecord(r){
                                     return false" style="margin-right:15%; margin-left:15%" class="pure-button">\
                                     <i class="fa fa-floppy-o"></i>\
                            </button>';
+    return false;
 }

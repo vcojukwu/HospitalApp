@@ -6,6 +6,7 @@
 package controller;
 
 import Model.*;
+import ViewModel.DoctorVisitationRecordVM;
 import ViewModel.UserProfileVM;
 import dao.*;
 import java.io.IOException;
@@ -27,7 +28,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author TheKey
  *///, 
-@WebServlet(name = "DoctorController", urlPatterns = {"/AddVisitationRecord" , "/Doctor", "/PatientRecords"})
+@WebServlet(name = "DoctorController", urlPatterns = {"/Doctor", "/PatientRecords"})
 public class DoctorController extends HttpServlet {
 
     /**
@@ -69,13 +70,7 @@ public class DoctorController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         //processRequest(request, response);
-
-        
-            DoctorDao doctor = new DoctorDao();
-            request.setAttribute("procedures", doctor.GetProcedures());     
-            RequestDispatcher rd = getServletContext().getRequestDispatcher("/Views/DoctorView/enter_records.jsp");
-            rd.forward(request, response);
-        
+       
     }
 
     /**
@@ -120,15 +115,17 @@ public class DoctorController extends HttpServlet {
             
            
             //get the patient info to diplay on top currently ill display id only - we can add first name and last name later on
-            request.setAttribute("patientId", patId);
+            //request.setAttribute("patientId", patId);
             String[] VisitationRecordSA = {null,null, null,
                 patId,user.getUserId(),null,null,null,null,
-                null};
+                null, null};
             String[] UserModelSA = {null, null, null , null, 
                 null, null, null, null, null, 
                 null, null};
             DoctorDao doctor = new DoctorDao();
-            request.setAttribute("records", doctor.FindRecords(VisitationRecordSA, UserModelSA));
+            List<DoctorVisitationRecordVM> tmp = doctor.FindRecords(VisitationRecordSA, UserModelSA);
+            request.setAttribute("patientInfo", tmp.get(0).getUser());
+            request.setAttribute("records", tmp);
             request.setAttribute("procedures", doctor.GetProcedures());
             
         RequestDispatcher rd = getServletContext().getRequestDispatcher("/Views/DoctorView/patient_records.jsp");
