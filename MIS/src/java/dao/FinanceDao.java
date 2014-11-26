@@ -96,7 +96,7 @@ public class FinanceDao {
                 if (!VisitRecords.containsKey(patientId))
                     VisitRecords.put(patientId, new ArrayList<VisitRecordVM>());
                 
-                if (rs.getInt("OriginalRecordId") != 0)
+                if (rs.getInt("OriginalRecordId") != rs.getInt("RecordId"))
                 {
                     for(VisitRecordVM rcd : VisitRecords.get(patientId))
                     {
@@ -158,7 +158,7 @@ public class FinanceDao {
         has its own listed fee.*/
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-         String query = "SELECT Y.ProcedureCost, X.PatientId, X.OriginalRecordId FROM visitation_records X INNER JOIN procedures Y ON " +
+         String query = "SELECT Y.ProcedureCost, X.PatientId, X.OriginalRecordId, X.RecordId FROM visitation_records X INNER JOIN procedures Y ON " +
                         "X.ProcedureId = Y.ProcedureID where TimeStarted BETWEEN '" + startDate +
                         "' and '" + endDate + "'";
         RevenueVM vm = new RevenueVM();
@@ -171,7 +171,7 @@ public class FinanceDao {
             while(rs.next())
             {
                 String test = rs.getString("PatientId");
-                if (rs.getInt("OriginalRecordId") == 0)
+                if (rs.getInt("OriginalRecordId") == rs.getInt("RecordId"))
                 {
                     vm.setVisitCount(vm.getVisitCount() + 1);
                     vm.setTotalProcedureRevenue(vm.getVisitRevenue() + rs.getInt("ProcedureCost"));
