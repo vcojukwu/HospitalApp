@@ -101,45 +101,6 @@ public class DoctorDao {
         }
     }
     
-    //This is the same as above, except above we make originalrecorid = -1 as its a new record but here, we add the original recordId. 
-    //We could merge the two above, by forcing controller to assign origianl RecordId = -1 if new record else the id itself. 
-    
-    //THIS logic can be done in controller, in the visitationRecord, just ensure OriginalRecordId is 
-    //-1 if the UI is in add new, or the current RecordId of the record being modified. Then this function
-    //is not needed
-    public void ModifyVisitationRecord(VisitationRecordsModel visitationRecord, int OriginalRecordId){
-        PreparedStatement pstmt = null;
-        String query = null;
-        try{
-            //Add new record
-            query = "INSERT INTO visitation_records ( OriginalRecordId, ProcedureId, PatientId, DoctorId, TimeStarted, TimeEnded, "
-                    + "Prescriptions, Diagnosis, TreatmentSchedule, Notes) "
-                    + "VALUES ( ?,?,?,?,?,?,?,?,?,?)";
-            
-            //Form preparedstatement from query
-            pstmt = DbUtil.getConnection().prepareStatement(query);
-            
-            //Add elements of prepared statement
-            pstmt.setInt(1, visitationRecord.getOriginalRecordId()); //Set OriginalRecordId
-            pstmt.setInt(2, visitationRecord.getProcedureId());         //Set ProcedureId
-            pstmt.setString(3, visitationRecord.getPatientId());        //Set PatientId
-            pstmt.setString(4, visitationRecord.getDoctorId());         //Set DoctorId
-            pstmt.setTimestamp(5, visitationRecord.getTimeStarted());   //Set TimeStarted
-            pstmt.setTimestamp(6, visitationRecord.getTimeEnded());     //Set TimeEnded
-            pstmt.setString(7, visitationRecord.getPrescriptions());    //Set Prescriptions
-            pstmt.setString(8, visitationRecord.getDiagnosis());        //Set Diagnosis
-            pstmt.setString(9, visitationRecord.getTreatmentSchedule());//Set TreatmentSchedule
-            pstmt.setString(10, visitationRecord.getNotes());           //Set Notes
-            
-            System.out.print(pstmt.toString());
-            
-            //Execute prepared statement
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-                e.printStackTrace();
-        }
-    }
-    
     public List<DoctorVisitationRecordVM> FindRecords(String[] VRecordParams, String[] UserParams){
         ArrayList<String> elements = new ArrayList<String>();
         ArrayList<String> elementType = new ArrayList<String>();
@@ -148,14 +109,14 @@ public class DoctorDao {
         DoctorVisitationRecordVM vrum = null;
         VisitationRecordsModel vrm = null;
         UserModel um = null;
+        boolean FlagBothID = false;
         String query = "select * from mis_db.visitation_records left join mis_db.users "
                     + "on visitation_records.PatientId = users.UserId ";
-        String query2 = "SELECT ";
         List<DoctorVisitationRecordVM> result = new ArrayList<DoctorVisitationRecordVM>();
         String allowedIds = " (";
         //If a specific PatientId is not provided, we only display all patients which the doctor is
         //allowed to see
-        if(VRecordParams[3]==null){
+        if(VRecordParams[3]==null && VRecordParams[4]!=null){                   //PatiendID null and DoctorID given
             //This request will get a list of PatientIds for which the given DoctorId is allowed to view
             List<String> AllowedPatientIds = GetAllowedPatientList(VRecordParams[4]);
             //The result is formatted to fit an SQL in condition
@@ -164,16 +125,22 @@ public class DoctorDao {
                 allowedIds += "'" + id + "',";
             }
             allowedIds = allowedIds.substring(0, allowedIds.length()-1)+") ";
+            query += " WHERE visitation_records.PatientId IN"+allowedIds;
         }
-        else{
+        else if(VRecordParams[3]!=null && VRecordParams[4]==null){              //PatiendID given and DoctorID null
             //if a specific PatientId is given
             allowedIds += "'" + VRecordParams[3] + "') ";
+            query += " WHERE visitation_records.PatientId IN"+allowedIds;
         }
-        query += " WHERE visitation_records.PatientId IN"+allowedIds;
+        else if(VRecordParams[3]==null && VRecordParams[4]==null){              //Both PatientID and DoctorID are null
+        }
+        else{
+            FlagBothID=true;
+        }
         
         for(int i=0; i<VisitationRecordModelColumns.length; i++){
-            if(VisitationRecordModelColumns[i].equalsIgnoreCase("DoctorId")||VisitationRecordModelColumns[i].equalsIgnoreCase("PatientId")){
-                //since patient and doctor id 
+            if(!FlagBothID){
+                //since patient id or doctor id have been accounted for above
                 continue;
             }
             if(VRecordParams[i] != null){
@@ -202,7 +169,7 @@ public class DoctorDao {
                 elementType.add(UserModelTypes[i]);
             }
         }
-        
+        query += " ORDER BY visitation_records.RecordId desc ";
         try{
             pstmt = DbUtil.getConnection().prepareStatement(query);
             for(int i=1;i<=elements.size(); i++){
@@ -230,7 +197,8 @@ public class DoctorDao {
                 }
                 
             }
-            rs = pstmt.executeQuery();
+            String FinalQuery = "Select * from ("+ pstmt.toString().substring(pstmt.toString().indexOf("select")) + ") as max group by max.OriginalRecordId";
+            rs = pstmt.executeQuery(FinalQuery);
             while(rs.next()){
                 vrum = new DoctorVisitationRecordVM();
                 vrm = new VisitationRecordsModel();
