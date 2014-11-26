@@ -38,12 +38,15 @@
             </fieldset>
     </div>
      <form class="pure-form" method="post" action="Doctor">
-        <div style="margin-left:15%">
+        <div style="margin-left:5%">
             <table class="pure-table pure-table-bordered" id="appointments">
                 <thead>
                     <tr>
                 <thead>
                     <tr>
+                        <th>Patient Id</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
                         <th>Procedure</th>
                         <th>Date</th>
                         <th>Time Started</th>
@@ -58,6 +61,9 @@
                 <tbody>
                       <c:forEach items="${records}" var="item" >
                         <tr>
+                            <td><input id="tpatientid" type="text" value = "${item.getUser().getUserId()}" disabled></td>
+                            <td><input id="tfirstname" type="text" value = "${item.getUser().getFirstName()}" disabled></td>
+                            <td><input id="tlastname" type="text" value = "${item.getUser().getLastName()}" disabled></td>
                             <td>                    
                                 <select id="procedureId" name="procedureId" disabled>
                                     <c:forEach items="${procedures}" var="procedures" >
