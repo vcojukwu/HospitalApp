@@ -1,4 +1,60 @@
 <%@include file="/WEB-INF/jspf/SideBars/doctorSideBar.jspf" %>
+<script>function addRowPatientRecord(r){
+    
+        var dt = new Date();
+        var newdate =dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + dt.getDate();
+        var timenow = dt.getHours() + ":" + dt.getMinutes();
+	var i = r.parentNode.parentNode.rowIndex;
+	var table = document.getElementById("records");
+	var row = table.insertRow(i);
+	var cell1 = row.insertCell(0);
+	var cell2 = row.insertCell(1);
+	var cell3 = row.insertCell(2);
+	var cell4 = row.insertCell(3);
+	var cell5 = row.insertCell(4);
+	var cell6 = row.insertCell(5);
+	var cell7 = row.insertCell(6);
+        var cell8 = row.insertCell(7);
+	
+	cell1.innerHTML = '<select id="procedureId" name="procedureId">\
+                                    <c:forEach items="${procedures}" var="procedures" >\
+                                        <option value="${procedures.getProcedureId()}">${procedures.getProcedureName()}</option>\
+                                    </c:forEach>\
+                                </select>';
+	cell2.innerHTML = '<input id="date" type="date" value ="' + newdate + '">';
+        cell3.innerHTML = '<input id="timestarted" type="time" value="' + timenow + '" >';
+	cell4.innerHTML = '<input id="timeended" type="time" value="' + timenow + '" >';
+	cell5.innerHTML = '<input id="precriptions" type="text" value ="" >';
+	cell6.innerHTML = '<input id="Diagnosis" type="text" value ="" >';
+	cell7.innerHTML = '<input id="notes" type="text" value = "" >';
+	cell8.innerHTML = '<button title="Save" value="PatientRecord" name="PatientRecord" onclick="enableRowPatientRecord(this); \
+                                    return false" style="margin-right:15%; margin-left:15%" class="pure-button">\
+                                    <i class="fa fa-floppy-o"></i>\
+                           </button>';
+                                        
+        var input1 = document.createElement('input');
+        var input2 = document.createElement('input');
+        var input3 = document.createElement('input');
+        
+        input1.id = "originalrecordid";
+        input2.id = "recordId";
+        input3.id = "recordType";
+        input1.type = "hidden";
+        input2.type = "hidden";
+        input3.type = "hidden";
+        input1.value = "${item.getVisitationRecord().getOriginalRecordId()}";
+        input2.value = "${item.getVisitationRecord().getRecordId()}";
+        input3.value = "0";
+   
+        row.appendChild(input1);       
+        row.appendChild(input2);  
+        row.appendChild(input3);  
+                                        
+    return false;
+}
+
+    
+</script>
 <div id="main">
     <div class="header">
         <h1>Patient Record</h1>
