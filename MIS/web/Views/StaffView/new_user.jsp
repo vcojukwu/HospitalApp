@@ -6,10 +6,18 @@ function addDoctor() {
     <c:forEach items="${doctors}" var="doctor">
         string += "<option value = ${doctor.getDoctorId()}>${doctor.getFirstName()} ${doctor.getLastName()}</option>";
     </c:forEach>
-    div.innerHTML = "<select id=\"doctor\" class=\"pure-input-1-2 doctorDropdown\">" + string + "</select>";
-    div.style.width = "50%";
-    div.style.marginLeft = "50%";
+    div.innerHTML = " <label for=\"user\">Doctor :</label> <select id=\"doctor\" class=\"doctorDropdown\">" + string + "</select>";
+    div.setAttribute("class", "pure-input-1-2 pure-control-group")
     document.getElementById('dynamic_content').appendChild(div);
+    document.getElementById("remove").disabled = false;
+
+}
+
+function deleteRow() {
+    document.getElementById('dynamic_content').lastChild.remove();
+    if (document.getElementById('dynamic_content').childNodes.length == 3) {
+        document.getElementById("remove").disabled = true;
+    }
 }
 
 function getAllDoctors() {
@@ -61,18 +69,21 @@ function getAllDoctors() {
                     </select>
                 </div>
                 <div id="dynamic_content">
-                    <div class="pure-input-1-2 pure-control-group">
+                    <div class="pure-input-1-2 pure-control-group" style="width: 60%">
+                        <div style="float: right">
+                    <button type="buttin" onClick="addDoctor();
+                        return false" class="pure-button pure-button-primary">+</button>
+
+                    <button id="remove" type="button" onClick="deleteRow();
+                        return false" class="pure-button pure-button-primary" disabled>-</button> 
+                    </div>
                     <label for="doctorId">Doctor :</label>
                     <select class="doctorDropdown" id="doctorId" name = "doctorId"style="display:inline-block" type="text">
                             <c:forEach items="${doctors}" var="doctor">
                                 <option value=${doctor.getDoctorId()}>${doctor.getFirstName()} ${doctor.getLastName()}</option>
                             </c:forEach>
                     </select>
-                    <button type="buttin" onClick="addDoctor();
-                        return false" class="pure-button pure-button-primary">+</button>
-
-                    <button id="remove" type="button" onClick="deleteRow();
-                        return false" class="pure-button pure-button-primary" disabled>-</button> 
+                    
                     </div>
                 </div>
                 <div class="pure-input-1-2 pure-control-group" id="doctorIdDiv" style="display:none">
@@ -103,7 +114,7 @@ function getAllDoctors() {
                     <label for="docType">Type of Doctor :</label>
                     <input name = "docType" id="docType" style="display:inline-block" type="text" placeholder="Doctor Type">
                 </div>                
-                <div class="pure-input-1-2 pure-control-group">
+                <div class="pure-input-1-2 pure-control-group" style="margin-top: 1%">
                     <label for="dob">Date of Birth :</label>
                     <input name = "dob" id="dob" style="display:inline-block" type="date">
                 </div>
