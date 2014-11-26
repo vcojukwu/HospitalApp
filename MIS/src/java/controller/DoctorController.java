@@ -135,8 +135,8 @@ public class DoctorController extends HttpServlet {
             //get the patient info to diplay on top currently ill display id only - we can add first name and last name later on
             String[] VisitationRecordSA = {null,null, (procedureid.equals("0"))? null : procedureid,
                 (email == "")?null : email, user.getUserId(), (recorddate == "")? null : recorddate, null,
-                (prescriptions == "")? null : prescriptions, (diagnosis == "")? null : diagnosis,
-                null};
+                (prescriptions == "")? null : prescriptions, (diagnosis == "")? null : diagnosis, null,
+                (notes == "")? null : notes};
             String[] UserModelSA = {null, (firstname == "")? null : firstname, (lastname == "")? null : lastname , null, 
                 null, null, null, null, null, null, null};
             
@@ -160,7 +160,7 @@ public class DoctorController extends HttpServlet {
             //get the patient info to diplay on top currently ill display id only - we can add first name and last name later on
             String[] VisitationRecordSA = {null,null, null,
                 patId,user.getUserId(),null,null,null,null,
-                null};
+                null, null};
             String[] UserModelSA = {null, null, null , null, 
                 null, null, null, null, null, 
                 null, null};
