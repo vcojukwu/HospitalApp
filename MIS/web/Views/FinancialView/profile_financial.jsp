@@ -4,7 +4,7 @@
     <div class="header">
         <h1>Profile</h1>
     </div>
-<<<<<<< HEAD
+
     <div class="content" style="padding-top:30px">
         <img style="margin-left:40%" src="Images/profilepic.jpg"/>            
         <div style="float:right; width:45%; height:80%; margin-left:5%">
@@ -50,7 +50,7 @@
                     </div>        
                 </fieldset>
             </form>            
-=======
+
     <div id="main">
         <div class="header">
             <h1>Profile</h1>
@@ -104,7 +104,6 @@
                     </fieldset>
                 </form>            
             </div>
->>>>>>> 997227b4c80c5c4d4d78f646cc2af12731d1ea7e
         </div>
     </div>
 </div>
