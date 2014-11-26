@@ -92,4 +92,18 @@ public class PermissionDao {
                 e.printStackTrace();
         }
     }
+    
+    public void RemovePermission (String doctorid, String patientid){
+        PreparedStatement pstmt = null;
+        String query;
+        try{
+            query = "DELETE FROM mis_db.doctor_permissions WHERE PatientId = ? and DoctorId = ?";
+            pstmt = DbUtil.getConnection().prepareStatement(query);
+            pstmt.setString(1, patientid);
+            pstmt.setString(2, doctorid);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+                e.printStackTrace();
+        }
+    }
 }
