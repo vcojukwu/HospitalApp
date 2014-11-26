@@ -3,7 +3,11 @@
     
         var dt = new Date();
         var newdate =dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + dt.getDate();
-        var timenow = dt.getHours() + ":" + dt.getMinutes();
+        var temp = dt.getMinutes();
+        var temp2 = dt.getHours();
+        if(dt.getMinutes() < 10) temp = '0' + temp;
+        if(dt.getHours() < 10) temp2 = '0' + temp;
+        var timenow = temp2 + ":" + temp;
 	var i = r.parentNode.parentNode.rowIndex;
 	var table = document.getElementById("records");
 	var row = table.insertRow(i);
@@ -42,8 +46,8 @@
         input1.type = "hidden";
         input2.type = "hidden";
         input3.type = "hidden";
-        input1.value = "${item.getVisitationRecord().getOriginalRecordId()}";
-        input2.value = "${item.getVisitationRecord().getRecordId()}";
+        input1.value = "-1";
+        input2.value = "-1";
         input3.value = "0";
    
         row.appendChild(input1);       
