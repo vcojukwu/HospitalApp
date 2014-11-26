@@ -310,4 +310,29 @@ public class DoctorDao {
         }
         return patientsAllowed;
     } 
+    
+    public boolean CheckAppointmentConflict(String doctorid, Timestamp time, int duration_minutes){
+        PreparedStatement pstmt=null;
+        ResultSet rs = null;
+        String query = "SELECT * FROM mis_db.appointments where DoctorId = ? and TimeScheduled>=? and TimeScheduled<=?";
+        String time1 = time.toString();
+        time.setTime(time.getTime()+(duration_minutes*60*1000));
+        String time2 = time.toString();
+        
+        try{
+            pstmt = DbUtil.getConnection().prepareStatement(query);
+            pstmt.setString(1, doctorid);
+            pstmt.setString(2, time1);
+            pstmt.setString(3, time2);
+            rs = pstmt.executeQuery();
+            
+            while(rs.next()){
+                return false;
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
 }

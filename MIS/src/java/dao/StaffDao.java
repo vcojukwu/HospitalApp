@@ -10,7 +10,11 @@ import Model.DoctorModel;
 import Model.HealthStateModel;
 import Model.PatientDropDownModel;
 import Model.PatientModel;
+import Model.UserModel;
+import Model.VisitationRecordsModel;
+import ViewModel.DoctorVisitationRecordVM;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -24,7 +28,18 @@ import util.DbUtil;
  * @author TheKey
  */
 public class StaffDao {
-    
+    private static String[] UserModelColumns = {"UserId", "FirstName", "LastName", "Gender", 
+        "DateOfBirth", "UserType", "Password", "PhoneNumber", "AddressId", 
+        "EmergencyContactName", "EmergencyContactPhoneNumber"};
+    private static String[] UserModelTypes = {"String", "String", "String", "boolean", 
+        "Date", "int", "String", "String", "int", 
+        "String", "String"};
+    private static String[] VisitationRecordModelColumns = {"RecordId","OriginalRecordId",
+        "ProcedureId","PatientId","DoctorId","TimeStarted","TimeEnded","Prescriptions",
+        "Diagnosis","TreatmentSchedule", "Notes"};
+    private static String[] VisitationRecordModelTypes = {"int","int",
+        "int","String","String","Timestamp","Timestamp","String",
+        "String","String", "String"};
     private Connection connection;
     public StaffDao()
     {
@@ -216,4 +231,160 @@ public class StaffDao {
         }
         return appointments;
     }
+    
+     public List<DoctorVisitationRecordVM> FindRecords(String[] VRecordParams, String[] UserParams, String staffid){
+        ArrayList<String> elements = new ArrayList<String>();
+        ArrayList<String> elementType = new ArrayList<String>();
+        PreparedStatement pstmt = null;
+        ResultSet rs    = null;
+        DoctorVisitationRecordVM vrum = null;
+        VisitationRecordsModel vrm = null;
+        UserModel um = null;
+        String basequery ="select * from "
+                + "(select * from "
+                    + "(select * from mis_db.visitation_records left join mis_db.users on visitation_records.PatientId = users.UserId ORDER BY visitation_records.RecordId desc) "
+                + "as max group by max.OriginalRecordId) "
+                + "as p";
+        
+        List<DoctorVisitationRecordVM> result = new ArrayList<DoctorVisitationRecordVM>();
+        String allowedIds = " (";
+        
+        List<String> AllowedPatientIds = GetPatientIDsAllowed(staffid);
+        if(VRecordParams[3]==null){
+            for(String id:AllowedPatientIds){
+                allowedIds += "'" + id + "',";
+            }
+            allowedIds = allowedIds.substring(0, allowedIds.length()-1)+") ";
+            basequery += " WHERE p.PatientId IN"+allowedIds;
+        }
+        else{
+            if(AllowedPatientIds.contains(VRecordParams[3])){
+                allowedIds += "'" + VRecordParams[3] + "') ";
+            basequery += " WHERE p.PatientId IN"+allowedIds;
+            }
+            else{
+                return null;
+            }
+        }
+        
+        for(int i=0; i<VisitationRecordModelColumns.length; i++){
+            if(VisitationRecordModelColumns[i].equalsIgnoreCase("DoctorId")||VisitationRecordModelColumns[i].equalsIgnoreCase("PatientId")){
+                //since patient id or doctor id have been accounted for above
+                continue;
+            }
+            if(VRecordParams[i] != null){
+                basequery += " AND ";
+                if(VisitationRecordModelTypes[i].equals("boolean") || VisitationRecordModelTypes[i].equals("int")){
+                    basequery += "p." + VisitationRecordModelColumns[i] + " = ? ";
+                }
+                else{
+                    basequery += "p." + VisitationRecordModelColumns[i] + " LIKE ? ";
+                }
+                elements.add(VRecordParams[i]);
+                elementType.add(VisitationRecordModelTypes[i]);
+            }
+        }
+        //User Model column search gets handled here
+        for(int i=0; i<UserModelColumns.length; i++){
+            if(UserParams[i] != null){
+                basequery += " AND ";
+                if(UserModelTypes[i].equals("boolean") || UserModelTypes[i].equals("int")){
+                    basequery += "p." + UserModelColumns[i] + " = ? ";
+                }
+                else{
+                    basequery += "p." + UserModelColumns[i] + " LIKE ? ";
+                }
+                elements.add(UserParams[i]);
+                elementType.add(UserModelTypes[i]);
+            }
+        }
+        try{
+            pstmt = DbUtil.getConnection().prepareStatement(basequery);
+            for(int i=1;i<=elements.size(); i++){
+                switch(elementType.get(i-1)){
+                    case "String":
+                        pstmt.setString(i, "%"+elements.get(i-1)+"%");
+                        break;
+                    case "int":
+                        pstmt.setInt(i, Integer.parseInt(elements.get(i-1)));
+                        break;
+                    case "boolean":
+                        if(elements.get(i-1).equalsIgnoreCase("true")||elements.get(i-1).equalsIgnoreCase("1")){
+                            pstmt.setBoolean(i, true);
+                        }
+                        else{
+                            pstmt.setBoolean(i, false);
+                        }
+                        break;
+                    case "Date":
+                        pstmt.setString(i,elements.get(i-1).substring(0, 10)+"%");
+                        break;
+                    case "Timestamp":
+                        pstmt.setString(i,elements.get(i-1).substring(0, 10)+"%");
+                        break;
+                }
+                
+            }
+            rs = pstmt.executeQuery();
+            while(rs.next()){
+                vrum = new DoctorVisitationRecordVM();
+                vrm = new VisitationRecordsModel();
+                um = new UserModel();
+                
+                vrm.setRecordId(rs.getInt(VisitationRecordModelColumns[0]));
+                vrm.setOriginalRecordId(rs.getInt(VisitationRecordModelColumns[1]));
+                vrm.setProcedureId(rs.getInt(VisitationRecordModelColumns[2]));
+                vrm.setPatientId(rs.getString(VisitationRecordModelColumns[3]));
+                vrm.setDoctorId(rs.getString(VisitationRecordModelColumns[4]));
+                vrm.setTimeStarted(rs.getTimestamp(VisitationRecordModelColumns[5]));
+                vrm.setTimeEnded(rs.getTimestamp(VisitationRecordModelColumns[6]));
+                vrm.setPrescriptions(rs.getString(VisitationRecordModelColumns[7]));
+                vrm.setDiagnosis(rs.getString(VisitationRecordModelColumns[8]));
+                vrm.setTreatmentSchedule(rs.getString(VisitationRecordModelColumns[9]));
+                vrm.setNotes(rs.getString(VisitationRecordModelColumns[10]));
+               
+                um.setUserId(rs.getString(UserModelColumns[0]));
+                um.setFirstName(rs.getString(UserModelColumns[1]));
+                um.setLastName(rs.getString(UserModelColumns[2]));
+                um.setGender(rs.getBoolean(UserModelColumns[3]));
+                um.setDateOfBirth(rs.getDate(UserModelColumns[4]));
+                um.setUserType(rs.getInt(UserModelColumns[5]));
+                um.setPassword(rs.getString(UserModelColumns[6]));
+                um.setPhoneNumber(rs.getString(UserModelColumns[7]));
+                um.setAddressId(rs.getInt(UserModelColumns[8]));
+                um.setEmergencyContactName(rs.getString(UserModelColumns[9]));
+                um.setEmergencyContactPhoneNumber(rs.getString(UserModelColumns[10]));
+
+                
+                vrum.setVisitationRecord(vrm);
+                vrum.setUser(um);
+                
+                result.add(vrum);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return result;
+    }
+     
+    public List<String> GetPatientIDsAllowed(String staffid){
+        PreparedStatement pstmt = null;
+        ResultSet rs;
+        String query="select * from mis_db.staff_doctor left join mis_db.patients on staff_doctor.DoctorId = patients.DoctorId";
+        List<String> result = new ArrayList<String>();
+        
+        try{
+            pstmt=DbUtil.getConnection().prepareStatement(query);
+            pstmt.setString(1, staffid);
+            rs=pstmt.executeQuery();
+            while(rs.next()){
+                result.add(rs.getString("PatientId"));
+            }
+            rs.close();
+            pstmt.close();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return result;
+    } 
 }
