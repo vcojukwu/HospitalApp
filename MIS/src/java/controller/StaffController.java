@@ -9,6 +9,7 @@ import Model.AppointmentsModel;
 import Model.PatientModel;
 import Model.UserModel;
 import ViewModel.UserProfileVM;
+import dao.DoctorDao;
 import dao.PatientDao;
 import dao.StaffDao;
 import java.io.IOException;
@@ -128,13 +129,19 @@ public class StaffController extends HttpServlet {
         
     private void editAppointment(HttpServletRequest request){
         StaffDao staff = new StaffDao();
+        DoctorDao doctor = new DoctorDao();
         AppointmentsModel appointment = new AppointmentsModel();
         appointment.setAppointmentId(Integer.parseInt(request.getParameter("appointmentIdFinal")));
         appointment.setDoctorId(request.getParameter("docIdFinal"));
         appointment.setPatientId(request.getParameter("patIdFinal"));
         appointment.setDurationScheduled(Integer.parseInt(request.getParameter("durationFinal")));
         appointment.setTimeScheduled(ParseTimeRecords(request.getParameter("dateFinal"), request.getParameter("timeFinal")));
-        staff.editAppointment(appointment);
+        if(doctor.CheckAppointmentConflict(appointment.getDoctorId(), appointment.getTimeScheduled(), appointment.getDurationScheduled())){
+            staff.editAppointment(appointment);
+            request.setAttribute("scheduleConflict", "Succesfully added");
+        } else{
+            request.setAttribute("scheduleConflict", "Conflict");
+        }
         request.setAttribute("doctors", staff.getDoctors());
         request.setAttribute("patients", staff.getAllPatientsDropdown());
         request.setAttribute("appointments", staff.getAllAppointments());
@@ -142,12 +149,19 @@ public class StaffController extends HttpServlet {
     
     private void addAppointment(HttpServletRequest request){
         StaffDao staff = new StaffDao();
+        DoctorDao doctor = new DoctorDao();
         AppointmentsModel appointment = new AppointmentsModel();
         appointment.setDoctorId(request.getParameter("docIdFinal"));
         appointment.setPatientId(request.getParameter("patIdFinal"));
         appointment.setDurationScheduled(Integer.parseInt(request.getParameter("durationFinal")));
         appointment.setTimeScheduled(ParseTimeRecords(request.getParameter("dateFinal"), request.getParameter("timeFinal")));
-        staff.addAppointment(appointment);
+        if(doctor.CheckAppointmentConflict(appointment.getDoctorId(), appointment.getTimeScheduled(), appointment.getDurationScheduled())){
+            staff.addAppointment(appointment);
+            request.setAttribute("scheduleConflict", "Succesfully added");
+        } else{
+            request.setAttribute("scheduleConflict", "Conflict");
+        }
+        
         request.setAttribute("doctors", staff.getDoctors());
         request.setAttribute("patients", staff.getAllPatientsDropdown());
         request.setAttribute("appointments", staff.getAllAppointments());

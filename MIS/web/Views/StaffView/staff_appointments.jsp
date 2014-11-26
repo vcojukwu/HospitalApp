@@ -35,6 +35,7 @@ function addRow2(r){
     </div>
 
     <div class="content" style="padding-top:30px; margin:5% !important; max-width:none !important">
+        <input name="scheduleConflict" value=${scheduleConflict}>
         <form method="post" action="AddAppointments">            
             <table class="pure-table pure-table-bordered" id="appointments">
                 <input type="hidden" name="patIdFinal" id="patIdFinal">
