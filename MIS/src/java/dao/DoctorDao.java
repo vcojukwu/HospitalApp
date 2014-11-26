@@ -109,47 +109,45 @@ public class DoctorDao {
         DoctorVisitationRecordVM vrum = null;
         VisitationRecordsModel vrm = null;
         UserModel um = null;
-        boolean FlagBothID = false;
-        String query = "select * from mis_db.visitation_records left join mis_db.users "
-                    + "on visitation_records.PatientId = users.UserId ";
+        String basequery ="select * from "
+                + "(select * from "
+                    + "(select * from mis_db.visitation_records left join mis_db.users on visitation_records.PatientId = users.UserId ORDER BY visitation_records.RecordId desc) "
+                + "as max group by max.OriginalRecordId) "
+                + "as p";
+        
         List<DoctorVisitationRecordVM> result = new ArrayList<DoctorVisitationRecordVM>();
         String allowedIds = " (";
-        //If a specific PatientId is not provided, we only display all patients which the doctor is
-        //allowed to see
-        if(VRecordParams[3]==null && VRecordParams[4]!=null){                   //PatiendID null and DoctorID given
-            //This request will get a list of PatientIds for which the given DoctorId is allowed to view
-            List<String> AllowedPatientIds = GetAllowedPatientList(VRecordParams[4]);
-            //The result is formatted to fit an SQL in condition
-            
+        
+        List<String> AllowedPatientIds = GetAllowedPatientList(VRecordParams[4]);
+        if(VRecordParams[3]==null){
             for(String id:AllowedPatientIds){
                 allowedIds += "'" + id + "',";
             }
             allowedIds = allowedIds.substring(0, allowedIds.length()-1)+") ";
-            query += " WHERE visitation_records.PatientId IN"+allowedIds;
-        }
-        else if(VRecordParams[3]!=null && VRecordParams[4]==null){              //PatiendID given and DoctorID null
-            //if a specific PatientId is given
-            allowedIds += "'" + VRecordParams[3] + "') ";
-            query += " WHERE visitation_records.PatientId IN"+allowedIds;
-        }
-        else if(VRecordParams[3]==null && VRecordParams[4]==null){              //Both PatientID and DoctorID are null
+            basequery += " WHERE p.PatientId IN"+allowedIds;
         }
         else{
-            FlagBothID=true;
+            if(AllowedPatientIds.contains(VRecordParams[3])){
+                allowedIds += "'" + VRecordParams[3] + "') ";
+            basequery += " WHERE p.PatientId IN"+allowedIds;
+            }
+            else{
+                return null;
+            }
         }
         
         for(int i=0; i<VisitationRecordModelColumns.length; i++){
-            if(!FlagBothID){
+            if(VisitationRecordModelColumns[i].equalsIgnoreCase("DoctorId")||VisitationRecordModelColumns[i].equalsIgnoreCase("PatientId")){
                 //since patient id or doctor id have been accounted for above
                 continue;
             }
             if(VRecordParams[i] != null){
-                query += " AND ";
+                basequery += " AND ";
                 if(VisitationRecordModelTypes[i].equals("boolean") || VisitationRecordModelTypes[i].equals("int")){
-                    query += "visitation_records." + VisitationRecordModelColumns[i] + " = ? ";
+                    basequery += "p." + VisitationRecordModelColumns[i] + " = ? ";
                 }
                 else{
-                    query += "visitation_records." + VisitationRecordModelColumns[i] + " LIKE ? ";
+                    basequery += "p." + VisitationRecordModelColumns[i] + " LIKE ? ";
                 }
                 elements.add(VRecordParams[i]);
                 elementType.add(VisitationRecordModelTypes[i]);
@@ -158,20 +156,19 @@ public class DoctorDao {
         //User Model column search gets handled here
         for(int i=0; i<UserModelColumns.length; i++){
             if(UserParams[i] != null){
-                query += " AND ";
+                basequery += " AND ";
                 if(UserModelTypes[i].equals("boolean") || UserModelTypes[i].equals("int")){
-                    query += "users." + UserModelColumns[i] + " = ? ";
+                    basequery += "p." + UserModelColumns[i] + " = ? ";
                 }
                 else{
-                    query += "users." + UserModelColumns[i] + " LIKE ? ";
+                    basequery += "p." + UserModelColumns[i] + " LIKE ? ";
                 }
                 elements.add(UserParams[i]);
                 elementType.add(UserModelTypes[i]);
             }
         }
-        query += " ORDER BY visitation_records.RecordId desc ";
         try{
-            pstmt = DbUtil.getConnection().prepareStatement(query);
+            pstmt = DbUtil.getConnection().prepareStatement(basequery);
             for(int i=1;i<=elements.size(); i++){
                 switch(elementType.get(i-1)){
                     case "String":
@@ -197,8 +194,7 @@ public class DoctorDao {
                 }
                 
             }
-            String FinalQuery = "Select * from ("+ pstmt.toString().substring(pstmt.toString().indexOf("select")) + ") as max group by max.OriginalRecordId";
-            rs = pstmt.executeQuery(FinalQuery);
+            rs = pstmt.executeQuery();
             while(rs.next()){
                 vrum = new DoctorVisitationRecordVM();
                 vrm = new VisitationRecordsModel();
@@ -314,4 +310,54 @@ public class DoctorDao {
         }
         return patientsAllowed;
     } 
+
+    public boolean CheckAppointmentConflict(String doctorid, Timestamp time, int duration_minutes){
+        PreparedStatement pstmt=null;
+        ResultSet rs = null;
+        String query = "SELECT * FROM mis_db.appointments where DoctorId = ? and TimeScheduled>=? and TimeScheduled<=?";
+        String time1 = time.toString();
+        time.setTime(time.getTime()+(duration_minutes*60*1000));
+        String time2 = time.toString();
+        
+        try{
+            pstmt = DbUtil.getConnection().prepareStatement(query);
+            pstmt.setString(1, doctorid);
+            pstmt.setString(2, time1);
+            pstmt.setString(3, time2);
+            rs = pstmt.executeQuery();
+            
+            while(rs.next()){
+                return false;
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+    
+    public List<AppointmentsModel> getUpcomingAppointmens(String DoctorId){
+        Statement stmt  = null;
+        String query    = null;
+        ResultSet rs    = null;
+        List<AppointmentsModel> appointments = new ArrayList<AppointmentsModel>();
+        try{
+            stmt = DbUtil.getConnection().createStatement();
+            query = "SELECT * from appointments "
+                    + "WHERE TimeScheduled>NOW() AND DoctorId = '" + DoctorId + "'"
+                    + "ORDER BY TimeScheduled limit 5";
+            System.out.println(query);
+            rs = stmt.executeQuery(query);
+            while(rs.next()){
+                AppointmentsModel appointment = new AppointmentsModel();
+                appointment.setPatientId(rs.getString("PatientId"));
+                appointment.setTimeScheduled(rs.getTimestamp("TimeScheduled"));
+                appointment.setDurationScheduled(rs.getInt("DurationScheduled"));
+                appointments.add(appointment);
+            }
+        } catch (SQLException e) {
+                e.printStackTrace();
+        }
+        return appointments;
+    }
 }

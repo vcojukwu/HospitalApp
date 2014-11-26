@@ -5,19 +5,22 @@
  */
 package controller;
 
+import ViewModel.UserProfileVM;
+import dao.PatientDao;
 import java.io.IOException;
-import java.io.PrintWriter;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author TheKey
  */
-@WebServlet(name = "PatientController", urlPatterns = { "/Patients"})
+@WebServlet(name = "PatientController", urlPatterns = { "/Patients", "/Views/PatientView/Profile"})
 public class PatientController extends HttpServlet {
 
     /**
@@ -59,7 +62,17 @@ public class PatientController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String forward = null;
+        String requestURL = request.getRequestURL().toString();
+        PatientDao patient = new PatientDao();
+        if (requestURL.contains("Views/PatientView/Profile")) {
+            HttpSession session = request.getSession();
+            UserProfileVM user = (UserProfileVM) session.getAttribute("profile");
+            request.setAttribute("upcomingAppointments", patient.getUpcomingAppointmens(user.getUser().getUserId()));
+            forward = "/Views/PatientView/profile.jsp";
+        }
+        RequestDispatcher rd = getServletContext().getRequestDispatcher(forward);
+        rd.forward(request, response);
     }
 
     /**
