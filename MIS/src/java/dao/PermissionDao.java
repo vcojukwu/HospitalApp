@@ -93,7 +93,7 @@ public class PermissionDao {
         PreparedStatement pstmt = null;
         String query;
         try{
-            query = "INSERT INTO mis_db.doctor_permissions (PatientId, DoctorId) VALUES ('?', '?')";
+            query = "INSERT INTO mis_db.doctor_permissions (PatientId, DoctorId) VALUES (?, ?)";
             pstmt = DbUtil.getConnection().prepareStatement(query);
             pstmt.setString(1, patientid);
             pstmt.setString(2, doctorid);

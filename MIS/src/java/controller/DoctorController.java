@@ -82,10 +82,7 @@ public class DoctorController extends HttpServlet {
         }
         else if(requestURL.contains("/Views/DoctorView/GrantPermission")){
             HttpSession session = request.getSession();
-            PermissionDao permission = new PermissionDao();
-            UserProfileVM user = (UserProfileVM) session.getAttribute("profile");
-            request.setAttribute("doctors", permission.getDoctorsExceptCurrent(user.getUser().getUserId()));
-            request.setAttribute("patients", permission.getPatientIdsForCurrentDoc(user.getUser().getUserId()));
+            RefreshPermissions(request,session,response);
             forward = "/Views/DoctorView/permission.jsp";
         }
         else {
@@ -132,24 +129,23 @@ public class DoctorController extends HttpServlet {
             String patId = request.getParameter("patientId");
             String docId = request.getParameter("doctorId");
             permission.AddPermission(docId, patId);
+            RefreshPermissions(request, session, response);
         }
     }
          
         
           
-    private void RefreshPermissions(HttpServletRequest request, HttpSession session, HttpServletResponse response, String patId)
+    private void RefreshPermissions(HttpServletRequest request, HttpSession session, HttpServletResponse response)
         throws ServletException, IOException{
             
-            UserModel user = ((UserProfileVM)session.getAttribute("profile")).getUser();                                //Get Doctor Id  
-            
-            
-           
-            PermissionDao permission = new PermissionDao();
-            DoctorDao doctor = new DoctorDao();
-            request.setAttribute("patientInfo", patient.getUser());
-            request.setAttribute("records", doctor.FindRecords(VisitationRecordSA, UserModelSA));
-            request.setAttribute("procedures", doctor.GetProcedures());
-            
+        PermissionDao permission = new PermissionDao(); 
+            UserProfileVM user = (UserProfileVM) session.getAttribute("profile");
+            request.setAttribute("doctors", permission.getDoctorsExceptCurrent(user.getUser().getUserId()));
+            request.setAttribute("patients", permission.getPatientIdsForCurrentDoc(user.getUser().getUserId()));
+        
+                                        //Get Doctor Id  
+                     
+            request.setAttribute("permission", permission.GetPermissions(user.getUser().getUserId()));      
             RequestDispatcher rd = getServletContext().getRequestDispatcher("/Views/DoctorView/permission.jsp");
             rd.forward(request, response);
     }  
