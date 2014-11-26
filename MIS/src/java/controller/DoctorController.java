@@ -131,6 +131,13 @@ public class DoctorController extends HttpServlet {
             permission.AddPermission(docId, patId);
             RefreshPermissions(request, session, response);
         }
+        else if (request.getParameter("DeleteRecords") != null){
+                PermissionDao permission = new PermissionDao();
+                String patId = request.getParameter("selectedpatid");
+                String docId = request.getParameter("selecteddocid");
+                permission.RemovePermission(docId, patId);
+                RefreshPermissions(request, session, response);
+            }
     }
          
         

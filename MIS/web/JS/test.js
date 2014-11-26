@@ -180,7 +180,7 @@ function enableRowPatientRecord(elem){
         
 }
 
-function deletePermission(r){
+function deletePermission(elem){
     var row = elem.parentNode.parentNode.getElementsByTagName("input");
     document.getElementById("selectedpatid").value = row[0].value;
     document.getElementById("selecteddocid").value = row[1].value;
