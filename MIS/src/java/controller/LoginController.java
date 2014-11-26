@@ -5,7 +5,9 @@
  */
 package controller;
 
+import Model.AppointmentsModel;
 import ViewModel.UserProfileVM;
+import dao.DoctorDao;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,6 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import dao.LoginDao;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpSession;
@@ -91,8 +95,19 @@ public class LoginController extends HttpServlet {
             int userType = user.getUser().getUserType();
             if(userType == 1) //Patient
                 forward = "Views/PatientView/Profile";
-            else if(userType == 2) //Doctor
+            else if(userType == 2){ //Doctor
+                DoctorDao doctor = new DoctorDao();
+                List<AppointmentsModel> appointments = doctor.getAllAppointments(user.getUser().getUserId());
+                List<AppointmentsModel> firstfive = new ArrayList<AppointmentsModel>();
+                int count = 0;
+                for(AppointmentsModel x : appointments){
+                    firstfive.add(x);
+                    count ++;
+                    if(count == 5) break;    
+            }
+                request.setAttribute("upcomingAppointments", firstfive);
                 forward = "Views/DoctorView/Profile";
+            }
             else if(userType == 3) //Staff
                 forward = "Views/StaffView/Profile";
             else if(userType == 4) //Finanace
