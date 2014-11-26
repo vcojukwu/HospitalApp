@@ -22,7 +22,7 @@
                     <input id="diagnosis" type="text" name="diagnosis" class="pure-input-rounded" placeholder="Diagnosis">
                     <input id="notes" type="text" name="notes" class="pure-input-rounded" placeholder="Notes">
                     <input id="firstname" type="text" name="firstname" class="pure-input-rounded" placeholder="Patient First Name">
-                    <input id="lastname" type="text" name="lastname" class="pure-input-rounded" placeholder="lastname">
+                    <input id="lastname" type="text" name="lastname" class="pure-input-rounded" placeholder="Patient Last Name">
                      <input id="recorddate" type="date" name="recorddate" class="pure-input-rounded" placeholder="Recard Date">
                      <input id="treatmentschedule" type="text" name="treatmentschedule" class="pure-input-rounded" placeholder="Treatment Schedule">
                 </div>

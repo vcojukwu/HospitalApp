@@ -97,15 +97,7 @@ public class LoginController extends HttpServlet {
                 forward = "Views/PatientView/Profile";
             else if(userType == 2){ //Doctor
                 DoctorDao doctor = new DoctorDao();
-                List<AppointmentsModel> appointments = doctor.getAllAppointments(user.getUser().getUserId());
-                List<AppointmentsModel> firstfive = new ArrayList<AppointmentsModel>();
-                int count = 0;
-                for(AppointmentsModel x : appointments){
-                    firstfive.add(x);
-                    count ++;
-                    if(count == 5) break;    
-            }
-                request.setAttribute("upcomingAppointments", firstfive);
+                request.setAttribute("upcomingAppointments", doctor.getAllAppointments(user.getUser().getUserId()));
                 forward = "Views/DoctorView/Profile";
             }
             else if(userType == 3) //Staff

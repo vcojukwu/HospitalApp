@@ -6,7 +6,7 @@
     </div>
 
     <div class="content" style="padding-top:30px">
-            <form class="pure-form" method="post" action="Doctor">
+            <form class="pure-form" method="post" action="Views/PatientView/SearchRecords">
                 <fieldset>
                     <legend>Search for a Record</legend>
 
@@ -18,43 +18,31 @@
                             </c:forEach>
                         </select>
 
-                        <input id="email" type="email" name="email" class="pure-input-rounded" placeholder="patient@email.com">
                         <input id="prescriptions" type="text" name="prescriptions" class="pure-input-rounded" placeholder="Prescriptions">
                         <input id="diagnosis" type="text" name="diagnosis" class="pure-input-rounded" placeholder="Diagnosis">
-                        <input id="notes" type="text" name="notes" class="pure-input-rounded" placeholder="Notes">
-                        <input id="firstname" type="text" name="firstname" class="pure-input-rounded" placeholder="Patient First Name">
-                        <input id="lastname" type="text" name="lastname" class="pure-input-rounded" placeholder="lastname">
+                        <input id="treatmentschedule" type="text" name="treatmentschedule" class="pure-input-rounded" placeholder="Treatment Schedule">
                          <input id="recorddate" type="date" name="recorddate" class="pure-input-rounded" placeholder="Recard Date">
                     </div>
 
-                    <input  type="hidden" name="firstname" id="firstname" class="pure-input-rounded" placeholder="First Name">
-                    <input  type="hidden" name="lastname" id="lastname" class="pure-input-rounded" placeholder="Last Name">
-
-                    <label id="adv2" for="date" style="display:none">Last Visit :</label>
-                    <input id="adv3" name="lastvisit" type="hidden">
 
                     <button type="submit" class="pure-button pure-button-primary" name="SearchRecords">Search</button>
-                    <button type="button" id="advSearch" onClick="showAdv1();
-                            return false" class="pure-button pure-button-primary">Advanced Search</button>
                 </fieldset>
         </div>
-         <form class="pure-form" method="post" action="Doctor">
+         <form class="pure-form" method="post" action="Views/PatientView/SearchRecords">
             <div style="margin-left:5%">
                 <table class="pure-table pure-table-bordered" id="appointments">
                     <thead>
                         <tr>
                     <thead>
                         <tr>
-                            <th>Patient Id</th>
-                            <th>First Name</th>
-                            <th>Last Name</th>
+                            <th>Doctor Id</th>
                             <th>Procedure</th>
                             <th>Date</th>
                             <th>Time Started</th>
                             <th>Time Ended</th>
                             <th>Prescriptions</th>
                             <th>Diagnosis</th>
-                            <th>Notes</th>
+                            <th>Treatment Schedule</th>
                         </tr>
                     </thead>
                         </tr>
@@ -62,9 +50,7 @@
                     <tbody>
                           <c:forEach items="${records}" var="item" >
                             <tr>
-                                <td><input id="tpatientid" type="text" value = "${item.getUser().getUserId()}" disabled></td>
-                                <td><input id="tfirstname" type="text" value = "${item.getUser().getFirstName()}" disabled></td>
-                                <td><input id="tlastname" type="text" value = "${item.getUser().getLastName()}" disabled></td>
+                                <td><input id="tpatientid" type="text" value = "${item.getVisitationRecord().getDoctorId()}" disabled></td>
                                 <td>                    
                                     <select id="procedureId" name="procedureId" disabled>
                                         <c:forEach items="${procedures}" var="procedures" >
@@ -84,7 +70,7 @@
                                 <td><input id="ttimeended" type="time" value = "${item.getVisitationRecord().getTimeEndedUI()}" disabled></td>
                                 <td><input id="tprecriptions" type="text" value = "${item.getVisitationRecord().getPrescriptions()}" disabled></td>
                                 <td><input id="tDiagnosis" type="text" value = "${item.getVisitationRecord().getDiagnosis()}" disabled></td>
-                                <td><input id="tnotes" type="text" value = "${item.getVisitationRecord().getNotes()}" disabled></td>
+                                <td><input id="ttreatmentschedule" type="text" value = "${item.getVisitationRecord().getTreatmentSchedule()}" disabled></td>
                             </tr>
                             </c:forEach>
                     </tbody>
