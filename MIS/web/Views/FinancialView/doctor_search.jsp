@@ -36,12 +36,12 @@
         <c:set var="count" value='<%= request.getAttribute("patientCount")%>' />
         <c:choose>
             <c:when test="${count != 0}">
-               <div> 
+               <div id="startend" align="center" style="margin:0 auto;width:50%; margin-top:5%"> 
                    <%= request.getAttribute("patientCount")%> patient(s) was seen by <%= request.getAttribute("doctorUserId")%>   between <%= request.getAttribute("startDate")%> and <%= request.getAttribute("endDate")%>
                 </div>
             </c:when>
             <c:when test="${inputDisplay == 1}">
-                <div>
+                <div id="startend" align="center" style="margin:0 auto;width:50%; margin-top:5%">
                     Invalid date selection
                 </div>
             </c:when>     

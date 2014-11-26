@@ -25,12 +25,12 @@
         <c:set var="count" value='<%= request.getAttribute("visitCount")%>' />
         <c:choose>
             <c:when test="${count != 0}">
-               <div>
+               <div id="startend" align="center" style="margin:0 auto;width:50%; margin-top:5%">
                     Bill for <%= request.getAttribute("startDate") %> to <%= request.getAttribute("endDate") %>
                 </div>
             </c:when>
             <c:when test="${inputDisplay == 1}">
-                <div>
+                <div id="startend" align="center" style="margin:0 auto;width:50%; margin-top:5%">
                     Incomplete date selection
                 </div>
             </c:when>      
