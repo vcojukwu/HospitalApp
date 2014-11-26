@@ -26,7 +26,7 @@
                     <a href="Views/PatientView/appointments.jsp">Past Appointments</a>
                 </li>
                 <li>
-                    <a href="Views/PatientView/prescriptions.jsp">Prescriptions</a> 
+                    <a href="Views/PatientView/search_patient_record.jsp">Search Records</a> 
                 </li>
                 <li>
                     <a href="Views/PatientView/diagnosis.jsp">Diagnosis</a>

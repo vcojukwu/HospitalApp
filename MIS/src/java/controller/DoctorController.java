@@ -137,6 +137,7 @@ public class DoctorController extends HttpServlet {
             String lastname = request.getParameter("lastname");
             String recorddate = request.getParameter("recorddate");
             String procedureid = request.getParameter("procedureId");
+            String treatmentSchedule = request.getParameter("treatmentschedule");
                            
             UserModel user = ((UserProfileVM)session.getAttribute("profile")).getUser();                                //Get Doctor Id  
             
@@ -145,7 +146,7 @@ public class DoctorController extends HttpServlet {
             //get the patient info to diplay on top currently ill display id only - we can add first name and last name later on
             String[] VisitationRecordSA = {null,null, (procedureid.equals("0"))? null : procedureid,
                 (email == "")?null : email, user.getUserId(), (recorddate == "")? null : recorddate, null,
-                (prescriptions == "")? null : prescriptions, (diagnosis == "")? null : diagnosis, null,
+                (prescriptions == "")? null : prescriptions, (diagnosis == "")? null : diagnosis, (treatmentSchedule == "")?null : treatmentSchedule,
                 (notes == "")? null : notes};
             String[] UserModelSA = {null, (firstname == "")? null : firstname, (lastname == "")? null : lastname , null, 
                 null, null, null, null, null, null, null};
@@ -213,8 +214,6 @@ public class DoctorController extends HttpServlet {
                 
         DoctorDao doctor = new DoctorDao();
         
-        String temp = request.getParameter("selectedNotes");
-        
         VisitationRecordsModel visitationRecord = new VisitationRecordsModel();
         
         int recordType = Integer.parseInt(request.getParameter("selectedRecordType"));                   //0 = existing record, 1 = new record
@@ -240,7 +239,7 @@ public class DoctorController extends HttpServlet {
         visitationRecord.setTimeEnded(ParseTimeRecords(request.getParameter("selectedDate"), request.getParameter("selectedTimeEnded")));
         visitationRecord.setPrescriptions(request.getParameter("selectedPrecriptions"));
         visitationRecord.setDiagnosis(request.getParameter("selectedDiagnosis"));
-        visitationRecord.setTreatmentSchedule("EMPTY");                                             // no treatment schedule field has been added yet
+        visitationRecord.setTreatmentSchedule(request.getParameter("selectedTreatmentSchedule"));                                             // no treatment schedule field has been added yet
         visitationRecord.setNotes(request.getParameter("selectedNotes"));
         
         doctor.AddVisitationRecord(visitationRecord);

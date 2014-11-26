@@ -167,10 +167,11 @@ function enableRowPatientRecord(elem){
 		document.getElementById("selectedTimeEnded").value = row[2].value;
                 document.getElementById("selectedPrecriptions").value = row[3].value;
 		document.getElementById("selectedDiagnosis").value = row[4].value;
-		document.getElementById("selectedNotes").value = row[5].value;
-                document.getElementById("selectedOriginalRecordId").value = row[6].value;
-                document.getElementById("selectedRecordId").value = row[7].value;
-                document.getElementById("selectedRecordType").value = row[8].value;
+                document.getElementById("selectedTreatmentSchedule").value = row[5].value;
+		document.getElementById("selectedNotes").value = row[6].value;
+                document.getElementById("selectedOriginalRecordId").value = row[7].value;
+                document.getElementById("selectedRecordId").value = row[8].value;
+                document.getElementById("selectedRecordType").value = row[9].value;
                 
                 
                 //Submit form

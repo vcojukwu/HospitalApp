@@ -19,6 +19,7 @@
 	var cell6 = row.insertCell(5);
 	var cell7 = row.insertCell(6);
         var cell8 = row.insertCell(7);
+        var cell9 = row.insertCell(8;)
 	
 	cell1.innerHTML = '<select id="procedureId" name="procedureId">\
                                     <c:forEach items="${procedures}" var="procedures" >\
@@ -30,8 +31,9 @@
 	cell4.innerHTML = '<input id="timeended" type="time" value="' + timenow + '" >';
 	cell5.innerHTML = '<input id="precriptions" type="text" value ="" >';
 	cell6.innerHTML = '<input id="Diagnosis" type="text" value ="" >';
-	cell7.innerHTML = '<input id="notes" type="text" value = "" >';
-	cell8.innerHTML = '<button title="Save" value="PatientRecord" name="PatientRecord" onclick="enableRowPatientRecord(this); \
+        cell7.innerHTML = '<input id="treatmentschedule" type="text" value = "" >';
+	cell8.innerHTML = '<input id="notes" type="text" value = "" >';
+	cell9.innerHTML = '<button title="Save" value="PatientRecord" name="PatientRecord" onclick="enableRowPatientRecord(this); \
                                     return false" style="margin-right:15%; margin-left:15%" class="pure-button">\
                                     <i class="fa fa-floppy-o"></i>\
                            </button>';
@@ -80,6 +82,7 @@
                         <th>Time Ended</th>
                         <th>Prescriptions</th>
                         <th>Diagnosis</th>
+                        <th>Treatment Schedule </th>
                         <th>Notes</th>
                         <th style="width:20%"></th>
                     </tr>
@@ -106,6 +109,7 @@
                             <td><input id="timeended" type="time" value = "${item.getVisitationRecord().getTimeEndedUI()}" disabled></td>
                             <td><input id="precriptions" type="text" value = "${item.getVisitationRecord().getPrescriptions()}" disabled></td>
                             <td><input id="Diagnosis" type="text" value = "${item.getVisitationRecord().getDiagnosis()}" disabled></td>
+                            <td><input id="treatmentschedule" type="text" value = "${item.getVisitationRecord().getTreatmentSchedule()}" disabled></td>
                             <td><input id="notes" type="text" value = "${item.getVisitationRecord().getNotes()}" disabled></td>
                             <input id="originalrecordid" type="hidden" value = "${item.getVisitationRecord().getOriginalRecordId()}" disabled >
                             <input id="recordId" type="hidden" type="number" value = "${item.getVisitationRecord().getRecordId()}" disabled >
@@ -128,6 +132,7 @@
                 <input type="hidden" id="selectedTimeEnded" name="selectedTimeEnded" type="time">
                 <input type="hidden" id="selectedPrecriptions" name="selectedPrecriptions" type="text">
                 <input type="hidden" id="selectedDiagnosis" name="selectedDiagnosis" type="text">
+                <input type="hidden" id="selectedTreatmentSchedule" name="selectedTreatmentSchedule" type="text">
                 <input type="hidden" id="selectedNotes" name="selectedNotes" type="text">
                 <input type="hidden" id="selectedOriginalRecordId" name="selectedOriginalRecordId" type="number">
                 <input type="hidden" id="selectedRecordId" name="selectedRecordId" type="number">

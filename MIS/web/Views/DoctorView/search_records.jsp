@@ -24,6 +24,7 @@
                     <input id="firstname" type="text" name="firstname" class="pure-input-rounded" placeholder="Patient First Name">
                     <input id="lastname" type="text" name="lastname" class="pure-input-rounded" placeholder="lastname">
                      <input id="recorddate" type="date" name="recorddate" class="pure-input-rounded" placeholder="Recard Date">
+                     <input id="treatmentschedule" type="text" name="treatmentschedule" class="pure-input-rounded" placeholder="Treatment Schedule">
                 </div>
 
                 <input  type="hidden" name="firstname" id="firstname" class="pure-input-rounded" placeholder="First Name">
@@ -54,6 +55,7 @@
                         <th>Prescriptions</th>
                         <th>Diagnosis</th>
                         <th>Notes</th>
+                        <th>Treatment Schedule</th>
                     </tr>
                 </thead>
                     </tr>
@@ -84,6 +86,7 @@
                             <td><input id="tprecriptions" type="text" value = "${item.getVisitationRecord().getPrescriptions()}" disabled></td>
                             <td><input id="tDiagnosis" type="text" value = "${item.getVisitationRecord().getDiagnosis()}" disabled></td>
                             <td><input id="tnotes" type="text" value = "${item.getVisitationRecord().getNotes()}" disabled></td>
+                            <td><input id="ttreatmentschedule" type="text" value = "${item.getVisitationRecord().getTreatmentSchedule()}" disabled></td>
                         </tr>
                         </c:forEach>
                 </tbody>
