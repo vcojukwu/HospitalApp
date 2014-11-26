@@ -118,8 +118,13 @@ public class DoctorDao {
         List<DoctorVisitationRecordVM> result = new ArrayList<DoctorVisitationRecordVM>();
         String allowedIds = " (";
         
-        List<String> AllowedPatientIds = GetAllowedPatientList(VRecordParams[4]);
+        if(VRecordParams[3]==null && VRecordParams[4]==null){
+            return null;
+        }
+        
         if(VRecordParams[3]==null){
+            //Doctor is searching all records, need to limit what he can see
+            List<String> AllowedPatientIds = GetAllowedPatientList(VRecordParams[4]);
             for(String id:AllowedPatientIds){
                 allowedIds += "'" + id + "',";
             }
@@ -127,13 +132,22 @@ public class DoctorDao {
             basequery += " WHERE p.PatientId IN"+allowedIds;
         }
         else{
-            if(AllowedPatientIds.contains(VRecordParams[3])){
-                allowedIds += "'" + VRecordParams[3] + "') ";
-            basequery += " WHERE p.PatientId IN"+allowedIds;
+            if(VRecordParams[4]!=null){
+                //Doctor is entering a patient ID, ensure he has access to it.
+                List<String> AllowedPatientIds = GetAllowedPatientList(VRecordParams[4]);
+                 if(AllowedPatientIds.contains(VRecordParams[3])){
+                    allowedIds += "'" + VRecordParams[3] + "') ";
+                    basequery += " WHERE p.PatientId IN"+allowedIds;
+                    }
+                else{
+                    return null;
+                }
             }
             else{
-                return null;
-            }
+                //Patient is search (only have PatientId)
+                allowedIds += "'" + VRecordParams[3] + "') ";
+                basequery += " WHERE p.PatientId IN"+allowedIds;
+            }           
         }
         
         for(int i=0; i<VisitationRecordModelColumns.length; i++){
