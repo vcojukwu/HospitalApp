@@ -5,8 +5,12 @@
  */
 package controller;
 
+import ViewModel.DoctorMonitorVM;
+import com.google.gson.Gson;
+import dao.FinanceDao;
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,7 +21,9 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author TheKey
  */
-@WebServlet(name = "FinancalController", urlPatterns = {"/Financal"})
+@WebServlet(name = "FinancalController", urlPatterns = {"/Financal/*", "/Financial/Monitor","/Financial/PatientSearch"},
+        loadOnStartup = 1,
+        asyncSupported = true)
 public class FinancalController extends HttpServlet {
 
     /**
@@ -58,7 +64,28 @@ public class FinancalController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String forward="";
+        String requestURL = request.getRequestURL().toString();
+        FinanceDao finance = new FinanceDao();
+        if(requestURL.contains("Monitor")){
+            request.setAttribute("doctors", finance.getDoctors());
+            forward = "/Views/FinancialView/doctor_search.jsp";
+            RequestDispatcher rd = getServletContext().getRequestDispatcher(forward);            
+            rd.forward(request, response);
+        }
+        else if(requestURL.contains("PatientSearch"))
+        {
+            
+            String doctorId = request.getParameter("userId");
+            String startDate = request.getParameter("startDate");
+            String endDate = request.getParameter("endDate");
+            DoctorMonitorVM vm = finance.getPatientList(doctorId, startDate, endDate);
+            String json = new Gson().toJson(vm);
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write(json);
+        }
+        
     }
 
     /**
