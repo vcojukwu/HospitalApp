@@ -6,7 +6,7 @@
 
         <div class="content" style="padding-top:30px">
             <img style="margin-left:40%" src="Images/profilepic.jpg"/>
-<a href="${pageContext.request}/Patient?action=edit">Update</a>            <div style="float:right; width:45%; height:80%; margin-left:5%">
+           <div style="float:right; width:45%; height:80%; margin-left:5%">
                 <p>Upcoming Appointments</p>
                 <table class="pure-table pure-table-bordered" id="appointments">
                 <thead>
