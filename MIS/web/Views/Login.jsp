@@ -29,10 +29,10 @@
                     <legend>Login</legend>
 
                     <label for="email">Email</label>
-                    <input id="email" name="userId" type="email" placeholder="Email">
+                    <input id="email" name="userId" type="email" placeholder="Email" required>
 
                     <label for="password">Password</label>
-                    <input id="password" name="pwd" type="password" placeholder="Password">
+                    <input id="password" name="pwd" type="password" placeholder="Password" required>
 
                     <label for="remember" class="pure-checkbox">
                         <input id="remember" type="checkbox"> Remember me
@@ -41,9 +41,6 @@
                     <button type="submit" class="pure-button pure-button-primary">Sign in</button>
                 </fieldset>
             </form>
-            <a href="Views/PatientView/profile.jsp">Go To Patient View</a><br>
-            <a href="Views/DoctorView/profile_doc.jsp">Go To Doctor View</a><br>
-            <a href="Views/StaffView/profile_staff.jsp">Go To Staff View</a>
         </div>
     </body>
 
