@@ -70,13 +70,15 @@ public class FinancalController extends HttpServlet {
         
         if(request.getParameter("SearchRecords") != null)
         {     
-            String doctorId = request.getParameter("userId");
+            String doctorId = request.getParameter("doctorId");
             String startDate = request.getParameter("startDate");
             String endDate = request.getParameter("endDate");
             forward = "/Views/FinancialView/doctor_search.jsp";
             DoctorMonitorVM vm = finance.getPatientList(doctorId, startDate, endDate);
-            request.setAttribute("searchRecords", vm);
-
+            request.setAttribute("patientCount", vm.getUniquePatientCount());
+            request.setAttribute("searchRecords", vm.getVisitRecords());
+            request.setAttribute("procedureList", vm.getProcedureList());
+            request.setAttribute("doctors", finance.getDoctors());
         }
         else if(requestURL.contains("Monitor")){
             request.setAttribute("doctors", finance.getDoctors());

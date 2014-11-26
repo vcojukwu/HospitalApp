@@ -10,16 +10,17 @@ import Model.ProceduresModel;
 import Model.VisitationRecordsModel;
 import ViewModel.DoctorMonitorVM;
 import ViewModel.RevenueVM;
+import ViewModel.VisitRecordVM;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Map;
 import util.DbUtil;
 
 /**
@@ -87,56 +88,64 @@ public class FinanceDao {
             
             pstmt = DbUtil.getConnection().prepareStatement(query);            
             rs = pstmt.executeQuery(query);
-            
+            Map<String, List<VisitRecordVM>> VisitRecords = new HashMap<String,List<VisitRecordVM>>();
             while(rs.next()){
-                VisitationRecordsModel record = new VisitationRecordsModel();
+                //VisitationRecordsModel record = new VisitationRecordsModel();
+                
+                String patientId = rs.getString("PatientId");
+                if (!VisitRecords.containsKey(patientId))
+                    VisitRecords.put(patientId, new ArrayList<VisitRecordVM>());
+                
                 if (rs.getInt("OriginalRecordId") != 0)
                 {
-                    for(VisitationRecordsModel rcd : result)
+                    for(VisitRecordVM rcd : VisitRecords.get(patientId))
                     {
-                        rcd.setRecordId(rs.getInt("RecordId"));
-                        rcd.setOriginalRecordId(rs.getInt("OriginalRecordId"));
-                        rcd.setProcedureId(rs.getInt("ProcedureId"));
-                        rcd.setPatientId(rs.getString("PatientId"));
-                        rcd.setTimeStarted(rs.getTimestamp("TimeStarted"));
-                        rcd.setTimeEnded(rs.getTimestamp("TimeEnded"));
-                        rcd.setPrescriptions(rs.getString("Prescriptions"));
-                        rcd.setDiagnosis(rs.getString("Diagnosis"));
-                        rcd.setTreatmentSchedule(rs.getString("TreatmentSchedule"));
-                        rcd.setNotes(rs.getString("Notes"));
+                        if (rcd.getRecordId() == rs.getInt("OriginalRecordId") || rcd.getOriginalRecordId() == rs.getInt("OriginalRecordId") )
+                        {
+                            rcd.setRecordId(rs.getInt("RecordId"));
+                            rcd.setOriginalRecordId(rs.getInt("OriginalRecordId"));
+                            rcd.setProcedureName(rs.getString("ProcedureName"));
+                            rcd.setProcedureCost(rs.getInt("ProcedureCost"));
+                            rcd.setPatientId(rs.getString("PatientId"));
+                            rcd.setTimeStarted(rs.getTimestamp("TimeStarted"));
+                            rcd.setTimeEnded(rs.getTimestamp("TimeEnded"));
+                            rcd.setPrescriptions(rs.getString("Prescriptions"));
+                            rcd.setDiagnosis(rs.getString("Diagnosis"));
+                            rcd.setTreatmentSchedule(rs.getString("TreatmentSchedule"));
+                            rcd.setNotes(rs.getString("Notes"));
+                            break;
+                        }   
                     }
                 }
-                else
+                else 
                 {
-                    record.setRecordId(rs.getInt("RecordId"));
-                    record.setOriginalRecordId(rs.getInt("OriginalRecordId"));
-                    record.setProcedureId(rs.getInt("ProcedureId"));
-                    record.setPatientId(rs.getString("PatientId"));
-                    record.setTimeStarted(rs.getTimestamp("TimeStarted"));
-                    record.setTimeEnded(rs.getTimestamp("TimeEnded"));
-                    record.setPrescriptions(rs.getString("Prescriptions"));
-                    record.setDiagnosis(rs.getString("Diagnosis"));
-                    record.setTreatmentSchedule(rs.getString("TreatmentSchedule"));
-                    record.setNotes(rs.getString("Notes"));
-                    result.add(record);
+                    VisitRecordVM newRecord = new VisitRecordVM();
+                    newRecord.setRecordId(rs.getInt("RecordId"));
+                    newRecord.setOriginalRecordId(rs.getInt("OriginalRecordId"));
+                    newRecord.setProcedureName(rs.getString("ProcedureName"));
+                    newRecord.setProcedureCost(rs.getInt("ProcedureCost"));
+                    newRecord.setPatientId(rs.getString("PatientId"));
+                    newRecord.setTimeStarted(rs.getTimestamp("TimeStarted"));
+                    newRecord.setTimeEnded(rs.getTimestamp("TimeEnded"));
+                    newRecord.setPrescriptions(rs.getString("Prescriptions"));
+                    newRecord.setDiagnosis(rs.getString("Diagnosis"));
+                    newRecord.setTreatmentSchedule(rs.getString("TreatmentSchedule"));
+                    newRecord.setNotes(rs.getString("Notes"));
+                    VisitRecords.get(patientId).add(newRecord);
                 }
                                 
             }
-            HashSet uniquePatients = new HashSet();
-            for(VisitationRecordsModel p : result)
-            {
-                uniquePatients.add(p.getPatientId());
-            }
-            vm.setUniquePatientCount(uniquePatients.size());
+
+            vm.setUniquePatientCount(VisitRecords.size());
             vm.setProcedureList(procedureList);
-            vm.setVisitRecords(result);
+            vm.setVisitRecords(VisitRecords);
             return vm;
         } catch (SQLException e) {
                 e.printStackTrace();
         }
         vm.setProcedureList(new ArrayList<ProceduresModel>());
         vm.setUniquePatientCount(0);
-        vm.setVisitRecords(new ArrayList<VisitationRecordsModel>());
+        vm.setVisitRecords(new HashMap<String,List<VisitRecordVM>>());
         return vm;
     }
  
