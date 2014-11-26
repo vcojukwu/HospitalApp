@@ -22,7 +22,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author TheKey
  */
-@WebServlet(name = "PatientController", urlPatterns = { "/Patients", "/Views/PatientView/Profile", "/Views/PatientView/SearchRecords"})
+@WebServlet(name = "PatientController", urlPatterns = { "/Patients", "/Views/PatientView/Profile", "/Views/PatientView/SearchRecords", "/Views/PatientView/PastAppointments"})
 public class PatientController extends HttpServlet {
 
     /**
@@ -77,6 +77,13 @@ public class PatientController extends HttpServlet {
             DoctorDao doctor = new DoctorDao();
             request.setAttribute("procedures", doctor.GetProcedures());
             forward = "/Views/PatientView/search_patient_record.jsp";
+        }
+        else if (requestURL.contains("Views/PatientView/PastAppointments")) {
+            HttpSession session = request.getSession();
+            DoctorDao doctor = new DoctorDao();
+            UserProfileVM user = (UserProfileVM) session.getAttribute("profile");
+            request.setAttribute("PastAppointments", doctor.getPastAppointments(user.getUser().getUserId()));
+            forward = "/Views/PatientView/appointments.jsp";
         }
         RequestDispatcher rd = getServletContext().getRequestDispatcher(forward);
         rd.forward(request, response);

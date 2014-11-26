@@ -23,16 +23,10 @@
                     <a href="Views/PatientView/Profile">Profile</a>
                 </li>
                 <li>
-                    <a href="Views/PatientView/appointments.jsp">Past Appointments</a>
+                    <a href="Views/PatientView/PastAppointments">Past Appointments</a>
                 </li>
                 <li>
                     <a href="Views/PatientView/SearchRecords">Search Records</a> 
-                </li>
-                <li>
-                    <a href="Views/PatientView/diagnosis.jsp">Diagnosis</a>
-                </li>
-                <li>
-                    <a href="Views/PatientView/requests.jsp">Request Appointment</a>
                 </li>
                 <li>
                     <!--<a href="#">Logout</a>-->
