@@ -6,7 +6,7 @@
 <div id="menu">
     <div class="pure-menu pure-menu-open">
         <p class="pure-menu-heading" align="center" style="background-color:#DDF10A">UWH</p>
-        <a href="#"><img src="Images/uwhlogo.jpg" alt="Insert Logo Here" width="120" height="90" id="Insert_logo" style="margin-left:17px"/></a>
+        <img src="Images/uwhlogo.jpg" alt="Insert Logo Here" width="100%" height="90" id="Insert_logo"/>
         <p align="center">
             <%= profile.getUser().getFirstName()%>  <%= profile.getUser().getLastName()%>
         </p>
