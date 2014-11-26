@@ -39,7 +39,7 @@ public class AppointmentsModel {
         return TimeScheduled;
     }
     
-    public String getTimeScheuledUI() {
+    public String getTimeScheduledUI() {
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm"); 
         return sdf.format(TimeScheduled);        
     }

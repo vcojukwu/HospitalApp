@@ -87,7 +87,7 @@ function addRow2(r){
                             </select>
                         </td>                        
                         <td><input name="date" class="rowData" type="date" value = ${appointment.getDate()} disabled></td>
-                        <td><input name="time" class="rowData" type="time" value = ${appointment.getTimeScheuledUI()} disabled></td>
+                        <td><input name="time" class="rowData" type="time" value = ${appointment.getTimeScheduledUI()} disabled></td>
                         <td><input name="duration" class="rowData" type="number" style="width:100%" value="${appointment.getDurationScheduled()}"  disabled></td>
                         <td>
                             <input onClick="enableRow(this);return false" class="pure-button pure-input-1-2 pure-button-primary" type="button" name="Edit" value="Edit" />
