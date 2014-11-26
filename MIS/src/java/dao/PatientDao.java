@@ -119,6 +119,11 @@ public class PatientDao {
         UserModel usermodel= null;
         String allowedIds = " (";
         
+        if(PatientSearchAttr[1]==null){
+            //patient is logged in and doing a search
+            result.add(getPatient(PatientSearchAttr[1]));
+            return result;
+        }
         //This request will get a list of PatientIds for which the given DoctorId is allowed to view
         List<String> AllowedPatientIds = GetAllowedPatientList(PatientSearchAttr[1]);
 
