@@ -62,8 +62,10 @@ public class UserDao {
                         + "PatientNotes) VALUES ('" + patient.getPatientId()+ "', '" + patient.getDoctorId()
                         + "', " + patient.getHealthStateId() + ", " + patient.getHealthCardNumber()                      
                         + ", " + patient.getSocialInsuranceNumber() + ", " + patient.getNumberOfVisits() + ", "
-                        + patient.isIsActive() + ", " + patient.getPatientNotes() + ");";
-                System.out.println(query);
+                        + patient.isIsActive() + ", " + patient.getPatientNotes() + ");";                
+                stmt.executeUpdate(query);                
+                query = "INSERT INTO doctor_permissions (PatientId, DoctorId) VALUES ('" + patient.getPatientId() 
+                    + "', '" + patient.getDoctorId() + "');";
                 stmt.executeUpdate(query);
             } else if (userType == 2){
                 query = "INSERT INTO mis_db.doctors (DoctorId, DoctorType) VALUES ('"
