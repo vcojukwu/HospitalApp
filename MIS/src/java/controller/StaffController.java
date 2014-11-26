@@ -7,7 +7,9 @@ package controller;
 
 import Model.AppointmentsModel;
 import Model.PatientModel;
+import Model.UserModel;
 import ViewModel.UserProfileVM;
+import dao.PatientDao;
 import dao.StaffDao;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -27,7 +29,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author TheKey
  */
-@WebServlet(name = "StaffController", urlPatterns = {"/Staff", "/AssignPatients", "/AddNewUser", "/Appointments", "/AddAppointments", "/Views/StaffView/Profile"})
+@WebServlet(name = "StaffController", urlPatterns = {"/Staff", "/AssignPatients", "/AddNewUser", "/Appointments", "/AddAppointments", "/Views/StaffView/Profile", "/Views/StaffView/SearchPatients"})
 public class StaffController extends HttpServlet {
 
     /**
@@ -89,11 +91,42 @@ public class StaffController extends HttpServlet {
             UserProfileVM user = (UserProfileVM) session.getAttribute("profile");
             request.setAttribute("upcomingAppointments", staff.getUpcomingAppointmens(user.getUser().getUserId()));
             forward = "/Views/StaffView/profile_staff.jsp";
+        } else if (requestURL.contains("/Views/StaffView/SearchPatients")) {
+            HttpSession session = request.getSession();
+            //UserProfileVM user = (UserProfileVM) session.getAttribute("profile");
+            //request.setAttribute("upcomingAppointments", staff.getUpcomingAppointmens(user.getUser().getUserId()));
+            forward = "/Views/StaffView/staffpatient_search.jsp";
         }
         RequestDispatcher rd = getServletContext().getRequestDispatcher(forward);            
         rd.forward(request, response);
     }
 
+    
+    
+        private void SearchPatients(HttpServletRequest request, HttpSession session, HttpServletResponse response)
+        throws ServletException, IOException{
+        
+        String firstname = request.getParameter("firstname");
+        String lastname = request.getParameter("lastname");
+        String patientId = request.getParameter("email");
+        String lastVisit = request.getParameter("lastvisit");
+        String doctorId = request.getParameter("doctoremail");
+        
+        UserModel user = ((UserProfileVM)session.getAttribute("profile")).getUser();
+        //Get Doctor Id  
+        PatientDao patientdao = new PatientDao();
+        String[] PatientModelSA = {(patientId == "")? null : patientId, (doctorId == "")? null : doctorId, null,null,
+            null,null, null, (lastVisit == "")?  null : lastVisit , null};
+        String[] UserModelSA = {null, (firstname == "")?  null : firstname , (lastname == "")?  null : lastname, null, 
+            null, null, null, null,null, 
+            null, null};
+        //For now just get all patients, not sending in search criteria
+         request.setAttribute("patients", patientdao.searchPatients(PatientModelSA, UserModelSA));
+         
+        RequestDispatcher rd = getServletContext().getRequestDispatcher("/Views/DoctorView/search_patients.jsp");
+        rd.forward(request, response);
+    }
+        
     private void editAppointment(HttpServletRequest request){
         StaffDao staff = new StaffDao();
         AppointmentsModel appointment = new AppointmentsModel();
