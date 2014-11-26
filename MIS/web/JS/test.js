@@ -212,8 +212,8 @@ function addRowPatientRecord(r){
         var tmp3 = '${procedures}';
 	
 	cell1.innerHTML = '<select id="procedureId" name="procedureId">\
-                                    <c:forEach items="'+ tmp3 +'" var="procedures" >\
-                                        <option value="' + tmp + '">' + tmp2 +'</option>\
+                                    <c:forEach items="\${procedures}" var="procedures" >\
+                                        <option value="\${procedures.getProcedureId()}">\${procedures.getProcedureName()}</option>\
                                     </c:forEach>\
                                 </select>';
 	cell2.innerHTML = '<input id="date" type="date" value ="' + newdate + '">';

@@ -7,6 +7,7 @@ package controller;
 
 import Model.*;
 import ViewModel.DoctorVisitationRecordVM;
+import ViewModel.PatientUserVM;
 import ViewModel.UserProfileVM;
 import dao.*;
 import java.io.IOException;
@@ -113,9 +114,9 @@ public class DoctorController extends HttpServlet {
             PatientDao patientdao = new PatientDao();
             UserModel user = ((UserProfileVM)session.getAttribute("profile")).getUser();                                //Get Doctor Id  
             
+            PatientUserVM patient = patientdao.getPatient(patId);
            
             //get the patient info to diplay on top currently ill display id only - we can add first name and last name later on
-            //request.setAttribute("patientId", patId);
             String[] VisitationRecordSA = {null,null, null,
                 patId,user.getUserId(),null,null,null,null,
                 null, null};
@@ -123,9 +124,8 @@ public class DoctorController extends HttpServlet {
                 null, null, null, null, null, 
                 null, null};
             DoctorDao doctor = new DoctorDao();
-            List<DoctorVisitationRecordVM> tmp = doctor.FindRecords(VisitationRecordSA, UserModelSA);
-            request.setAttribute("patientInfo", tmp.get(0).getUser());
-            request.setAttribute("records", tmp);
+            request.setAttribute("patientInfo", patient.getUser());
+            request.setAttribute("records", doctor.FindRecords(VisitationRecordSA, UserModelSA));
             request.setAttribute("procedures", doctor.GetProcedures());
             
         RequestDispatcher rd = getServletContext().getRequestDispatcher("/Views/DoctorView/patient_records.jsp");

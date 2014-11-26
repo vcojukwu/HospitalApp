@@ -36,7 +36,7 @@
                     <tr>
                         <th>Patient Email</th>
                         <th>Patient Name</th>
-                        <th>Doctor Name</th>
+                        <th>Doctor Id</th>
                         <th>Last Visit</th>
                         <th>Active</th>
                         <th><span style="visibility:hidden">EditandDeleteButtons</span></th>
@@ -48,7 +48,7 @@
                             <td><input id="patID" type="text" value = ${item.getPatient().getPatientId()} disabled></td>
                             <td><input id="patName" type="text" value = "${item.getUser().getFirstName()} ${item.getUser().getLastName()}" disabled></td>
                             <td><input id="docName" type="text" value = "John Doe" disabled></td>
-                            <td><input id="lastVisit" type="date" value = "" disabled></td>
+                            <td><input id="lastVisit" type="date" value = "" disabled></td>                
                             <td align="center"><input id="isActive" type="checkbox" value = "1" disabled></td>
                             <td align="center">
 
