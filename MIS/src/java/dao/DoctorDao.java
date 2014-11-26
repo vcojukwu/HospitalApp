@@ -109,8 +109,12 @@ public class DoctorDao {
         DoctorVisitationRecordVM vrum = null;
         VisitationRecordsModel vrm = null;
         UserModel um = null;
-        String query = "select * from mis_db.visitation_records left join mis_db.users "
-                    + "on visitation_records.PatientId = users.UserId ";
+        String basequery ="select * from "
+                + "(select * from "
+                    + "(select * from mis_db.visitation_records left join mis_db.users on visitation_records.PatientId = users.UserId ORDER BY visitation_records.RecordId desc) "
+                + "as max group by max.OriginalRecordId) "
+                + "as p";
+        
         List<DoctorVisitationRecordVM> result = new ArrayList<DoctorVisitationRecordVM>();
         String allowedIds = " (";
         
@@ -120,12 +124,12 @@ public class DoctorDao {
                 allowedIds += "'" + id + "',";
             }
             allowedIds = allowedIds.substring(0, allowedIds.length()-1)+") ";
-            query += " WHERE visitation_records.PatientId IN"+allowedIds;
+            basequery += " WHERE p.PatientId IN"+allowedIds;
         }
         else{
             if(AllowedPatientIds.contains(VRecordParams[3])){
                 allowedIds += "'" + VRecordParams[3] + "') ";
-            query += " WHERE visitation_records.PatientId IN"+allowedIds;
+            basequery += " WHERE p.PatientId IN"+allowedIds;
             }
             else{
                 return null;
@@ -138,12 +142,12 @@ public class DoctorDao {
                 continue;
             }
             if(VRecordParams[i] != null){
-                query += " AND ";
+                basequery += " AND ";
                 if(VisitationRecordModelTypes[i].equals("boolean") || VisitationRecordModelTypes[i].equals("int")){
-                    query += "visitation_records." + VisitationRecordModelColumns[i] + " = ? ";
+                    basequery += "p." + VisitationRecordModelColumns[i] + " = ? ";
                 }
                 else{
-                    query += "visitation_records." + VisitationRecordModelColumns[i] + " LIKE ? ";
+                    basequery += "p." + VisitationRecordModelColumns[i] + " LIKE ? ";
                 }
                 elements.add(VRecordParams[i]);
                 elementType.add(VisitationRecordModelTypes[i]);
@@ -152,20 +156,19 @@ public class DoctorDao {
         //User Model column search gets handled here
         for(int i=0; i<UserModelColumns.length; i++){
             if(UserParams[i] != null){
-                query += " AND ";
+                basequery += " AND ";
                 if(UserModelTypes[i].equals("boolean") || UserModelTypes[i].equals("int")){
-                    query += "users." + UserModelColumns[i] + " = ? ";
+                    basequery += "p." + UserModelColumns[i] + " = ? ";
                 }
                 else{
-                    query += "users." + UserModelColumns[i] + " LIKE ? ";
+                    basequery += "p." + UserModelColumns[i] + " LIKE ? ";
                 }
                 elements.add(UserParams[i]);
                 elementType.add(UserModelTypes[i]);
             }
         }
-        query += " ORDER BY visitation_records.RecordId desc ";
         try{
-            pstmt = DbUtil.getConnection().prepareStatement(query);
+            pstmt = DbUtil.getConnection().prepareStatement(basequery);
             for(int i=1;i<=elements.size(); i++){
                 switch(elementType.get(i-1)){
                     case "String":
@@ -191,8 +194,7 @@ public class DoctorDao {
                 }
                 
             }
-            String FinalQuery = "Select * from ("+ pstmt.toString().substring(pstmt.toString().indexOf("select")) + ") as max group by max.OriginalRecordId";
-            rs = pstmt.executeQuery(FinalQuery);
+            rs = pstmt.executeQuery();
             while(rs.next()){
                 vrum = new DoctorVisitationRecordVM();
                 vrm = new VisitationRecordsModel();
