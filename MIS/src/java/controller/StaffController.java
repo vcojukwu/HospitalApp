@@ -7,7 +7,6 @@ package controller;
 
 import Model.AppointmentsModel;
 import Model.PatientModel;
-import dao.PatientDao;
 import dao.StaffDao;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -21,7 +20,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -98,6 +96,9 @@ public class StaffController extends HttpServlet {
         appointment.setDurationScheduled(Integer.parseInt(request.getParameter("durationFinal")));
         appointment.setTimeScheduled(ParseTimeRecords(request.getParameter("dateFinal"), request.getParameter("timeFinal")));
         staff.editAppointment(appointment);
+        request.setAttribute("doctors", staff.getDoctors());
+        request.setAttribute("patients", staff.getAllPatientsDropdown());
+        request.setAttribute("appointments", staff.getAllAppointments());
     }
     
     private void addAppointment(HttpServletRequest request){
@@ -108,6 +109,9 @@ public class StaffController extends HttpServlet {
         appointment.setDurationScheduled(Integer.parseInt(request.getParameter("durationFinal")));
         appointment.setTimeScheduled(ParseTimeRecords(request.getParameter("dateFinal"), request.getParameter("timeFinal")));
         staff.addAppointment(appointment);
+        request.setAttribute("doctors", staff.getDoctors());
+        request.setAttribute("patients", staff.getAllPatientsDropdown());
+        request.setAttribute("appointments", staff.getAllAppointments());
     }
     
     private void deleteAppointment(HttpServletRequest request){
@@ -119,6 +123,9 @@ public class StaffController extends HttpServlet {
         //appointment.setDurationScheduled(Integer.parseInt(("durationFinal")));
         //appointment.setTimeScheduled(ParseTimeRecords(request.getParameter("dateFinal"), request.getParameter("timeFinal")));
         staff.deleteAppointment(appointment);
+        request.setAttribute("doctors", staff.getDoctors());
+        request.setAttribute("patients", staff.getAllPatientsDropdown());
+        request.setAttribute("appointments", staff.getAllAppointments());
     }
     
     private void assignPatients(HttpServletRequest request){
@@ -130,6 +137,8 @@ public class StaffController extends HttpServlet {
             patient.setPatientId(patientId);
             staff.AssignPatients(patient);
         }
+        request.setAttribute("doctors", staff.getDoctors());
+        request.setAttribute("patients", staff.getAllPatientsDropdown());
     }
     /**
      * Handles the HTTP <code>POST</code> method.
@@ -144,27 +153,27 @@ public class StaffController extends HttpServlet {
             throws ServletException, IOException {
         RequestDispatcher view = null;
         String forward = null;
+        StaffDao staff = new StaffDao();
         if (request.getParameter("function").equals("EditAppointment")){
-            this.editAppointment(request);
-            forward = "MIS/Appointments";
+            this.editAppointment(request);            
+            forward = "/Views/StaffView/staff_appointments.jsp";
         }            
         else if (request.getParameter("function").equals("AddAppointment")){
-            this.addAppointment(request);
-            forward = "MIS/Appointments";
+            this.addAppointment(request);            
+            forward = "/Views/StaffView/staff_appointments.jsp";
         }
         
         else if (request.getParameter("function").equals("DeleteAppointment")){
             this.deleteAppointment(request);
-            forward = "MIS/Appointments";
+            forward = "/Views/StaffView/staff_appointments.jsp";
         }
         
         else if(request.getParameter("function").equals("AssignPatients")){
-           this.assignPatients(request);
-           forward = "MIS/AssignPatients";
+            this.assignPatients(request);            
+            forward = "/Views/StaffView/assign.jsp";            
         }
-        //view = request.getServletContext().getRequestDispatcher(forward);
-        //view.forward(request, response);
-        //response.sendRedirect(forward);  
+        view = request.getServletContext().getRequestDispatcher(forward);
+        view.forward(request, response);
     }
 
     /**
