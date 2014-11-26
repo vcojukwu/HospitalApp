@@ -12,12 +12,22 @@
             <table class="pure-table pure-table-bordered" id="appointments">
                 <thead>
                     <tr>
-                        <th style="width:25%">Time Scheduled</th>
-                        <th style="width:25%">Patient Id</th>
-                        <th style="width:25%">Doctor Id</th>
-                        <th style="width:25%">Duration</th>
-                    </tr>
+                        <th>Date Scheduled</th>
+                        <th>Time Scheduled</th>                        
+                        <th>Patient Id</th>
+                        <th>Duration</th>
+                    </tr>                    
                 </thead>
+                <tbody>
+                <c:forEach items="${upcomingAppointments}" var="appointment">                        
+                    <tr>
+                        <td><input name="date" type="date" value = ${appointment.getDate()} disabled></td>
+                        <td><input name="time" type="time" value = ${appointment.getTimeScheduledUI()} disabled></td>
+                        <td><input name="time" type="text" value = ${appointment.getPatientId()} disabled></td>
+                        <td><input name="duration" type="number" value="${appointment.getDurationScheduled()}"  disabled></td>
+                    </tr>
+                </c:forEach>
+                </tbody>
             </table>
         </div>            
         <div style="float:left; width:50%">
