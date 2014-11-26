@@ -15,7 +15,7 @@
             <li class="menu-item-divided"><a href="Views/StaffView/Profile">Profile</a></li>
             <li><a href="AddNewUser">Add New User</a></li>
             <li><a href="Appointments">Appointments</a> </li>
-            <li><a href="Views/StaffView/staffpatient_search.jsp">Patient Search</a></li>
+            <li><a href="Views/StaffView/SearchPatients">Patient Search</a></li>
             <li><a href="AssignPatients">Assign Patients</a></li>
             <li>
                 <form id="logout" action="LogoutController" method="post">
