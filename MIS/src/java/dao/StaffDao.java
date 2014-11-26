@@ -190,4 +190,30 @@ public class StaffDao {
         }
         return appointments;
     }
+    
+    public List<AppointmentsModel> getUpcomingAppointmens(String StaffId){
+        Statement stmt  = null;
+        String query    = null;
+        ResultSet rs    = null;
+        List<AppointmentsModel> appointments = new ArrayList<AppointmentsModel>();
+        try{
+            stmt = DbUtil.getConnection().createStatement();
+            query = "SELECT appointments.DoctorId, PatientId, TImeScheduled, DurationScheduled from appointments JOIN STAFF_DOCTOR ON appointments.`DoctorId` = staff_doctor.`DoctorId` "
+                    + "WHERE APPOINTMENTS.TIMESCHEDULED>NOW() AND STAFF_DOCTOR.STAFFID = '" + StaffId + "'"
+                    + "ORDER BY TimeScheduled limit 5";
+            rs = stmt.executeQuery(query);
+            while(rs.next()){
+                AppointmentsModel appointment = new AppointmentsModel();
+                appointment.setDoctorId(rs.getString("DoctorId"));
+                appointment.setPatientId(rs.getString("PatientId"));
+                appointment.setTimeScheduled(rs.getTimestamp("TimeScheduled"));
+                appointment.setDurationScheduled(rs.getInt("DurationScheduled"));
+                appointments.add(appointment);
+                //appointment.getTimeScheuledUI()
+            }
+        } catch (SQLException e) {
+                e.printStackTrace();
+        }
+        return appointments;
+    }
 }

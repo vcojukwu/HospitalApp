@@ -7,6 +7,7 @@ package controller;
 
 import Model.AppointmentsModel;
 import Model.PatientModel;
+import ViewModel.UserProfileVM;
 import dao.StaffDao;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -20,12 +21,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author TheKey
  */
-@WebServlet(name = "StaffController", urlPatterns = {"/Staff", "/AssignPatients", "/AddNewUser", "/Appointments", "/AddAppointments"})
+@WebServlet(name = "StaffController", urlPatterns = {"/Staff", "/AssignPatients", "/AddNewUser", "/Appointments", "/AddAppointments", "/Views/StaffView/Profile"})
 public class StaffController extends HttpServlet {
 
     /**
@@ -82,6 +84,11 @@ public class StaffController extends HttpServlet {
             request.setAttribute("patients", staff.getAllPatientsDropdown());
             request.setAttribute("appointments", staff.getAllAppointments());
             forward = "/Views/StaffView/staff_appointments.jsp";
+        } else if (requestURL.contains("Views/StaffView/Profile")) {
+            HttpSession session = request.getSession();
+            UserProfileVM user = (UserProfileVM) session.getAttribute("profile");
+            request.setAttribute("upcomingAppointments", staff.getUpcomingAppointmens(user.getUser().getUserId()));
+            forward = "/Views/StaffView/profile_staff.jsp";
         }
         RequestDispatcher rd = getServletContext().getRequestDispatcher(forward);            
         rd.forward(request, response);
@@ -118,10 +125,6 @@ public class StaffController extends HttpServlet {
         StaffDao staff = new StaffDao();
         AppointmentsModel appointment = new AppointmentsModel();
         appointment.setAppointmentId(Integer.parseInt(request.getParameter("appointmentIdFinal")));
-        //appointment.setDoctorId(request.getParameter("docIdFinal"));
-        //appointment.setPatientId("patIdFinal");
-        //appointment.setDurationScheduled(Integer.parseInt(("durationFinal")));
-        //appointment.setTimeScheduled(ParseTimeRecords(request.getParameter("dateFinal"), request.getParameter("timeFinal")));
         staff.deleteAppointment(appointment);
         request.setAttribute("doctors", staff.getDoctors());
         request.setAttribute("patients", staff.getAllPatientsDropdown());
@@ -153,7 +156,6 @@ public class StaffController extends HttpServlet {
             throws ServletException, IOException {
         RequestDispatcher view = null;
         String forward = null;
-        StaffDao staff = new StaffDao();
         if (request.getParameter("function").equals("EditAppointment")){
             this.editAppointment(request);            
             forward = "/Views/StaffView/staff_appointments.jsp";
@@ -162,7 +164,6 @@ public class StaffController extends HttpServlet {
             this.addAppointment(request);            
             forward = "/Views/StaffView/staff_appointments.jsp";
         }
-        
         else if (request.getParameter("function").equals("DeleteAppointment")){
             this.deleteAppointment(request);
             forward = "/Views/StaffView/staff_appointments.jsp";
@@ -190,7 +191,7 @@ public class StaffController extends HttpServlet {
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");        
         Date time = null;
         Date temp = null;
-        try{                                                                                    //parsing time started
+        try{
             temp = sdf.parse(strTime);
             time = new Date();
             time.setHours(temp.getHours());
@@ -208,7 +209,7 @@ public class StaffController extends HttpServlet {
         Date date = null;
         Date temp = null;
         Date time = null;
-        try{                                                                                    //parsing time started
+        try{
             temp = sdf.parse(strTime);
             date = sdf1.parse(strDate);
             time = new Date();

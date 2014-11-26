@@ -91,7 +91,7 @@ function addRow2(r){
                         <td><input name="duration" class="rowData" type="number" style="width:100%" value="${appointment.getDurationScheduled()}"  disabled></td>
                         <td>
                             <input onClick="enableRow(this);return false" class="pure-button pure-input-1-2 pure-button-primary" type="button" name="Edit" value="Edit" />
-                            <input onClick="deleteRow2(this);" class="pure-button pure-input-1-2 pure-button-primary" type="submit" name="Delete" value="Delete" />
+                            <input onClick="deleteRow2(this);" class="pure-button pure-input-1-2 pure-button-primary" type="button" name="Delete" value="Delete" />
                         </td>
                     </c:forEach>
                     </tr>
