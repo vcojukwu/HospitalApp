@@ -249,12 +249,12 @@ public class StaffDao {
         UserModel usermodel= null;
         String allowedIds = " (";
         
-        if(PatientSearchAttr[1]==null){
+        /*if(PatientSearchAttr[1]==null){
             //patient is logged in and doing a search
             PatientDao pdao = new PatientDao();
             result.add(pdao.getPatient(PatientSearchAttr[1]));
             return result;
-        }
+        }*/
         //This request will get a list of PatientIds for which the given DoctorId is allowed to view
         List<String> AllowedPatientIds = GetPatientIDsAllowed(staffid);
 
@@ -516,7 +516,8 @@ public class StaffDao {
     public List<String> GetPatientIDsAllowed(String staffid){
         PreparedStatement pstmt = null;
         ResultSet rs;
-        String query="select * from mis_db.staff_doctor left join mis_db.patients on staff_doctor.DoctorId = patients.DoctorId";
+        String query="select * from mis_db.staff_doctor left join mis_db.patients on staff_doctor.DoctorId = patients.DoctorId "
+                + "where staff_doctor.StaffId = ?";
         List<String> result = new ArrayList<String>();
         
         try{

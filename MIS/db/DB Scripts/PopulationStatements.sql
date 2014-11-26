@@ -112,5 +112,7 @@ INSERT INTO `mis_db`.`users` (`UserId`, `FirstName`, `LastName`, `Gender`, `Date
 
 INSERT INTO `mis_db`.`users` (`UserId`, `FirstName`, `LastName`, `Gender`, `DateOfBirth`, `UserType`, `Password`, `PhoneNumber`, `AddressId`, `EmergencyContactName`, `EmergencyContactPhoneNumber`) VALUES ('finance1@email.com', 'Feddy', 'Jackson', 1, '1988-08-12', '4', 'c775e7b757ede630cd0aa1113bd102661ab38829ca52a6422ab782862f268646', '651686868', '22', 'emergaflia', '039203480');
 
+INSERT INTO `mis_db`.`staff_doctor` (`StaffId`, `DoctorId`) VALUES ('staff1@email.com', 'doctor1@email.com');
+
 INSERT INTO `mis_db`.`appointments` (`PatientId`, `DoctorId`, `TimeScheduled`, `DurationScheduled`) VALUES ('patient1@email.com', 'doctor1@email.com', '2014-11-24 12:30:00', '60');
 INSERT INTO `mis_db`.`appointments` (`PatientId`, `DoctorId`, `TimeScheduled`, `DurationScheduled`) VALUES ('patient2@email.com', 'doctor1@email.com', '2014-11-30 09:30:00', '30');
