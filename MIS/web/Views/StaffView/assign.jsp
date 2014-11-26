@@ -58,7 +58,7 @@ function myFunction() {
 				<input type="text" name="patientIDs" id="patientIDs" style="display:none">
                 <button type="submit" class="pure-button pure-button-primary" onClick="myFunction();">Make Assignment</button>
 
-                <button type="buttin" onClick="addRow();
+                <button type="button" onClick="addRow();
                         return false" class="pure-button pure-button-primary" style="margin-left:44%">+</button>
 
                 <button id="remove" type="button" onClick="deleteRow();
