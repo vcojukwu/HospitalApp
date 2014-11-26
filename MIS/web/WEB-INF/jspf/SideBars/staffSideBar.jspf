@@ -7,7 +7,9 @@
     <div class="pure-menu pure-menu-open">
         <p class="pure-menu-heading" align="center" style="background-color:#DDF10A">UWH</p>
         <a href="#"><img src="Images/uwhlogo.jpg" alt="Insert Logo Here" width="120" height="90" id="Insert_logo" style="margin-left:17px"/></a>
-        <p align="center"><a style="padding-left:0" href="#"><%= profile.getUser().getFirstName()%>  <%= profile.getUser().getLastName()%></a></p>
+        <p align="center">
+            <%= profile.getUser().getFirstName()%>  <%= profile.getUser().getLastName()%>
+        </p>
 
         <ul style="margin-top:20%">            
             <li class="menu-item-divided"><a href="Views/StaffView/Profile">Profile</a></li>
@@ -17,8 +19,8 @@
             <li><a href="AssignPatients">Assign Patients</a></li>
             <li>
                 <form id="logout" action="LogoutController" method="post">
-                        <a href="javascript:{}" onclick="document.getElementById('logout').submit();">Logout</a>
-                    </form>
+                    <a href="javascript:{}" onclick="document.getElementById('logout').submit();">Logout</a>
+                </form>
             </li>
         </ul>
     </div>
