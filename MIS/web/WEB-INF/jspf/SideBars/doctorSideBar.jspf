@@ -12,8 +12,7 @@
             <ul style="margin-top:20%">            
                 <li class="menu-item-divided pure-menu-selected" style="background-color:#F4090D"><a href="Views/DoctorView/profile_doc.jsp">Profile</a></li>
                 <li><a href="Views/DoctorView/search_patients.jsp">Patients Search</a></li>
-                <li><a href="Views/DoctorView/search_records.jsp">Past Records Search</a> </li>
-                <li><a href="AddVisitationRecord">Enter New Record</a></li>
+                <li><a href=SearchRecords>Past Records Search</a> </li>
                 <li>
                     <form id="logout" action="LogoutController" method="post">
                         <a href="javascript:{}" onclick="document.getElementById('logout').submit();">Logout</a>

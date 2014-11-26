@@ -2,6 +2,7 @@
 package Model;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 public class AppointmentsModel {
     private int AppointmentId;
@@ -37,7 +38,17 @@ public class AppointmentsModel {
     public Timestamp getTimeScheduled() {
         return TimeScheduled;
     }
-
+    
+    public String getTimeScheuledUI() {
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm"); 
+        return sdf.format(TimeScheduled);        
+    }
+    
+    public String getDate(){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return sdf.format(TimeScheduled);
+    }
+    
     public void setTimeScheduled(Timestamp TimeScheduled) {
         this.TimeScheduled = TimeScheduled;
     }

@@ -51,7 +51,7 @@ public class PatientDao {
         try{
             pstmt = DbUtil.getConnection().prepareStatement(query);
             pstmt.setString(1, patientid);
-            rs = pstmt.executeQuery(query); 
+            rs = pstmt.executeQuery(); 
             while (rs.next()) {
                 
                 pm.setPatientId(rs.getString(PatientModelColumns[0]));

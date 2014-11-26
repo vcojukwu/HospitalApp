@@ -60,7 +60,7 @@ public class FinanceDao {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         ResultSet rs2 = null;
-        String query = "SELECT * FROM mis_db.visitation_records X INNER JOIN procedures Y ON" +
+        String query = "SELECT * FROM visitation_records X INNER JOIN procedures Y ON " +
                         "X.ProcedureId = Y.ProcedureID where TimeStarted BETWEEN '" + startDate +
                         "' and '" + endDate + "' And DoctorId = '" + doctorId + "' ORDER BY RecordId";
         List<VisitationRecordsModel> result = new ArrayList<VisitationRecordsModel>();
@@ -78,10 +78,10 @@ public class FinanceDao {
             while(rs2.next())
             {
                 ProceduresModel procedure = new ProceduresModel();
-                procedure.setProcedureId(rs.getInt("ProcedureId"));
-                procedure.setProcedureType(rs.getString("ProcedureType"));
-                procedure.setProcedureName(rs.getString("ProcedureName"));
-                procedure.setProcedureCost(rs.getInt("ProcedureCost"));
+                procedure.setProcedureId(Integer.parseInt(rs2.getString("ProcedureId")));
+                procedure.setProcedureType(rs2.getString("ProcedureType"));
+                procedure.setProcedureName(rs2.getString("ProcedureName"));
+                procedure.setProcedureCost(rs2.getInt("ProcedureCost"));
                 procedureList.add(procedure);
             }
             
@@ -90,7 +90,7 @@ public class FinanceDao {
             
             while(rs.next()){
                 VisitationRecordsModel record = new VisitationRecordsModel();
-                if (rs.getString("OriginalRecordId").equals(null))
+                if (rs.getInt("OriginalRecordId") != 0)
                 {
                     for(VisitationRecordsModel rcd : result)
                     {
@@ -106,17 +106,21 @@ public class FinanceDao {
                         rcd.setNotes(rs.getString("Notes"));
                     }
                 }
-                record.setRecordId(rs.getInt("RecordId"));
-                record.setOriginalRecordId(rs.getInt("OriginalRecordId"));
-                record.setProcedureId(rs.getInt("ProcedureId"));
-                record.setPatientId(rs.getString("PatientId"));
-                record.setTimeStarted(rs.getTimestamp("TimeStarted"));
-                record.setTimeEnded(rs.getTimestamp("TimeEnded"));
-                record.setPrescriptions(rs.getString("Prescriptions"));
-                record.setDiagnosis(rs.getString("Diagnosis"));
-                record.setTreatmentSchedule(rs.getString("TreatmentSchedule"));
-                record.setNotes(rs.getString("Notes"));
-                result.add(record);                
+                else
+                {
+                    record.setRecordId(rs.getInt("RecordId"));
+                    record.setOriginalRecordId(rs.getInt("OriginalRecordId"));
+                    record.setProcedureId(rs.getInt("ProcedureId"));
+                    record.setPatientId(rs.getString("PatientId"));
+                    record.setTimeStarted(rs.getTimestamp("TimeStarted"));
+                    record.setTimeEnded(rs.getTimestamp("TimeEnded"));
+                    record.setPrescriptions(rs.getString("Prescriptions"));
+                    record.setDiagnosis(rs.getString("Diagnosis"));
+                    record.setTreatmentSchedule(rs.getString("TreatmentSchedule"));
+                    record.setNotes(rs.getString("Notes"));
+                    result.add(record);
+                }
+                                
             }
             HashSet uniquePatients = new HashSet();
             for(VisitationRecordsModel p : result)
@@ -145,7 +149,7 @@ public class FinanceDao {
         has its own listed fee.*/
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-         String query = "SELECT Y.ProcedureCost FROM visitation_records X INNER JOIN procedures Y ON" +
+         String query = "SELECT Y.ProcedureCost, X.OriginalRecordId FROM visitation_records X INNER JOIN procedures Y ON " +
                         "X.ProcedureId = Y.ProcedureID where TimeStarted BETWEEN '" + startDate +
                         "' and '" + endDate + "'";
         RevenueVM vm = new RevenueVM();

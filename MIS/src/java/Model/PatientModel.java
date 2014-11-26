@@ -2,6 +2,7 @@
 package Model;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 public class PatientModel {
     private String PatientId;
@@ -72,6 +73,11 @@ public class PatientModel {
     
     public Timestamp getLastVisitDate() {
         return LastVisitDate;
+    }
+    
+    public String getLastVisitDateUI() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");; 
+        return sdf.format(LastVisitDate);
     }
 
     public void setLastVisitDate(Timestamp LastVisitDate) {

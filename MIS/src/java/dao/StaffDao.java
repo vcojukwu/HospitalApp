@@ -5,6 +5,7 @@
  */
 package dao;
 
+import Model.AppointmentsModel;
 import Model.DoctorModel;
 import Model.HealthStateModel;
 import Model.PatientDropDownModel;
@@ -13,6 +14,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import util.DbUtil;
@@ -71,7 +73,7 @@ public class StaffDao {
         return healthStates;
     }
 
-	public List<PatientDropDownModel> getAllPatientsDropdown(){
+    public List<PatientDropDownModel> getAllPatientsDropdown(){
         Statement stmt  = null;
         String query    = null;
         ResultSet rs    = null;
@@ -107,5 +109,81 @@ public class StaffDao {
         } catch (SQLException e) {
                 e.printStackTrace();
         }
+    }
+    
+    public void addAppointment(AppointmentsModel appointment){
+        Statement stmt  = null;
+        String query    = null;
+
+        try{
+            stmt = DbUtil.getConnection().createStatement();            
+            query = "INSERT INTO appointments (PatientId, DoctorId, TimeScheduled, DurationScheduled)" + 
+                    "VALUES ('" + appointment.getPatientId() + "', '" + appointment.getDoctorId() + 
+                    "', '" + appointment.getTimeScheduled()+ "'," + appointment.getDurationScheduled() 
+                    + ");";  
+            System.out.println(query);
+            stmt.executeUpdate(query); 
+
+        } catch (SQLException e) {
+                e.printStackTrace();
+        }
+    }  
+    
+    public void editAppointment(AppointmentsModel appointment){
+        Statement stmt  = null;
+        String query    = null;
+        
+        try{
+            stmt = DbUtil.getConnection().createStatement();            
+            query = "UPDATE appointments " +
+                    "SET PatientId='" + appointment.getPatientId() + "', " +
+                    "DoctorId='" + appointment.getDoctorId() + "', " +
+                    "TimeScheduled='" + appointment.getTimeScheduled()+ "', " +
+                    "DurationScheduled='" + appointment.getDurationScheduled()+ "' " +
+                    "WHERE AppointmentId='" + appointment.getAppointmentId() + "'; ";
+            stmt.executeUpdate(query);
+
+        } catch (SQLException e) {
+                e.printStackTrace();
+        }
+    }
+    
+    public void deleteAppointment(AppointmentsModel appointment){
+        Statement stmt  = null;
+        String query    = null;
+
+        try{
+            stmt = DbUtil.getConnection().createStatement();            
+            query = "DELETE FROM appointments WHERE AppointmentId = '" + appointment.getAppointmentId() + "';";
+            stmt.executeUpdate(query); 
+
+        } catch (SQLException e) {
+                e.printStackTrace();
+        }
+    }
+    
+    public List<AppointmentsModel> getAllAppointments(){
+        Statement stmt  = null;
+        String query    = null;
+        ResultSet rs    = null;
+        List<AppointmentsModel> appointments = new ArrayList<AppointmentsModel>();
+        try{
+            stmt = DbUtil.getConnection().createStatement();            
+            query = "SELECT AppointmentId, PatientId, DoctorId, TimeScheduled, DurationScheduled FROM appointments";
+            rs = stmt.executeQuery(query);
+        
+            while(rs.next()){
+                AppointmentsModel appointment = new AppointmentsModel();
+                appointment.setAppointmentId(rs.getInt("AppointmentId"));
+                appointment.setDoctorId(rs.getString("DoctorId"));
+                appointment.setPatientId(rs.getString("PatientId"));
+                appointment.setTimeScheduled(rs.getTimestamp("TimeScheduled"));
+                appointment.setDurationScheduled(rs.getInt("DurationScheduled"));
+                appointments.add(appointment);
+            }
+        } catch (SQLException e) {
+                e.printStackTrace();
+        }
+        return appointments;
     }
 }

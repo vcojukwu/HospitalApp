@@ -5,8 +5,12 @@
  */
 package controller;
 
+import ViewModel.DoctorMonitorVM;
+import ViewModel.RevenueVM;
+import dao.FinanceDao;
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,7 +21,9 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author TheKey
  */
-@WebServlet(name = "FinancalController", urlPatterns = {"/Financal"})
+@WebServlet(name = "FinancalController", urlPatterns = {"/Financal/*", "/Financial/Monitor","/Financial/Revenue"},
+        loadOnStartup = 1,
+        asyncSupported = true)
 public class FinancalController extends HttpServlet {
 
     /**
@@ -58,7 +64,42 @@ public class FinancalController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String forward="";
+        String requestURL = request.getRequestURL().toString();
+        FinanceDao finance = new FinanceDao();
+        
+        if(request.getParameter("SearchRecords") != null)
+        {     
+            String doctorId = request.getParameter("userId");
+            String startDate = request.getParameter("startDate");
+            String endDate = request.getParameter("endDate");
+            forward = "/Views/FinancialView/doctor_search.jsp";
+            DoctorMonitorVM vm = finance.getPatientList(doctorId, startDate, endDate);
+            request.setAttribute("searchRecords", vm);
+
+        }
+        else if(requestURL.contains("Monitor")){
+            request.setAttribute("doctors", finance.getDoctors());
+            forward = "/Views/FinancialView/doctor_search.jsp";
+
+        }  
+        else if (requestURL.contains("Revenue"))
+        {
+            forward = "/Views/FinancialView/revenue.jsp";
+            String startDate = request.getParameter("startDate");
+            String endDate = request.getParameter("endDate");
+            
+            RevenueVM vm = finance.getRevenue(startDate, endDate);
+            vm.setTotalRevenue();
+            request.setAttribute("visitCount", vm.getVisitCount());
+            request.setAttribute("totalRevenue", vm.getTotalRevenue());
+            request.setAttribute("procedureRevenue", vm.getTotalProcedureRevenue());
+            request.setAttribute("startDate", startDate);
+            request.setAttribute("endDate", endDate);
+        }
+            RequestDispatcher rd = getServletContext().getRequestDispatcher(forward);            
+            rd.forward(request, response);
+            
     }
 
     /**
