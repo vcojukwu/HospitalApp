@@ -8,9 +8,11 @@ package controller;
 import Model.AddressModel;
 import Model.DoctorModel;
 import Model.PatientModel;
+import Model.StaffDoctorModel;
 import Model.StaffModel;
 import Model.UserModel;
 import ViewModel.UserProfileVM;
+import dao.StaffDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -136,9 +138,17 @@ public class UserController extends HttpServlet {
             doctor.setDoctorType(request.getParameter("docType"));
             userData.AddUser(user, address, null, doctor, null);
         } else if (userType == 3) {
-            StaffModel staff = new StaffModel();
+            StaffModel staff = new StaffModel();            
             staff.setStaffId(request.getParameter("email"));
             userData.AddUser(user, address, null, null, staff);
+            
+            StaffDoctorModel staffDoctor = new StaffDoctorModel();
+            String[] array = request.getParameter("doctorIds").split(",");
+            staffDoctor.setStaffId(request.getParameter("email"));
+            for (String doctorId : array) {
+                staffDoctor.setDoctorId(doctorId);
+                userData.AddStaffDoctor(staffDoctor);
+            }
         }      
     }
     
@@ -167,8 +177,11 @@ public class UserController extends HttpServlet {
                 forward = "/Views/PatientView/profile.jsp";
             else if(userType == 2) //Doctor
                 forward = "/Views/DoctorView/profile_doc.jsp";
-            else if(userType == 3) //Staff
+            else if(userType == 3){ //Staff
+                //StaffDao staff = new StaffDao();
+                //request.setAttribute("upcomingAppointments", staff.getUpcomingAppointmens(user.getUser().getUserId()));
                 forward = "/Views/StaffView/profile_staff.jsp";
+            }
             else if(userType == 4) //Finanace
                 forward = "/Views/FinancialView/profile_financial.jsp";
         view = request.getServletContext().getRequestDispatcher(forward);

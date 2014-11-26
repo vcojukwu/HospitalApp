@@ -71,6 +71,7 @@ function showForm(elem){
             document.getElementById("docDiv").style.display = "none";
             document.getElementById("doctorIdDiv").style.display = "none";
             document.getElementById("healthStateIdDiv").style.display = "none";
+            document.getElementById("dynamic_content").style.display = "block";
     }
     else if(selected == 1){
             document.getElementById("sinDiv").style.display = "block";
@@ -78,6 +79,7 @@ function showForm(elem){
             document.getElementById("docDiv").style.display = "none";
             document.getElementById("doctorIdDiv").style.display = "block";
             document.getElementById("healthStateIdDiv").style.display = "block";
+            document.getElementById("dynamic_content").style.display = "none";
     }
     else{
             document.getElementById("sinDiv").style.display = "none";
@@ -85,6 +87,7 @@ function showForm(elem){
             document.getElementById("docDiv").style.display = "block";
             document.getElementById("doctorIdDiv").style.display = "none";
             document.getElementById("healthStateIdDiv").style.display = "none";
+            document.getElementById("dynamic_content").style.display = "none";
     }
 }
 
