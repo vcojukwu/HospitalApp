@@ -277,6 +277,33 @@ public class DoctorDao {
         return appointments;
     }
     
+        public List<AppointmentsModel> getPastAppointments(String patientId){
+        PreparedStatement stmt  = null;
+        String query    = null;
+        ResultSet rs    = null;
+        List<AppointmentsModel> appointments = new ArrayList<AppointmentsModel>();
+        try{
+            query = "SELECT AppointmentId, PatientId, DoctorId, TimeScheduled, DurationScheduled FROM appointments "
+                    + "WHERE PatientId = ? AND TimeScheduled <= NOW()";
+            stmt = DbUtil.getConnection().prepareStatement(query);  
+            stmt.setString(1, patientId);
+            rs = stmt.executeQuery();
+            
+            while(rs.next()){
+                AppointmentsModel appointment = new AppointmentsModel();
+                appointment.setAppointmentId(rs.getInt("AppointmentId"));
+                appointment.setDoctorId(rs.getString("DoctorId"));
+                appointment.setPatientId(rs.getString("PatientId"));
+                appointment.setTimeScheduled(rs.getTimestamp("TimeScheduled"));
+                appointment.setDurationScheduled(rs.getInt("DurationScheduled"));
+                appointments.add(appointment);
+            }
+        } catch (SQLException e) {
+                e.printStackTrace();
+        }
+        return appointments;
+    }
+    
     
     public List<ProceduresModel> GetProcedures(){
                

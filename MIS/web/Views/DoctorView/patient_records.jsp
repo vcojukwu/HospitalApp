@@ -19,7 +19,7 @@
 	var cell6 = row.insertCell(5);
 	var cell7 = row.insertCell(6);
         var cell8 = row.insertCell(7);
-        var cell9 = row.insertCell(8;)
+        var cell9 = row.insertCell(8);
 	
 	cell1.innerHTML = '<select id="procedureId" name="procedureId">\
                                     <c:forEach items="${procedures}" var="procedures" >\

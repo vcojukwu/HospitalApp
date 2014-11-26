@@ -5,7 +5,9 @@
  */
 package controller;
 
+import Model.UserModel;
 import ViewModel.UserProfileVM;
+import dao.DoctorDao;
 import dao.PatientDao;
 import java.io.IOException;
 import javax.servlet.RequestDispatcher;
@@ -20,7 +22,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author TheKey
  */
-@WebServlet(name = "PatientController", urlPatterns = { "/Patients", "/Views/PatientView/Profile"})
+@WebServlet(name = "PatientController", urlPatterns = { "/Patients", "/Views/PatientView/Profile", "/Views/PatientView/SearchRecords", "/Views/PatientView/PastAppointments"})
 public class PatientController extends HttpServlet {
 
     /**
@@ -71,6 +73,18 @@ public class PatientController extends HttpServlet {
             request.setAttribute("upcomingAppointments", patient.getUpcomingAppointmens(user.getUser().getUserId()));
             forward = "/Views/PatientView/profile.jsp";
         }
+        else if (requestURL.contains("Views/PatientView/SearchRecords")) {
+            DoctorDao doctor = new DoctorDao();
+            request.setAttribute("procedures", doctor.GetProcedures());
+            forward = "/Views/PatientView/search_patient_record.jsp";
+        }
+        else if (requestURL.contains("Views/PatientView/PastAppointments")) {
+            HttpSession session = request.getSession();
+            DoctorDao doctor = new DoctorDao();
+            UserProfileVM user = (UserProfileVM) session.getAttribute("profile");
+            request.setAttribute("PastAppointments", doctor.getPastAppointments(user.getUser().getUserId()));
+            forward = "/Views/PatientView/appointments.jsp";
+        }
         RequestDispatcher rd = getServletContext().getRequestDispatcher(forward);
         rd.forward(request, response);
     }
@@ -86,8 +100,41 @@ public class PatientController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        
+        HttpSession session = request.getSession(false); 
+        
+        if(request.getParameter("SearchRecords") != null){
+            this.SearchRecords(request, session, response);
+        }
     }
+    
+        private void SearchRecords(HttpServletRequest request, HttpSession session, HttpServletResponse response)
+        throws ServletException, IOException{
+            
+            String prescriptions = request.getParameter("prescriptions");
+            String diagnosis = request.getParameter("diagnosis");
+            String recorddate = request.getParameter("recorddate");
+            String procedureid = request.getParameter("procedureId");
+            String treatmentSchedule = request.getParameter("treatmentschedule");
+                           
+             UserModel user = ((UserProfileVM)session.getAttribute("profile")).getUser();   
+            //PatientUserVM patient = patientdao.getPatient(patId);
+           
+            //get the patient info to diplay on top currently ill display id only - we can add first name and last name later on
+            String[] VisitationRecordSA = {null,null, (procedureid.equals("0"))? null : procedureid,
+                user.getUserId(), null, (recorddate == "")? null : recorddate, null,
+                (prescriptions == "")? null : prescriptions, (diagnosis == "")? null : diagnosis, (treatmentSchedule == "")?null : treatmentSchedule,
+                null};
+            String[] UserModelSA = {null, null, null , null, 
+                null, null, null, null, null, null, null};
+            
+            DoctorDao doctor = new DoctorDao();
+            request.setAttribute("records", doctor.FindRecords(VisitationRecordSA, UserModelSA));
+            request.setAttribute("procedures", doctor.GetProcedures());
+            
+            RequestDispatcher rd = getServletContext().getRequestDispatcher("/Views/PatientView/search_patient_record.jsp");
+            rd.forward(request, response);
+        }
 
     /**
      * Returns a short description of the servlet.
