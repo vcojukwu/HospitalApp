@@ -79,7 +79,7 @@ public class DoctorDao {
                     OrigId = rs.getLong(1);
                 }
                 query = "UPDATE mis_db.visitation_records SET OriginalRecordId = '"+OrigId+"' WHERE RecordId = '"+OrigId+"'";
-                pstmt.executeQuery(query);
+                pstmt.executeUpdate(query);
             }
             
         } catch (SQLException e) {

@@ -15,7 +15,7 @@
             </ul>
         </div>            
         <div style="float:left; width:50%">
-            <form class="pure-form pure-form-aligned">
+            <form class="pure-form pure-form-aligned" method="post" action="User">
                 <fieldset>
                     <legend>Contact Information</legend>
                     <div class="pure-control-group">
@@ -43,9 +43,8 @@
                         <input id="email" type="email" value=<%= profile.getUser().getUserId()%> disabled>
                     </div> 
                     <div class="pure-controls">
-                        <button style="margin-left:5%" type="submit" class="pure-button pure-button-primary">Save</button>
-                        <button onClick="enable();
-                                return false" style="margin-left:5%" type="button" class="pure-button pure-button-primary">Edit</button>
+                        <button style="margin-left:5%" name="Edit" value="Save" type="submit" class="pure-button pure-button-primary">Save</button>
+                        <button onClick="enable(); return false" style="margin-left:5%" type="button" class="pure-button pure-button-primary">Edit</button>
                     </div>        
                 </fieldset>
             </form>            

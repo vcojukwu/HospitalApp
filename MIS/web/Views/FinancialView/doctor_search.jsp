@@ -1,36 +1,5 @@
 <%@include file="/WEB-INF/jspf/SideBars/financialSideBar.jspf" %>
-<!--<script>
-    function search() {
-        var doctorId = $("#doctor").val();
-        var startDate = $("#start").val();
-        var endDate = $("#end").val();
-        $.get('/MIS/Financial/PatientSearch', {userId: doctorId, startDate: startDate, endDate: endDate}, function (data) {
-            if (data.VisitRecords.length != 0)
-            {
-                
-            }
-            
-//$('#results').html(data).hide().slideDown('slow');
-//            if (data.VisitRecords.length != 0)
-//            {
-//                $('#record').dataTable({
-//                    "data": data.VisitRecords,
-//                    "columns": [
-//                        {"title": "RecordId"},
-//                        {"title": "ProcedureType"},
-//                        {"title": "TimeStarted"},
-//                        {"title": "TimeEnded"},
-//                        {"title": "Prescription"},
-//                        {"title": "Diagnosis"},                   
-//                        {"title": "TreatmentSchedule"},
-//                        {"title": "Notes"}
-//                    ]
-//                });
-//            }
-//        });
 
-    }
-</script>-->
 <div id="main">
     <div class="header">
         <h1>Monitor Doctor</h1>
@@ -38,7 +7,7 @@
     </div>
 
     <div class="content" style="padding-top:30px">
-        <form class="pure-form" method = "post" action ="Financial">
+        <form class="pure-form" >
             <fieldset>
                 <legend>Select Doctor</legend>
 
@@ -51,47 +20,68 @@
 
                 <div style="margin-top:5% !important">
                     <label for="start">Start Date: </label>
-                    <input id="start" type="date">
+                    <input id="start" name ="startDate" type="date">
 
                     <label style="margin-left:5%" for="end">End Date: </label>
-                    <input id="end" type="date">
+                    <input id="end" name="endDate" type="date">
 
                     <input class="pure-button pure-button-primary" style="margin-left:5%" type="submit" name="SearchRecords" value="Search"></input>
                 </div>
             </fieldset>
         </form>
-
     </div>
+
     <div>
-        <table style="margin-left:4%" class="pure-table pure-table-bordered" id="record">
-            <caption>Patient Name</caption>
-            <thead>
-                <tr>
-                    <th>Record #</th>
-                    <th>Procedure</th>
-                    <th>Date</th>
-                    <th>Time Started</th>
-                    <th>Time Ended</th>
-                    <th>Prescription</th>
-                    <th>Diagnosis</th>
-                    <th>Notes</th>
-                    <th>Revenue</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!--                <tr>
-                                    <td>1</td>
-                                    <td><input class="procedure" type="text" value = "X-Ray" disabled></td>
-                                    <td><input class="date" type="date" value = "2014-11-11" disabled></td>
-                                    <td><input class="started" type="time" value = "1:00" disabled></td>
-                                    <td><input class="ended" type="time" value = "2:00" disabled></td>
-                                    <td><input class="prescription" type="text" value="Advil" disabled></td>
-                                    <td><input class="diagnosis" type="number" value = "60" disabled></td>
-                                    <td><input class="notes" type="text" value = "Notes" disabled></td>
-                                    <td><input class="revenue" style="width:80px" type="number" value = "60" disabled></td>
-                                </tr>-->
-                
-            </tbody>
-        </table>
+        <c:set var="inputDisplay" value='<%= request.getAttribute("invalid")%>' />
+        <c:set var="count" value='<%= request.getAttribute("patientCount")%>' />
+        <c:choose>
+            <c:when test="${count != 0}">
+               <div id="startend" align="center" style="margin:0 auto;width:50%; margin-top:5%"> 
+                   <%= request.getAttribute("patientCount")%> patient(s) was seen by <%= request.getAttribute("doctorUserId")%>   between <%= request.getAttribute("startDate")%> and <%= request.getAttribute("endDate")%>
+                </div>
+            </c:when>
+            <c:when test="${inputDisplay == 1}">
+                <div id="startend" align="center" style="margin:0 auto;width:50%; margin-top:5%">
+                    Invalid date selection
+                </div>
+            </c:when>     
+        </c:choose>
+        
+        
+
+        <c:forEach items="${requestScope.searchRecords}" var="entry" >
+            <table style="margin-left:4%" class="pure-table pure-table-bordered" id="record">
+                <caption>Patient Id: ${entry.key} (Seen by doctor ${entry.value.size()} times)</caption>
+                <thead>
+                    <tr>                       
+                        <th>Procedure Name</th>
+                        <th>Procedure Cost</th>                   
+                        <th>Time Started</th>
+                        <th>Time Ended</th>
+                        <th>Prescriptions Prescribed</th>
+                        <th>Diagnosis</th>
+                        <th>Treatment Schedule</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <c:forEach var="item" items="${entry.value}" varStatus="loop">
+                        <tr>
+                            <td>${item.getProcedureName()}</td>
+                            <td>$${item.getProcedureCost()}.00</td>
+                            <td>${item.getTimeStarted()}</td>
+                            <td>${item.getTimeEnded()}</td>
+                            <td>${item.getPrescriptions()}</td>
+                            <td>${item.getDiagnosis()}</td>
+                            <td>${item.getTreatmentSchedule()}</td>
+                            <td>${item.getNotes()}</td>        
+                        </tr>
+                </c:forEach><br>
+                </tbody>
+            </table>
+        </c:forEach>
+
+
+
     </div>
 </div>
