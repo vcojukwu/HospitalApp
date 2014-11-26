@@ -5,11 +5,11 @@
     </div>
 
     <div class="content" style="padding-top:30px; margin:5% !important">
-        <form class="pure-form">
+        <form class="pure-form" name ="patientRecordForm" action="Doctor" method="post">
             <fieldset>
                 <legend>Search for a Patient</legend>
 
-                <input name ="patientId" id="patientId" type="text" class="pure-input-rounded" value="${patientInfo.getUserId()}" disabled>
+                <input name ="patId" id="patId" type="text" class="pure-input-rounded" value="${patientInfo.getUserId()}" disabled>
                 <input name ="firstname" id="firstname" type="text" class="pure-input-rounded" value="${patientInfo.getFirstName()}" disabled>
                 <input name ="lastname" id="lastname" type="text" class="pure-input-rounded" value="${patientInfo.getLastName()}" disabled>
             </fieldset>
@@ -68,8 +68,6 @@
                     class="button-success pure-button" style="float:right">
             <i class="fa fa-plus"></i>
             </button>
-        </form>
-        <form class="pure-form" name ="patientRecordForm" action="Doctor" method="post">
             <fieldset>
                 <input type="hidden" id="selectedProcedureId" name="selectedProcedureId" type="number">
                 <input type="hidden" id="selectedDate" name="selectedDate" type="date">
@@ -81,7 +79,7 @@
                 <input type="hidden" id="selectedOriginalRecordId" name="selectedOriginalRecordId" type="number">
                 <input type="hidden" id="selectedRecordId" name="selectedRecordId" type="number">
                 <input type="hidden" id="selectedRecordType" name="selectedRecordType" type="number">
-                
+                <input type="hidden" id="selectedpatId" name ="selectedpatId" type="text" value="${patientInfo.getUserId()}">
             </fieldset>
             <button type="hidden" id="submitRecords" name="PatientRecord" class="pure-button pure-button-primary" hidden>Submit</button>
         </form>

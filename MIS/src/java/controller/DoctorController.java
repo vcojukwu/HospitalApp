@@ -98,7 +98,7 @@ public class DoctorController extends HttpServlet {
             this.NavigateToPatientView(request, session, response, patientId);
          }
          else if (request.getParameter("PatientRecord") != null){
-                   String patientId = (String)request.getAttribute("patientId");
+                   String patientId = request.getParameter("selectedpatId");
                    this.AddVisitationRecord(request, session, response, patientId);
                    this.NavigateToPatientView(request, session, response, patientId);
             }
