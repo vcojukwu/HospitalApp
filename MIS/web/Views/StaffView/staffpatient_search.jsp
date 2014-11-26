@@ -23,7 +23,7 @@
     </div>
      <form class="pure-form" method="post" action="Views/StaffViewSearchPatients">
         <div style="margin-left:15%">
-            <input type="hidden" name="function" value="SearchPatient"/>
+            <input type="hidden" name="function" value="SearchPatients"/>
             <table class="pure-table pure-table-bordered" id="appointments">
                 <thead>
                     <tr>
@@ -32,7 +32,6 @@
                         <th>Doctor Id</th>
                         <th>Last Visit</th>
                         <th>Active</th>
-                        <th><span style="visibility:hidden">EditandDeleteButtons</span></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -52,12 +51,6 @@
                                     </c:otherwise>
                                 </c:choose>
                             
-                            </td>
-                            <td align="center">
-
-                                <button type="submit" class="pure-button" value =${item.getPatient().getPatientId()} name="ViewPatientDetail" onClick="">
-                                    View Record
-                                </button>
                             </td>
                         </tr>
                     </c:forEach>

@@ -59,13 +59,23 @@ public class PermissionDao {
     
     public List<DoctorPermissionsModel> GetPermissions (String doctorid){
         PreparedStatement pstmt = null;
-        String query = "SELECT * FROM mis_db.doctor_permissions where DoctorId = ?";
+        String allowedIds = "(";
+        
+        List<String> ImmediatePatients = getPatientIdsForCurrentDoc(doctorid);
+        String query = "SELECT * FROM mis_db.doctor_permissions where DoctorId <> ? and PatientId IN ?";
         List<DoctorPermissionsModel> permissions = new ArrayList<DoctorPermissionsModel>();
         DoctorPermissionsModel dpm = null;
         ResultSet rs= null;
+        
+        for(String id:ImmediatePatients){
+                allowedIds += "'" + id + "',";
+            }
+        allowedIds = allowedIds.substring(0, allowedIds.length()-1)+")";
+        
         try{
-            pstmt = DbUtil.getConnection().prepareStatement(doctorid);
+            pstmt = DbUtil.getConnection().prepareStatement(query);
             pstmt.setString(1, doctorid);
+            pstmt.setString(2, allowedIds);
             rs = pstmt.executeQuery();
             while(rs.next()){
                 dpm = new DoctorPermissionsModel();
@@ -84,6 +94,20 @@ public class PermissionDao {
         String query;
         try{
             query = "INSERT INTO mis_db.doctor_permissions (PatientId, DoctorId) VALUES ('?', '?')";
+            pstmt = DbUtil.getConnection().prepareStatement(query);
+            pstmt.setString(1, patientid);
+            pstmt.setString(2, doctorid);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+                e.printStackTrace();
+        }
+    }
+    
+    public void RemovePermission (String doctorid, String patientid){
+        PreparedStatement pstmt = null;
+        String query;
+        try{
+            query = "DELETE FROM mis_db.doctor_permissions WHERE PatientId = ? and DoctorId = ?";
             pstmt = DbUtil.getConnection().prepareStatement(query);
             pstmt.setString(1, patientid);
             pstmt.setString(2, doctorid);
