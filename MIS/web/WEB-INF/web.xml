@@ -7,7 +7,10 @@
     <filter-mapping>
         <filter-name>AuthenticationFilter</filter-name>
         <url-pattern>/Views/*</url-pattern>
-         
+         <url-pattern>/Financial/*</url-pattern>
+         <url-pattern>/Patient/*</url-pattern>
+         <url-pattern>/Doctor/*</url-pattern>
+         <url-pattern>/Staff/*</url-pattern>
     </filter-mapping>
     
     <!--    <filter>
