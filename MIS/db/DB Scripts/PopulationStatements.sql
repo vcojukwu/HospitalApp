@@ -34,6 +34,10 @@ INSERT INTO `mis_db`.`doctors` (`DoctorId`, `DoctorType`) VALUES ('doctor7@email
 INSERT INTO `mis_db`.`doctors` (`DoctorId`, `DoctorType`) VALUES ('doctor8@email.com', 'Radiologist');
 INSERT INTO `mis_db`.`doctors` (`DoctorId`, `DoctorType`) VALUES ('doctor9@email.com', 'Surgeon');
 
+INSERT INTO `mis_db`.`staff` (`StaffId`) VALUES ('staff1@email.com');
+INSERT INTO `mis_db`.`staff` (`StaffId`) VALUES ('staff2@email.com');
+INSERT INTO `mis_db`.`staff` (`StaffId`) VALUES ('staff3@email.com');
+
 
 INSERT INTO `mis_db`.`patients` (`PatientId`, `DoctorId`, `HealthStateId`, `HealthCardNumber`, `SocialInsuranceNumber`, `NumberOfVisits`, `IsActive`, `LastVisitDate`, `PatientNotes`) VALUES ('patient1@email.com', 'doctor1@email.com', '1', '1321483', '382382294', '3', 1, NOW(), 'This patient has meninjitis.');
 INSERT INTO `mis_db`.`patients` (`PatientId`, `DoctorId`, `HealthStateId`, `HealthCardNumber`, `SocialInsuranceNumber`, `NumberOfVisits`, `IsActive`, `LastVisitDate`, `PatientNotes`) VALUES ('patient2@email.com', 'doctor2@email.com', '3', '6485468', '654961684', '10', 0, NOW(), 'Cataracs.');
@@ -101,6 +105,10 @@ INSERT INTO `mis_db`.`users` (`UserId`, `FirstName`, `LastName`, `Gender`, `Date
 INSERT INTO `mis_db`.`users` (`UserId`, `FirstName`, `LastName`, `Gender`, `DateOfBirth`, `UserType`, `Password`, `PhoneNumber`, `AddressId`, `EmergencyContactName`, `EmergencyContactPhoneNumber`) VALUES ('doctor7@email.com', 'Jack', 'Altera', 1, '1990-03-10', '2', 'c775e7b757ede630cd0aa1113bd102661ab38829ca52a6422ab782862f268646', '204942304', '19', 'emerg7', '65452456');
 INSERT INTO `mis_db`.`users` (`UserId`, `FirstName`, `LastName`, `Gender`, `DateOfBirth`, `UserType`, `Password`, `PhoneNumber`, `AddressId`, `EmergencyContactName`, `EmergencyContactPhoneNumber`) VALUES ('doctor8@email.com', 'Dylan', 'Hendrick', 1, '1949-09-28', '2', 'c775e7b757ede630cd0aa1113bd102661ab38829ca52a6422ab782862f268646', '204942304', '20', 'emerg8', '6489712256');
 INSERT INTO `mis_db`.`users` (`UserId`, `FirstName`, `LastName`, `Gender`, `DateOfBirth`, `UserType`, `Password`, `PhoneNumber`, `AddressId`, `EmergencyContactName`, `EmergencyContactPhoneNumber`) VALUES ('doctor9@email.com', 'Harjinder', 'Tatla', 1, '1972-04-30', '2', 'c775e7b757ede630cd0aa1113bd102661ab38829ca52a6422ab782862f268646', '204942304', '21', 'emerg9', '647894254');
+
+INSERT INTO `mis_db`.`users` (`UserId`, `FirstName`, `LastName`, `Gender`, `DateOfBirth`, `UserType`, `Password`, `PhoneNumber`, `AddressId`, `EmergencyContactName`, `EmergencyContactPhoneNumber`) VALUES ('staff1@email.com', 'Janet', 'Jackson', 0, '1986-08-02', '3', 'c775e7b757ede630cd0aa1113bd102661ab38829ca52a6422ab782862f268646', '46816184', '22', 'emergastaff', '039203480');
+INSERT INTO `mis_db`.`users` (`UserId`, `FirstName`, `LastName`, `Gender`, `DateOfBirth`, `UserType`, `Password`, `PhoneNumber`, `AddressId`, `EmergencyContactName`, `EmergencyContactPhoneNumber`) VALUES ('staff2@email.com', 'Harold', 'Lee', 1, '1983-08-02', '3', 'c775e7b757ede630cd0aa1113bd102661ab38829ca52a6422ab782862f268646', '46816184', '22', 'emergastaff', '039203480');
+INSERT INTO `mis_db`.`users` (`UserId`, `FirstName`, `LastName`, `Gender`, `DateOfBirth`, `UserType`, `Password`, `PhoneNumber`, `AddressId`, `EmergencyContactName`, `EmergencyContactPhoneNumber`) VALUES ('staff3@email.com', 'Kumar', 'Patel', 1, '1984-08-02', '3', 'c775e7b757ede630cd0aa1113bd102661ab38829ca52a6422ab782862f268646', '46816184', '22', 'emergastaff', '039203480');
 
 INSERT INTO `mis_db`.`users` (`UserId`, `FirstName`, `LastName`, `Gender`, `DateOfBirth`, `UserType`, `Password`, `PhoneNumber`, `AddressId`, `EmergencyContactName`, `EmergencyContactPhoneNumber`) VALUES ('finance1@email.com', 'Feddy', 'Jackson', 1, '1988-08-12', '4', 'c775e7b757ede630cd0aa1113bd102661ab38829ca52a6422ab782862f268646', '651686868', '22', 'emergaflia', '039203480');
 
