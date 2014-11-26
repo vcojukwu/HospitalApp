@@ -6,7 +6,6 @@
 package controller;
 
 import Model.*;
-import ViewModel.DoctorVisitationRecordVM;
 import ViewModel.PatientUserVM;
 import ViewModel.UserProfileVM;
 import dao.*;
@@ -15,6 +14,7 @@ import java.io.PrintWriter;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
@@ -29,7 +29,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author TheKey
  *///, 
-@WebServlet(name = "DoctorController", urlPatterns = {"/Doctor", "/PatientRecords", "/SearchRecords",  "/Views/DoctorView/Profile"})
+@WebServlet(name = "DoctorController", urlPatterns = {"/Doctor", "/PatientRecords", "/SearchRecords",  "/Views/DoctorView/Profile", "/DoctorView/GrantPermission"})
 public class DoctorController extends HttpServlet {
 
     /**
@@ -80,6 +80,14 @@ public class DoctorController extends HttpServlet {
             request.setAttribute("upcomingAppointments", doctor.getUpcomingAppointmens(user.getUser().getUserId()));
             forward = "/Views/DoctorView/profile_doc.jsp";
         }
+        else if(requestURL.contains("/Views/DoctorView/GrantPermission")){
+            HttpSession session = request.getSession();
+            PermissionDao permission = new PermissionDao();
+            UserProfileVM user = (UserProfileVM) session.getAttribute("profile");
+            request.setAttribute("doctors", permission.getDoctorsExceptCurrent(user.getUser().getUserId()));
+            request.setAttribute("patients", permission.getPatientIdsForCurrentDoc(user.getUser().getUserId()));
+            forward = "/Views/DoctorView/permission.jsp";
+        }
         else {
             request.setAttribute("procedures", doctor.GetProcedures());
             forward = "/Views/DoctorView/search_records.jsp";
@@ -119,12 +127,33 @@ public class DoctorController extends HttpServlet {
         else if(request.getParameter("SearchRecords") != null){
             this.SearchRecords(request, session, response);
         }
+        else if(request.getParameter("AddPermission") != null){
+            PermissionDao permission = new PermissionDao();
+            String patId = request.getParameter("patientId");
+            String docId = request.getParameter("doctorId");
+            permission.AddPermission(docId, patId);
+        }
+    }
          
         
-        
-        
-
-    }
+          
+    private void RefreshPermissions(HttpServletRequest request, HttpSession session, HttpServletResponse response, String patId)
+        throws ServletException, IOException{
+            
+            UserModel user = ((UserProfileVM)session.getAttribute("profile")).getUser();                                //Get Doctor Id  
+            
+            
+           
+            PermissionDao permission = new PermissionDao();
+            DoctorDao doctor = new DoctorDao();
+            request.setAttribute("patientInfo", patient.getUser());
+            request.setAttribute("records", doctor.FindRecords(VisitationRecordSA, UserModelSA));
+            request.setAttribute("procedures", doctor.GetProcedures());
+            
+            RequestDispatcher rd = getServletContext().getRequestDispatcher("/Views/DoctorView/permission.jsp");
+            rd.forward(request, response);
+    }  
+       
 
     private void SearchRecords(HttpServletRequest request, HttpSession session, HttpServletResponse response)
         throws ServletException, IOException{

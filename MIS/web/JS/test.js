@@ -180,6 +180,12 @@ function enableRowPatientRecord(elem){
         
 }
 
+function deletePermission(r){
+    var row = elem.parentNode.parentNode.getElementsByTagName("input");
+    document.getElementById("selectedpatid").value = row[0].value;
+    document.getElementById("selecteddocid").value = row[1].value;
+}
+
 function deleteRow2(r) {
     var ans = confirm("Are you sure you want to delete appointment?");
     if(ans == true){

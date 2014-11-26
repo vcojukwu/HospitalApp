@@ -15,7 +15,7 @@
             <li class="menu-item-divided"><a href="Views/DoctorView/Profile">Profile</a></li>
             <li><a href="Views/DoctorView/search_patients.jsp">Patients Search</a></li>
             <li><a href=SearchRecords>Past Records Search</a></li>
-            <li><a href="Views/DoctorView/permission.jsp">Grant Permission</a></li>
+            <li><a href="Views/DoctorView/GrantPermission">Grant Permission</a></li>
             <li>
                 <form id="logout" action="LogoutController" method="post">
                     <a href="javascript:{}" onclick="document.getElementById('logout').submit();">Logout</a>

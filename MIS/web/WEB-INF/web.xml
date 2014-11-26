@@ -39,6 +39,7 @@
         <url-pattern>/PatientRecords</url-pattern>
         <url-pattern>/SearchRecords</url-pattern>
         <url-pattern>/Views/DoctorView/Profile</url-pattern>
+        <url-pattern>/Views/DoctorView/GrantPermission</url-pattern>
     </servlet-mapping>
    
     
