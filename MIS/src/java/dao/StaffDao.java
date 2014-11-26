@@ -105,7 +105,11 @@ public class StaffDao {
                     "SET DoctorId='" + patient.getDoctorId() + "' " + 
                     "WHERE PatientId='" + patient.getPatientId() + "'; ";
             stmt.executeUpdate(query);
-
+            query = "DELETE FROM doctor_permissions WHERE PatientId = '" + patient.getPatientId() + "'";
+            stmt.executeUpdate(query);
+            query = "INSERT INTO doctor_permissions (PatientId, DoctorId) VALUES ('" + patient.getPatientId() 
+                    + "', '" + patient.getDoctorId() + "');";
+            stmt.executeUpdate(query);
         } catch (SQLException e) {
                 e.printStackTrace();
         }
