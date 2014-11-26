@@ -64,15 +64,14 @@
         <h1>Patient Record</h1>
     </div>
 
-    <div class="content" style="padding-top:30px; margin:5% !important">
+    <div style="width:90%; margin: 0 auto; padding-top: 30px">
         <form class="pure-form" name ="patientRecordForm" action="Doctor" method="post">
-            <fieldset>
-                <input name ="patId" id="patId" type="text" class="pure-input-rounded" value="${patientInfo.getUserId()}" disabled>
-                <input name ="firstname" id="firstname" type="text" class="pure-input-rounded" value='${patientInfo.getFirstName()} ${patientInfo.getLastName()}' disabled>
-            </fieldset>
-        
-
+            <button type="button" title="AddRecord" value="AddRecord" name="AddRecord" onClick="addRowPatientRecord(this); return false;" 
+                    class="button-success pure-button" style="float:right">
+            <i class="fa fa-plus"></i>
+            </button>
             <table class="pure-table pure-table-bordered" id="records">
+                <caption>${patientInfo.getFirstName()} ${patientInfo.getLastName()} (${patientInfo.getUserId()})</caption>
                 <thead>
                     <tr>
                         <th>Procedure</th>
@@ -121,10 +120,7 @@
                         </c:forEach>
                 </tbody>
             </table>
-                <button type="button" title="AddRecord" value="AddRecord" name="AddRecord" onClick="addRowPatientRecord(this); return false;" 
-                    class="button-success pure-button" style="float:right">
-            <i class="fa fa-plus"></i>
-            </button>
+                
             <fieldset>
                 <input type="hidden" id="selectedProcedureId" name="selectedProcedureId" type="number">
                 <input type="hidden" id="selectedDate" name="selectedDate" type="date">
