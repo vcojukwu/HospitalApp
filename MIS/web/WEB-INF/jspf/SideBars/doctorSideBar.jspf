@@ -12,7 +12,7 @@
         </p>
 
         <ul style="margin-top:20%">            
-            <li class="menu-item-divided"><a href="Views/DoctorView/profile_doc.jsp">Profile</a></li>
+            <li class="menu-item-divided"><a href="Views/DoctorView/Profile">Profile</a></li>
             <li><a href="Views/DoctorView/search_patients.jsp">Patients Search</a></li>
             <li><a href=SearchRecords>Past Records Search</a></li>
             <li><a href="Views/DoctorView/permission.jsp">Grant Permission</a></li>
