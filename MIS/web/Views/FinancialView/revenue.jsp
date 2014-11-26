@@ -12,10 +12,10 @@
                 <legend>Time Period</legend>
 
                 <label for="start">Start Date: </label>
-                <input id="start" type="date">
+                <input id="startDate" type="date">
 
                 <label style="margin-left:5%" for="end">End Date: </label>
-                <input id="end" type="date">
+                <input id="endDate" type="date">
 
                 <button style="margin-left:5%" type="submit" class="pure-button pure-button-primary">Search</button>
             </fieldset>
@@ -24,19 +24,19 @@
         <table style="margin-top:10%" id="bill">
             <tr>
                 <td align="right">Cost Per Visit :</td>
-                <td align="right">Value 1</td>
+                <td align="right">$10.00</td>
             </tr>
             <tr>
                 <td align="right">Number Of Visits :</td>
-                <td align="right">Value 2</td>
+                <td align="right"><%= request.getAttribute("visitCount") %></td>
             </tr>
             <tr>
                 <td align="right">Revenue From Procedures :</td>
-                <td align="right" width="70%">Value 3</td>
+                <td align="right" width="70%"><%= request.getAttribute("procedureRevenue") %></td>
             </tr>
             <tr s>
                 <td align="right" style="border-top:thin solid black">Total Revenue :</td>
-                <td align="right" style="border-top:thin solid black">Value 4</td>
+                <td align="right" style="border-top:thin solid black"><%= request.getAttribute("totalRevenue") %></td>
             </tr>
         </table>
     </div>

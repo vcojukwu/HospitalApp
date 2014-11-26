@@ -13,14 +13,15 @@ import java.util.HashMap;
  */
 public class RevenueVM {
     private int VisitCount; 
-    private double VisitRevenue;
-    private double TotalProcedureRevenue;
-
+    private int VisitRevenue;
+    private int TotalProcedureRevenue;
+    private int TotalRevenue;
     public RevenueVM ()
     {
         VisitCount = 0;
         VisitRevenue = 0;
         TotalProcedureRevenue = 0;
+        TotalRevenue = TotalProcedureRevenue + VisitRevenue;
     }
     public int getVisitCount() {
         return VisitCount;
@@ -30,19 +31,27 @@ public class RevenueVM {
         this.VisitCount = VisitCount;
     }
 
-    public double getVisitRevenue() {
+    public int getVisitRevenue() {
         return VisitRevenue;
     }
 
-    public void setVisitRevenue(double VisitRevenue) {
+    public void setVisitRevenue(int VisitRevenue) {
         this.VisitRevenue = VisitRevenue;
     }
 
-    public double getTotalProcedureRevenue() {
+    public int getTotalProcedureRevenue() {
         return TotalProcedureRevenue;
     }
 
-    public void setTotalProcedureRevenue(double TotalProcedureRevenue) {
+    public void setTotalProcedureRevenue(int TotalProcedureRevenue) {
         this.TotalProcedureRevenue = TotalProcedureRevenue;
+    }
+
+    public int getTotalRevenue() {
+        return TotalRevenue;
+    }
+
+    public void setTotalRevenue() {
+        this.TotalRevenue = this.TotalProcedureRevenue + this.VisitRevenue;
     }
 }

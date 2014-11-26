@@ -6,7 +6,7 @@
 package controller;
 
 import ViewModel.DoctorMonitorVM;
-import com.google.gson.Gson;
+import ViewModel.RevenueVM;
 import dao.FinanceDao;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author TheKey
  */
-@WebServlet(name = "FinancalController", urlPatterns = {"/Financal/*", "/Financial/Monitor",},
+@WebServlet(name = "FinancalController", urlPatterns = {"/Financal/*", "/Financial/Monitor","/Financial/Revenue"},
         loadOnStartup = 1,
         asyncSupported = true)
 public class FinancalController extends HttpServlet {
@@ -73,17 +73,31 @@ public class FinancalController extends HttpServlet {
             String doctorId = request.getParameter("userId");
             String startDate = request.getParameter("startDate");
             String endDate = request.getParameter("endDate");
+            forward = "/Views/FinancialView/doctor_search.jsp";
             DoctorMonitorVM vm = finance.getPatientList(doctorId, startDate, endDate);
             request.setAttribute("searchRecords", vm);
-            RequestDispatcher rd = getServletContext().getRequestDispatcher("/Views/FinancialView/doctor_search.jsp");
-            rd.forward(request, response);
+
         }
         else if(requestURL.contains("Monitor")){
             request.setAttribute("doctors", finance.getDoctors());
             forward = "/Views/FinancialView/doctor_search.jsp";
+
+        }  
+        else if (requestURL.contains("Revenue"))
+        {
+            forward = "/Views/FinancialView/revenue.jsp";
+            String startDate = request.getParameter("startDate");
+            String endDate = request.getParameter("endDate");
+            
+            RevenueVM vm = finance.getRevenue(startDate, endDate);
+            vm.setTotalRevenue();
+            request.setAttribute("visitCount", vm.getVisitCount());
+            request.setAttribute("totalRevenue", vm.getTotalRevenue());
+            request.setAttribute("procedureRevenue", vm.getTotalProcedureRevenue());
+
+        }
             RequestDispatcher rd = getServletContext().getRequestDispatcher(forward);            
             rd.forward(request, response);
-        }  
     }
 
     /**
