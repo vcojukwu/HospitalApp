@@ -62,7 +62,7 @@ public class PermissionDao {
         String allowedIds = "(";
         
         List<String> ImmediatePatients = getPatientIdsForCurrentDoc(doctorid);
-        String query = "SELECT * FROM mis_db.doctor_permissions where DoctorId <> ? and PatientId IN ?";
+        String query = "SELECT * FROM mis_db.doctor_permissions where DoctorId <> '"+doctorid+"' and PatientId IN ";
         List<DoctorPermissionsModel> permissions = new ArrayList<DoctorPermissionsModel>();
         DoctorPermissionsModel dpm = null;
         ResultSet rs= null;
@@ -74,9 +74,9 @@ public class PermissionDao {
         
         try{
             pstmt = DbUtil.getConnection().prepareStatement(query);
-            pstmt.setString(1, doctorid);
-            pstmt.setString(2, allowedIds);
-            rs = pstmt.executeQuery();
+            query+=allowedIds;
+            System.out.println(pstmt.toString());
+            rs = pstmt.executeQuery(query);
             while(rs.next()){
                 dpm = new DoctorPermissionsModel();
                 dpm.setDoctorId(rs.getString("DoctorId"));
