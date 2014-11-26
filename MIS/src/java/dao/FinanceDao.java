@@ -106,17 +106,21 @@ public class FinanceDao {
                         rcd.setNotes(rs.getString("Notes"));
                     }
                 }
-                record.setRecordId(rs.getInt("RecordId"));
-                record.setOriginalRecordId(rs.getInt("OriginalRecordId"));
-                record.setProcedureId(rs.getInt("ProcedureId"));
-                record.setPatientId(rs.getString("PatientId"));
-                record.setTimeStarted(rs.getTimestamp("TimeStarted"));
-                record.setTimeEnded(rs.getTimestamp("TimeEnded"));
-                record.setPrescriptions(rs.getString("Prescriptions"));
-                record.setDiagnosis(rs.getString("Diagnosis"));
-                record.setTreatmentSchedule(rs.getString("TreatmentSchedule"));
-                record.setNotes(rs.getString("Notes"));
-                result.add(record);                
+                else
+                {
+                    record.setRecordId(rs.getInt("RecordId"));
+                    record.setOriginalRecordId(rs.getInt("OriginalRecordId"));
+                    record.setProcedureId(rs.getInt("ProcedureId"));
+                    record.setPatientId(rs.getString("PatientId"));
+                    record.setTimeStarted(rs.getTimestamp("TimeStarted"));
+                    record.setTimeEnded(rs.getTimestamp("TimeEnded"));
+                    record.setPrescriptions(rs.getString("Prescriptions"));
+                    record.setDiagnosis(rs.getString("Diagnosis"));
+                    record.setTreatmentSchedule(rs.getString("TreatmentSchedule"));
+                    record.setNotes(rs.getString("Notes"));
+                    result.add(record);
+                }
+                                
             }
             HashSet uniquePatients = new HashSet();
             for(VisitationRecordsModel p : result)

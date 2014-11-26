@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author TheKey
  */
-@WebServlet(name = "FinancalController", urlPatterns = {"/Financal/*", "/Financial/Monitor","/Financial/PatientSearch"},
+@WebServlet(name = "FinancalController", urlPatterns = {"/Financal/*", "/Financial/Monitor",},
         loadOnStartup = 1,
         asyncSupported = true)
 public class FinancalController extends HttpServlet {
@@ -67,25 +67,23 @@ public class FinancalController extends HttpServlet {
         String forward="";
         String requestURL = request.getRequestURL().toString();
         FinanceDao finance = new FinanceDao();
-        if(requestURL.contains("Monitor")){
-            request.setAttribute("doctors", finance.getDoctors());
-            forward = "/Views/FinancialView/doctor_search.jsp";
-            RequestDispatcher rd = getServletContext().getRequestDispatcher(forward);            
-            rd.forward(request, response);
-        }
-        else if(requestURL.contains("PatientSearch"))
-        {
-            
+        
+        if(request.getParameter("SearchRecords") != null)
+        {     
             String doctorId = request.getParameter("userId");
             String startDate = request.getParameter("startDate");
             String endDate = request.getParameter("endDate");
             DoctorMonitorVM vm = finance.getPatientList(doctorId, startDate, endDate);
-            String json = new Gson().toJson(vm);
-            response.setContentType("application/json");
-            response.setCharacterEncoding("UTF-8");
-            response.getWriter().write(json);
+            request.setAttribute("searchRecords", vm);
+            RequestDispatcher rd = getServletContext().getRequestDispatcher("/Views/FinancialView/doctor_search.jsp");
+            rd.forward(request, response);
         }
-        
+        else if(requestURL.contains("Monitor")){
+            request.setAttribute("doctors", finance.getDoctors());
+            forward = "/Views/FinancialView/doctor_search.jsp";
+            RequestDispatcher rd = getServletContext().getRequestDispatcher(forward);            
+            rd.forward(request, response);
+        }  
     }
 
     /**
