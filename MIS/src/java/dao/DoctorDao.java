@@ -109,37 +109,31 @@ public class DoctorDao {
         DoctorVisitationRecordVM vrum = null;
         VisitationRecordsModel vrm = null;
         UserModel um = null;
-        boolean FlagBothID = false;
         String query = "select * from mis_db.visitation_records left join mis_db.users "
                     + "on visitation_records.PatientId = users.UserId ";
         List<DoctorVisitationRecordVM> result = new ArrayList<DoctorVisitationRecordVM>();
         String allowedIds = " (";
-        //If a specific PatientId is not provided, we only display all patients which the doctor is
-        //allowed to see
-        if(VRecordParams[3]==null && VRecordParams[4]!=null){                   //PatiendID null and DoctorID given
-            //This request will get a list of PatientIds for which the given DoctorId is allowed to view
-            List<String> AllowedPatientIds = GetAllowedPatientList(VRecordParams[4]);
-            //The result is formatted to fit an SQL in condition
-            
+        
+        List<String> AllowedPatientIds = GetAllowedPatientList(VRecordParams[4]);
+        if(VRecordParams[3]==null){
             for(String id:AllowedPatientIds){
                 allowedIds += "'" + id + "',";
             }
             allowedIds = allowedIds.substring(0, allowedIds.length()-1)+") ";
             query += " WHERE visitation_records.PatientId IN"+allowedIds;
         }
-        else if(VRecordParams[3]!=null && VRecordParams[4]==null){              //PatiendID given and DoctorID null
-            //if a specific PatientId is given
-            allowedIds += "'" + VRecordParams[3] + "') ";
-            query += " WHERE visitation_records.PatientId IN"+allowedIds;
-        }
-        else if(VRecordParams[3]==null && VRecordParams[4]==null){              //Both PatientID and DoctorID are null
-        }
         else{
-            FlagBothID=true;
+            if(AllowedPatientIds.contains(VRecordParams[3])){
+                allowedIds += "'" + VRecordParams[3] + "') ";
+            query += " WHERE visitation_records.PatientId IN"+allowedIds;
+            }
+            else{
+                return null;
+            }
         }
         
         for(int i=0; i<VisitationRecordModelColumns.length; i++){
-            if(!FlagBothID){
+            if(VisitationRecordModelColumns[i].equalsIgnoreCase("DoctorId")||VisitationRecordModelColumns[i].equalsIgnoreCase("PatientId")){
                 //since patient id or doctor id have been accounted for above
                 continue;
             }

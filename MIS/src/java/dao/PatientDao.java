@@ -126,23 +126,26 @@ public class PatientDao {
         PatientModel patientmodel= null;
         UserModel usermodel= null;
         String allowedIds = " (";
-        //If a specific PatientId is not provided, we only display all patients which the doctor is
-        //allowed to see
-        if(PatientSearchAttr[0]==null){
-            //This request will get a list of PatientIds for which the given DoctorId is allowed to view
-            List<String> AllowedPatientIds = GetAllowedPatientList(PatientSearchAttr[1]);
-            //The result is formatted to fit an SQL in condition
-            
+        
+        //This request will get a list of PatientIds for which the given DoctorId is allowed to view
+        List<String> AllowedPatientIds = GetAllowedPatientList(PatientSearchAttr[1]);
+
+        if(PatientSearchAttr[0]==null){ 
             for(String id:AllowedPatientIds){
                 allowedIds += "'" + id + "',";
             }
             allowedIds = allowedIds.substring(0, allowedIds.length()-1)+") ";
+            query += " WHERE patients.PatientId IN"+allowedIds;
         }
-        else{
-            //if a specific PatientId is given
-            allowedIds += "'" + PatientSearchAttr[0] + "') ";
+        else{              //PatiendID given and DoctorID null
+            if(AllowedPatientIds.contains(PatientSearchAttr[0])){
+                allowedIds += "'" + PatientSearchAttr[0] + "') ";
+                query += " WHERE patients.PatientId IN"+allowedIds;
+            }
+            else{
+                return null;
+            }
         }
-        query += " WHERE patients.PatientId IN"+allowedIds;
         
         //Patient Model column search gets handled here
         for(int i=0; i<PatientModelColumns.length; i++){
