@@ -5,7 +5,7 @@
     </div>
 
     <div class="content" style="padding-top:30px">
-        <form class="pure-form" method="post" action="Doctor">
+        <form class="pure-form" method="post" action="SearchRecords">
             <fieldset>
                 <legend>Search for a Patient</legend>
 

@@ -7,11 +7,8 @@
     <div class="content" style="padding-top:30px; margin:5% !important">
         <form class="pure-form" name ="patientRecordForm" action="Doctor" method="post">
             <fieldset>
-                <legend>Search for a Patient</legend>
-
                 <input name ="patId" id="patId" type="text" class="pure-input-rounded" value="${patientInfo.getUserId()}" disabled>
-                <input name ="firstname" id="firstname" type="text" class="pure-input-rounded" value="${patientInfo.getFirstName()}" disabled>
-                <input name ="lastname" id="lastname" type="text" class="pure-input-rounded" value="${patientInfo.getLastName()}" disabled>
+                <input name ="firstname" id="firstname" type="text" class="pure-input-rounded" value='${patientInfo.getFirstName()} ${patientInfo.getLastName()}' disabled>
             </fieldset>
         
 
