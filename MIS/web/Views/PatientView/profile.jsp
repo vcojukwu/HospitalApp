@@ -8,11 +8,26 @@
             <img style="margin-left:40%" src="Images/profilepic.jpg"/>
 <a href="${pageContext.request}/Patient?action=edit">Update</a>            <div style="float:right; width:45%; height:80%; margin-left:5%">
                 <p>Upcoming Appointments</p>
-                <ul>
-                    <li>1</li>
-                    <li>2</li>
-                    <li>3</li>
-                </ul>
+                <table class="pure-table pure-table-bordered" id="appointments">
+                <thead>
+                    <tr>
+                        <th>Date Scheduled</th>
+                        <th>Time Scheduled</th>                        
+                        <th>Doctor Id</th>
+                        <th>Duration</th>
+                    </tr>                    
+                </thead>
+                <tbody>
+                <c:forEach items="${upcomingAppointments}" var="appointment">                        
+                    <tr>
+                        <td><input name="date" type="date" value = ${appointment.getDate()} disabled></td>
+                        <td><input name="time" type="time" value = ${appointment.getTimeScheduledUI()} disabled></td>
+                        <td><input name="time" type="text" value = ${appointment.getDoctorId()} disabled></td>
+                        <td><input name="duration" type="number" value="${appointment.getDurationScheduled()}"  disabled></td>
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </table>
             </div>
 
             <div style="float:left; width:50%">
