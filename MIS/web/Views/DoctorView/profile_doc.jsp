@@ -9,11 +9,16 @@
         <img style="margin-left:40%" src="Images/profilepic.jpg"/>            
         <div style="float:right; width:45%; height:80%; margin-left:5%">
             <p>Schedule</p>
-            <ul>
-                <li>1</li>
-                <li>2</li>
-                <li>3</li>
-            </ul>
+            <table class="pure-table pure-table-bordered" id="appointments">
+                <thead>
+                    <tr>
+                        <th style="width:25%">Time Scheduled</th>
+                        <th style="width:25%">Patient Id</th>
+                        <th style="width:25%">Doctor Id</th>
+                        <th style="width:25%">Duration</th>
+                    </tr>
+                </thead>
+            </table>
         </div>            
         <div style="float:left; width:50%">
             <form class="pure-form pure-form-aligned">

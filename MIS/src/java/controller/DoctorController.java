@@ -29,7 +29,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author TheKey
  *///, 
-@WebServlet(name = "DoctorController", urlPatterns = {"/Doctor", "/PatientRecords"})
+@WebServlet(name = "DoctorController", urlPatterns = {"/Doctor", "/PatientRecords", "/SearchRecords"})
 public class DoctorController extends HttpServlet {
 
     /**
@@ -71,7 +71,11 @@ public class DoctorController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         //processRequest(request, response);
-       
+        DoctorDao doctor = new DoctorDao();
+        request.setAttribute("procedures", doctor.GetProcedures());
+        
+        RequestDispatcher rd = getServletContext().getRequestDispatcher("/Views/DoctorView/search_records.jsp");
+        rd.forward(request, response);
     }
 
     /**
@@ -88,26 +92,63 @@ public class DoctorController extends HttpServlet {
         
         HttpSession session = request.getSession(false);       
         
-         if (request.getParameter("AddVisitationRecord") != null){
+        if (request.getParameter("AddVisitationRecord") != null){
            this.AddVisitationRecord(request, session, response, "NULL");
-         }
-         else if (request.getParameter("SearchPatients") != null)
+        }
+        else if (request.getParameter("SearchPatients") != null)
             this.SearchPatients(request, session, response);
-         else if (request.getParameter("ViewPatientDetail") != null){
+        else if (request.getParameter("ViewPatientDetail") != null){
              String patientId = request.getParameter("ViewPatientDetail");
             this.NavigateToPatientView(request, session, response, patientId);
-         }
-         else if (request.getParameter("PatientRecord") != null){
-                   String patientId = (String)request.getAttribute("patientId");
+        }
+        else if (request.getParameter("PatientRecord") != null){
+                   String patientId = request.getParameter("selectedpatId");
                    this.AddVisitationRecord(request, session, response, patientId);
                    this.NavigateToPatientView(request, session, response, patientId);
-            }
+        }
+        else if(request.getParameter("SearchRecords") != null){
+            this.SearchRecords(request, session, response);
+        }
+         
         
         
         
 
     }
 
+    private void SearchRecords(HttpServletRequest request, HttpSession session, HttpServletResponse response)
+        throws ServletException, IOException{
+            
+            String email = request.getParameter("email");
+            String prescriptions = request.getParameter("prescriptions");
+            String diagnosis = request.getParameter("diagnosis");
+            String notes = request.getParameter("notes");
+            String firstname = request.getParameter("firstname");
+            String lastname = request.getParameter("lastname");
+            String recorddate = request.getParameter("recorddate");
+            String procedureid = request.getParameter("procedureId");
+                           
+            UserModel user = ((UserProfileVM)session.getAttribute("profile")).getUser();                                //Get Doctor Id  
+            
+            //PatientUserVM patient = patientdao.getPatient(patId);
+           
+            //get the patient info to diplay on top currently ill display id only - we can add first name and last name later on
+            String[] VisitationRecordSA = {null,null, (procedureid.equals("0"))? null : procedureid,
+                (email == "")?null : email, user.getUserId(), (recorddate == "")? null : recorddate, null,
+                (prescriptions == "")? null : prescriptions, (diagnosis == "")? null : diagnosis, null,
+                (notes == "")? null : notes};
+            String[] UserModelSA = {null, (firstname == "")? null : firstname, (lastname == "")? null : lastname , null, 
+                null, null, null, null, null, null, null};
+            
+            DoctorDao doctor = new DoctorDao();
+            request.setAttribute("records", doctor.FindRecords(VisitationRecordSA, UserModelSA));
+            request.setAttribute("procedures", doctor.GetProcedures());
+            
+            RequestDispatcher rd = getServletContext().getRequestDispatcher("/Views/DoctorView/search_records.jsp");
+            rd.forward(request, response);
+        }
+    
+    
     private void NavigateToPatientView(HttpServletRequest request, HttpSession session, HttpServletResponse response, String patId)
         throws ServletException, IOException{
             
@@ -123,24 +164,32 @@ public class DoctorController extends HttpServlet {
             String[] UserModelSA = {null, null, null , null, 
                 null, null, null, null, null, 
                 null, null};
+            
             DoctorDao doctor = new DoctorDao();
             request.setAttribute("patientInfo", patient.getUser());
             request.setAttribute("records", doctor.FindRecords(VisitationRecordSA, UserModelSA));
             request.setAttribute("procedures", doctor.GetProcedures());
             
-        RequestDispatcher rd = getServletContext().getRequestDispatcher("/Views/DoctorView/patient_records.jsp");
-        rd.forward(request, response);
+            RequestDispatcher rd = getServletContext().getRequestDispatcher("/Views/DoctorView/patient_records.jsp");
+            rd.forward(request, response);
         }
+    
     private void SearchPatients(HttpServletRequest request, HttpSession session, HttpServletResponse response)
         throws ServletException, IOException{
+        
         String firstname = request.getParameter("firstname");
         String lastname = request.getParameter("lastname");
-        UserModel user = ((UserProfileVM)session.getAttribute("profile")).getUser();                                //Get Doctor Id  
+        String patientId = request.getParameter("email");
+        String isActive = request.getParameter("current");
+        String lastVisit = request.getParameter("lastvisit");
+        
+        UserModel user = ((UserProfileVM)session.getAttribute("profile")).getUser();
+        //Get Doctor Id  
         PatientDao patientdao = new PatientDao();
-        String[] PatientModelSA = {null,user.getUserId(), null,null,
-            null,null, null, null, null};
+        String[] PatientModelSA = {(patientId == "")? null : patientId, user.getUserId(), null,null,
+            null,null,  (isActive.equals("1"))? isActive : null, (lastVisit == "")?  null : lastVisit , null};
         String[] UserModelSA = {null, (firstname == "")?  null : firstname , (lastname == "")?  null : lastname, null, 
-            null, null, null, null, null, 
+            null, null, null, null,null, 
             null, null};
         //For now just get all patients, not sending in search criteria
          request.setAttribute("patients", patientdao.searchPatients(PatientModelSA, UserModelSA));

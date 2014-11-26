@@ -6,12 +6,15 @@
             <file>file:/C:/Users/Abbasali/Dropbox/University/3B/ECE%20356/Project/HospitalApp/MIS/src/java/ViewModel/VisitationRecordsVM.java</file>
             <file>file:/C:/Users/Abbasali/Dropbox/University/3B/ECE%20356/Project/HospitalApp/MIS/src/java/dao/DoctorDao.java</file>
             <file>file:/C:/Users/Abbasali/Dropbox/University/3B/ECE%20356/Project/HospitalApp/MIS/src/java/controller/DoctorController.java</file>
-            <file>file:/C:/Users/Abbasali/Dropbox/University/3B/ECE%20356/Project/HospitalApp/MIS/src/java/Model/UserModel.java</file>
+            <file>file:/C:/Users/Abbasali/Dropbox/University/3B/ECE%20356/Project/HospitalApp/MIS/web/WEB-INF/jspf/SideBars/doctorSideBar.jspf</file>
+            <file>file:/C:/Users/Abbasali/Dropbox/University/3B/ECE%20356/Project/HospitalApp/MIS/web/Views/DoctorView/search_records.jsp</file>
             <file>file:/C:/Users/Abbasali/Dropbox/University/3B/ECE%20356/Project/HospitalApp/MIS/web/Views/DoctorView/enter_records.jsp</file>
+            <file>file:/C:/Users/Abbasali/Dropbox/University/3B/ECE%20356/Project/HospitalApp/MIS/web/Views/DoctorView/profile_doc.jsp</file>
+            <file>file:/C:/Users/Abbasali/Dropbox/University/3B/ECE%20356/Project/HospitalApp/MIS/web/Views/DoctorView/search_patients.jsp</file>
             <file>file:/C:/Users/Abbasali/Dropbox/University/3B/ECE%20356/Project/HospitalApp/MIS/web/Views/DoctorView/patient_records.jsp</file>
+            <file>file:/C:/Users/Abbasali/Dropbox/University/3B/ECE%20356/Project/HospitalApp/MIS/src/java/Model/AppointmentsModel.java</file>
             <file>file:/C:/Users/Abbasali/Dropbox/University/3B/ECE%20356/Project/HospitalApp/MIS/src/java/ViewModel/DoctorVisitationRecordVM.java</file>
             <file>file:/C:/Users/Abbasali/Dropbox/University/3B/ECE%20356/Project/HospitalApp/MIS/src/java/Model/VisitationRecordsModel.java</file>
-            <file>file:/C:/Users/Abbasali/Dropbox/University/3B/ECE%20356/Project/HospitalApp/MIS/web/Views/StaffView/staff_appointments.jsp</file>
         </group>
     </open-files>
 </project-private>

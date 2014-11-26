@@ -1,17 +1,74 @@
 <%@include file="/WEB-INF/jspf/SideBars/doctorSideBar.jspf" %>
+<script>function addRowPatientRecord(r){
+    
+        var dt = new Date();
+        var newdate =dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + dt.getDate();
+        var temp = dt.getMinutes();
+        var temp2 = dt.getHours();
+        if(dt.getMinutes() < 10) temp = '0' + temp;
+        if(dt.getHours() < 10) temp2 = '0' + temp;
+        var timenow = temp2 + ":" + temp;
+	var i = r.parentNode.parentNode.rowIndex;
+	var table = document.getElementById("records");
+	var row = table.insertRow(i);
+	var cell1 = row.insertCell(0);
+	var cell2 = row.insertCell(1);
+	var cell3 = row.insertCell(2);
+	var cell4 = row.insertCell(3);
+	var cell5 = row.insertCell(4);
+	var cell6 = row.insertCell(5);
+	var cell7 = row.insertCell(6);
+        var cell8 = row.insertCell(7);
+	
+	cell1.innerHTML = '<select id="procedureId" name="procedureId">\
+                                    <c:forEach items="${procedures}" var="procedures" >\
+                                        <option value="${procedures.getProcedureId()}">${procedures.getProcedureName()}</option>\
+                                    </c:forEach>\
+                                </select>';
+	cell2.innerHTML = '<input id="date" type="date" value ="' + newdate + '">';
+        cell3.innerHTML = '<input id="timestarted" type="time" value="' + timenow + '" >';
+	cell4.innerHTML = '<input id="timeended" type="time" value="' + timenow + '" >';
+	cell5.innerHTML = '<input id="precriptions" type="text" value ="" >';
+	cell6.innerHTML = '<input id="Diagnosis" type="text" value ="" >';
+	cell7.innerHTML = '<input id="notes" type="text" value = "" >';
+	cell8.innerHTML = '<button title="Save" value="PatientRecord" name="PatientRecord" onclick="enableRowPatientRecord(this); \
+                                    return false" style="margin-right:15%; margin-left:15%" class="pure-button">\
+                                    <i class="fa fa-floppy-o"></i>\
+                           </button>';
+                                        
+        var input1 = document.createElement('input');
+        var input2 = document.createElement('input');
+        var input3 = document.createElement('input');
+        
+        input1.id = "originalrecordid";
+        input2.id = "recordId";
+        input3.id = "recordType";
+        input1.type = "hidden";
+        input2.type = "hidden";
+        input3.type = "hidden";
+        input1.value = "-1";
+        input2.value = "-1";
+        input3.value = "0";
+   
+        row.appendChild(input1);       
+        row.appendChild(input2);  
+        row.appendChild(input3);  
+                                        
+    return false;
+}
+
+    
+</script>
 <div id="main">
     <div class="header">
         <h1>Patient Record</h1>
     </div>
 
     <div class="content" style="padding-top:30px; margin:5% !important">
-        <form class="pure-form">
+        <form class="pure-form" name ="patientRecordForm" action="Doctor" method="post">
             <fieldset>
-                <legend>Search for a Patient</legend>
-
-                <input name ="patientId" id="patientId" type="text" class="pure-input-rounded" value="${patientInfo.getUserId()}" disabled>
-                <input name ="firstname" id="firstname" type="text" class="pure-input-rounded" value="${patientInfo.getFirstName()}" disabled>
-                <input name ="lastname" id="lastname" type="text" class="pure-input-rounded" value="${patientInfo.getLastName()}" disabled>
+                <input name ="patId" id="patId" type="text" class="pure-input-rounded" value="${patientInfo.getUserId()}" disabled>
+                <input name ="firstname" id="firstname" type="text" class="pure-input-rounded" value='${patientInfo.getFirstName()} ${patientInfo.getLastName()}' disabled>
             </fieldset>
         
 
@@ -68,8 +125,6 @@
                     class="button-success pure-button" style="float:right">
             <i class="fa fa-plus"></i>
             </button>
-        </form>
-        <form class="pure-form" name ="patientRecordForm" action="Doctor" method="post">
             <fieldset>
                 <input type="hidden" id="selectedProcedureId" name="selectedProcedureId" type="number">
                 <input type="hidden" id="selectedDate" name="selectedDate" type="date">
@@ -81,7 +136,7 @@
                 <input type="hidden" id="selectedOriginalRecordId" name="selectedOriginalRecordId" type="number">
                 <input type="hidden" id="selectedRecordId" name="selectedRecordId" type="number">
                 <input type="hidden" id="selectedRecordType" name="selectedRecordType" type="number">
-                
+                <input type="hidden" id="selectedpatId" name ="selectedpatId" type="text" value="${patientInfo.getUserId()}">
             </fieldset>
             <button type="hidden" id="submitRecords" name="PatientRecord" class="pure-button pure-button-primary" hidden>Submit</button>
         </form>
