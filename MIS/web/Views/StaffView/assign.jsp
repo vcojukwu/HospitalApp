@@ -6,7 +6,7 @@ function addRow() {
     <c:forEach items="${patients}" var="patient">
         string += "<option value = ${patient.getPatientId()}>${patient.getFirstName()} ${patient.getLastName()}</option>";
     </c:forEach>
-    div.innerHTML = "<select id=\"doctor\" class=\"pure-input-1-2 patientDropdown\">" + string + "</select>";
+    div.innerHTML = "<select id=\"patient\" class=\"pure-input-1-2 patientDropdown\">" + string + "</select>";
     div.style.width = "50%";
     div.style.marginLeft = "50%";
     document.getElementById('dynamic_content').appendChild(div);
@@ -36,7 +36,7 @@ function myFunction() {
         <form class="pure-form pure-form-stacked" method = "post" action = "Staff">
             <fieldset>
                 <div class="pure-g" id="dynamic_content">
-
+                    <input name="function" type="hidden" value="AssignPatients">
                     <div class="pure-u-1 pure-u-md-1-3" style="width:50% !important">
                         <label for="doctor">Select Doctor</label>
                         <select name = "doctorId" id="doctor" class="pure-input-1-2 doctorDropdown">                            
