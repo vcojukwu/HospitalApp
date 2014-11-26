@@ -17,7 +17,6 @@
         <ul style="margin-top:20%">            
             <li class="menu-item-divided pure-menu-selected" style="background-color:#54F707"><a href="Views/FinancialView/profile_financial.jsp">Profile</a></li>
             <li><a href="Financial/Monitor">Doctor Search</a></li>
-            <li><a href="Views/FinancialView/financialpatient_search.jsp">Patient Search</a></li>
             <li><a href="Financial/Revenue">Monthly Revenue</a></li>
             <li>
                 <form id="logout" action="LogoutController" method="post">

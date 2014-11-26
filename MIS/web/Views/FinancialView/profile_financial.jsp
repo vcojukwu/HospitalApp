@@ -6,15 +6,8 @@
     </div>
     <div class="content" style="padding-top:30px">
         <img style="margin-left:40%" src="Images/profilepic.jpg"/>            
-        <div style="float:right; width:45%; height:80%; margin-left:5%">
-            <p>Schedule</p>
-            <ul>
-                <li>1</li>
-                <li>2</li>
-                <li>3</li>
-            </ul>
-        </div>            
-        <div style="float:left; width:50%">
+                   
+        <div style="width:50%; margin: 0 auto; margin-top: 10%">
             <form class="pure-form pure-form-aligned" method="post" action="User">
                 <fieldset>
                     <legend>Contact Information</legend>
