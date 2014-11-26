@@ -5,7 +5,7 @@
     </div>
 
     <div class="content" style="padding-top:30px">
-        <form class="pure-form" method="post" action="/Views/StaffView/SearchPatients">
+        <form class="pure-form" method="post" action="Views/StaffView/SearchPatients">
             <fieldset>
                 <legend>Search for a Patient</legend>
 
@@ -21,8 +21,9 @@
                 <button type="submit" class="pure-button pure-button-primary" name="SearchPatients">Search</button>
             </fieldset>
     </div>
-     <form class="pure-form" method="post" action="/Views/StaffView/SearchPatients">
+     <form class="pure-form" method="post" action="Views/StaffViewSearchPatients">
         <div style="margin-left:15%">
+            <input type="hidden" name="function" value="SearchPatient"/>
             <table class="pure-table pure-table-bordered" id="appointments">
                 <thead>
                     <tr>

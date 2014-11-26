@@ -103,7 +103,7 @@ public class StaffController extends HttpServlet {
 
     
     
-        private void SearchPatients(HttpServletRequest request, HttpSession session, HttpServletResponse response)
+    private void SearchPatients(HttpServletRequest request, HttpSession session, HttpServletResponse response)
         throws ServletException, IOException{
         
         String firstname = request.getParameter("firstname");
@@ -113,18 +113,17 @@ public class StaffController extends HttpServlet {
         String doctorId = request.getParameter("doctoremail");
         
         UserModel user = ((UserProfileVM)session.getAttribute("profile")).getUser();
+        StaffDao staff = new StaffDao();
         //Get Doctor Id  
-        PatientDao patientdao = new PatientDao();
+
         String[] PatientModelSA = {(patientId == "")? null : patientId, (doctorId == "")? null : doctorId, null,null,
             null,null, null, (lastVisit == "")?  null : lastVisit , null};
         String[] UserModelSA = {null, (firstname == "")?  null : firstname , (lastname == "")?  null : lastname, null, 
             null, null, null, null,null, 
             null, null};
         //For now just get all patients, not sending in search criteria
-         request.setAttribute("patients", patientdao.searchPatients(PatientModelSA, UserModelSA));
+         request.setAttribute("patients", staff.searchPatients(PatientModelSA, UserModelSA, user.getUserId()));
          
-        RequestDispatcher rd = getServletContext().getRequestDispatcher("/Views/DoctorView/search_patients.jsp");
-        rd.forward(request, response);
     }
         
     private void editAppointment(HttpServletRequest request){
@@ -205,6 +204,11 @@ public class StaffController extends HttpServlet {
         else if(request.getParameter("function").equals("AssignPatients")){
             this.assignPatients(request);            
             forward = "/Views/StaffView/assign.jsp";            
+        }
+        else if (request.getParameter("function").equals("SearchPatients")){
+            HttpSession session = request.getSession(false);
+            this.SearchPatients(request, session, response); 
+            forward = "/Views/StaffView/staffpatient_search.jsp";
         }
         view = request.getServletContext().getRequestDispatcher(forward);
         view.forward(request, response);
