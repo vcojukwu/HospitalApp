@@ -4,59 +4,68 @@
         <h1>Patient Search</h1>
     </div>
 
-    <div class="content" style="padding-top:30px; margin:5% !important">
+    <div class="content" style="padding-top:30px">
         <form class="pure-form" method="post" action="Doctor">
             <fieldset>
                 <legend>Search for a Patient</legend>
 
-                <input name ="firstname" id="firstname" type="text" class="pure-input-rounded" placeholder="Patient First Name">
-                <input name ="lastname" id="lastname" type="text" class="pure-input-rounded" placeholder="Patient Last Name">
-                <input id="adv1" type="hidden" placeholder="Patient ID">
+                <div style="margin-bottom:5px">
+                    <select id="current">
+                        <option value="0">Active Patients</option>
+                        <option value="1">All Patients</option>
+                    </select>
+
+                    <input id="email" type="email" class="pure-input-rounded" placeholder="patient@email.com">
+                </div>
+
+                <input  type="hidden" name="firstname" id="firstname" class="pure-input-rounded" placeholder="First Name">
+                <input  type="hidden" name="lastname" id="lastname" class="pure-input-rounded" placeholder="Last Name">
+
                 <label id="adv2" for="date" style="display:none">Last Visit :</label>
                 <input id="adv3" type="hidden">
 
                 <button type="submit" class="pure-button pure-button-primary" name="SearchPatients">Search</button>
-                <button type="button" onClick="showAdv1();
-                   return false" class="pure-button pure-button-primary">Advanced Search</button>
+                <button type="button" id="advSearch" onClick="showAdv1();
+                        return false" class="pure-button pure-button-primary">Advanced Search</button>
             </fieldset>
-        
 
-            <table class="pure-table pure-table-bordered" id="appointments">
-                <thead>
-                    <tr>
-                        <th>Patient ID</th>
-                        <th>Patient Name</th>
-                        <th>Doctor ID</th>
-                        <th>Doctor Name</th>
-                        <th>Start Time</th>
-                        <th>Duration</th>
-                        <th style="width:20%"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                      <c:forEach items="${patients}" var="item" >
-                        <tr>
-                            <td><input id="patID" type="text" value = ${item.getPatient().getPatientId()} disabled></td>
-                            <td><input id="patName" type="text" value = "${item.getUser().getFirstName()} ${item.getUser().getLastName()}" disabled></td>
-                            <td><input id="time" type="datetime" value = "1:00" disabled></td>
-                            <td><input id="duration" type="number" value = "60" disabled></td>
-                            <td>
-                                <button onClick="enableRow();
-                                        return false" style="margin-right:15px" class="pure-button">
-                                    <i class="fa fa-pencil"></i>
-                                </button>
-                                <button value =${item.getPatient().getPatientId()} name="ViewPatientDetail" onClick="">
-                                    <i class="fa fa-times-circle"></i>
-                                </button>
-                                <!--<button onClick="deleteRow2(this);
-                                        return false" class="pure-button">
-                                    <i class="fa fa-times-circle"></i>
-                                </button> -->
-                            </td>
-                        </tr>
-                        </c:forEach>
-                </tbody>
-            </table>
+
+
         </form>
+    </div>
+    <div style="margin-left:15%">
+        <table class="pure-table pure-table-bordered" id="appointments">
+            <thead>
+                <tr>
+                    <th>Patient Email</th>
+                    <th>Patient Name</th>
+                    <th>Doctor Name</th>
+                    <th>Last Visit</th>
+                    <th>Active</th>
+                    <th><span style="visibility:hidden">EditandDeleteButtons</span></th>
+                </tr>
+            </thead>
+            <tbody>
+                <c:forEach items="${patients}" var="item" >
+                    <tr>
+                        <td><input id="patID" type="text" value = ${item.getPatient().getPatientId()} disabled></td>
+                        <td><input id="patName" type="text" value = "${item.getUser().getFirstName()} ${item.getUser().getLastName()}" disabled></td>
+                        <td><input id="docName" type="text" value = "John Doe" disabled></td>
+                        <td><input id="lastVisit" type="date" value = "" disabled></td>
+                        <td align="center"><input id="isActive" type="checkbox" value = "1" disabled></td>
+                        <td align="center">
+                            
+                            <button class="pure-button" value =${item.getPatient().getPatientId()} name="ViewPatientDetail" onClick="">
+                                View Record
+                            </button>
+                            <!--<button onClick="deleteRow2(this);
+                                    return false" class="pure-button">
+                                <i class="fa fa-times-circle"></i>
+                            </button> -->
+                        </td>
+                    </tr>
+                </c:forEach>
+            </tbody>
+        </table>
     </div>
 </div>

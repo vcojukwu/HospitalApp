@@ -34,19 +34,23 @@
 
 }(this, this.document));
 
-function showAdv1() {
-    var elem = document.getElementById("adv1");
-    var attr = elem.getAttribute("type");
-    if (attr === "hidden") {
-        elem.setAttribute("type", "number");
-        document.getElementById("adv3").setAttribute("type", "date");
-        document.getElementById("adv2").style.display = "block";
-    }
-    else {
-        elem.setAttribute("type", "hidden");
-        document.getElementById("adv3").setAttribute("type", "hidden");
-        document.getElementById("adv2").style.display = "none";
-    }
+function showAdv1(){
+	var elem = document.getElementById("firstname");
+	var attr = elem.getAttribute("type");
+	if(attr == "hidden"){
+		elem.setAttribute("type","text");
+		document.getElementById("lastname").setAttribute("type","text");
+		document.getElementById("adv2").style.display = "block";
+		document.getElementById("adv3").setAttribute("type","date");
+		document.getElementById("advSearch").innerHTML = "Regular Search";
+	}
+	else{
+		elem.setAttribute("type","hidden");
+		document.getElementById("lastname").setAttribute("type","hidden");
+		document.getElementById("adv2").style.display = "none";
+		document.getElementById("adv3").setAttribute("type","hidden");
+		document.getElementById("advSearch").innerHTML = "Advanced Search";
+	}
 }
 
 function enable() {
