@@ -29,7 +29,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author TheKey
  *///, 
-@WebServlet(name = "DoctorController", urlPatterns = {"/Doctor", "/PatientRecords", "/SearchRecords"})
+@WebServlet(name = "DoctorController", urlPatterns = {"/Doctor", "/PatientRecords", "/SearchRecords",  "/Views/DoctorView/Profile"})
 public class DoctorController extends HttpServlet {
 
     /**
@@ -70,11 +70,21 @@ public class DoctorController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //processRequest(request, response);
+
+        String forward = null;
+        String requestURL = request.getRequestURL().toString();
         DoctorDao doctor = new DoctorDao();
-        request.setAttribute("procedures", doctor.GetProcedures());
-        
-        RequestDispatcher rd = getServletContext().getRequestDispatcher("/Views/DoctorView/search_records.jsp");
+        if (requestURL.contains("Views/DoctorView/Profile")) {
+            HttpSession session = request.getSession();
+            UserProfileVM user = (UserProfileVM) session.getAttribute("profile");
+            request.setAttribute("upcomingAppointments", doctor.getUpcomingAppointmens(user.getUser().getUserId()));
+            forward = "/Views/DoctorView/profile_doc.jsp";
+        }
+        else {
+            request.setAttribute("procedures", doctor.GetProcedures());
+            forward = "/Views/DoctorView/search_records.jsp";
+        }
+        RequestDispatcher rd = getServletContext().getRequestDispatcher(forward);
         rd.forward(request, response);
     }
 

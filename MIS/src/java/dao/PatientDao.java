@@ -5,21 +5,13 @@
  */
 package dao;
 
-import java.sql.Connection;
 import util.DbUtil;
 import Model.*;
 import ViewModel.PatientUserVM;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.*;
-import java.text.DateFormat;
-import java.text.FieldPosition;
-import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 /**
  *
@@ -295,5 +287,30 @@ public class PatientDao {
             e.printStackTrace();
         }
         return patientsAllowed;
-    } 
+    }
+    
+    public List<AppointmentsModel> getUpcomingAppointmens(String PatientId){
+        Statement stmt  = null;
+        String query    = null;
+        ResultSet rs    = null;
+        List<AppointmentsModel> appointments = new ArrayList<AppointmentsModel>();
+        try{
+            stmt = DbUtil.getConnection().createStatement();
+            query = "SELECT * from appointments "
+                    + "WHERE TimeScheduled>NOW() AND PatientId = '" + PatientId + "'"
+                    + "ORDER BY TimeScheduled limit 5";
+            System.out.println(query);
+            rs = stmt.executeQuery(query);
+            while(rs.next()){
+                AppointmentsModel appointment = new AppointmentsModel();
+                appointment.setDoctorId(rs.getString("DoctorId"));
+                appointment.setTimeScheduled(rs.getTimestamp("TimeScheduled"));
+                appointment.setDurationScheduled(rs.getInt("DurationScheduled"));
+                appointments.add(appointment);
+            }
+        } catch (SQLException e) {
+                e.printStackTrace();
+        }
+        return appointments;
+    }
 }

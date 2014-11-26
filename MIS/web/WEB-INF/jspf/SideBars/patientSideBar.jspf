@@ -20,7 +20,7 @@
             </p>
             <ul style="margin-top:20%">
                 <li class="menu-item-divided pure-menu-selected">
-                    <a href="Views/PatientView/profile.jsp">Profile</a>
+                    <a href="Views/PatientView/Profile">Profile</a>
                 </li>
                 <li>
                     <a href="Views/PatientView/appointments.jsp">Past Appointments</a>

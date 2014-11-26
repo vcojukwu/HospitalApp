@@ -310,7 +310,7 @@ public class DoctorDao {
         }
         return patientsAllowed;
     } 
-    
+
     public boolean CheckAppointmentConflict(String doctorid, Timestamp time, int duration_minutes){
         PreparedStatement pstmt=null;
         ResultSet rs = null;
@@ -334,5 +334,30 @@ public class DoctorDao {
             return false;
         }
         return true;
+    }
+    
+    public List<AppointmentsModel> getUpcomingAppointmens(String DoctorId){
+        Statement stmt  = null;
+        String query    = null;
+        ResultSet rs    = null;
+        List<AppointmentsModel> appointments = new ArrayList<AppointmentsModel>();
+        try{
+            stmt = DbUtil.getConnection().createStatement();
+            query = "SELECT * from appointments "
+                    + "WHERE TimeScheduled>NOW() AND DoctorId = '" + DoctorId + "'"
+                    + "ORDER BY TimeScheduled limit 5";
+            System.out.println(query);
+            rs = stmt.executeQuery(query);
+            while(rs.next()){
+                AppointmentsModel appointment = new AppointmentsModel();
+                appointment.setPatientId(rs.getString("PatientId"));
+                appointment.setTimeScheduled(rs.getTimestamp("TimeScheduled"));
+                appointment.setDurationScheduled(rs.getInt("DurationScheduled"));
+                appointments.add(appointment);
+            }
+        } catch (SQLException e) {
+                e.printStackTrace();
+        }
+        return appointments;
     }
 }

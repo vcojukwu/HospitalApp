@@ -90,9 +90,9 @@ public class LoginController extends HttpServlet {
            // forward = "/Views/loginRedirect.jsp"
             int userType = user.getUser().getUserType();
             if(userType == 1) //Patient
-                forward = "Views/PatientView/profile.jsp";
+                forward = "Views/PatientView/Profile";
             else if(userType == 2) //Doctor
-                forward = "Views/DoctorView/profile_doc.jsp";
+                forward = "Views/DoctorView/Profile";
             else if(userType == 3) //Staff
                 forward = "Views/StaffView/Profile";
             else if(userType == 4) //Finanace
