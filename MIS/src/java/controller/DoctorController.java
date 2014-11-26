@@ -277,6 +277,8 @@ public class DoctorController extends HttpServlet {
             time.setMinutes(temp.getMinutes());
             time.setSeconds(0);
             time.setDate(date.getDate());
+            time.setMonth(date.getMonth());
+            time.setYear(date.getYear());
         } catch (ParseException e){
             e.printStackTrace();
         }
